@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\konsultan;
 use Illuminate\Http\Request;
 use App\Rules\LoginKonsultanCheck;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class KonsultanLogin extends Controller
@@ -18,19 +19,18 @@ class KonsultanLogin extends Controller
 
     public function prosesloginKonsultan(Request $request)
 {
-    $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required', new LoginKonsultanCheck($request)],
-    ]);
+    $email = $request->input('email');
+    $password = $request->input('password');
 
-    // Ambil data konsultan berdasarkan email
-    $konsultan = konsultan::where('email', $request->email)->first();
+    $konsultan = konsultan::where('email', $email)->first();
 
-    // Simpan ID konsultan ke session
-    session(['konsultan_id' => $konsultan->id]);
+    if ($konsultan && Hash::check($password, $konsultan->password)) {
+        Session::put('loginStatus', true);
+        Session::put('konsultanLogin', $konsultan);
+        session(['konsultan_id' => $konsultan->id]);
+        return redirect()->route('status.index');
+    }
 
-    // Redirect ke halaman status atau jadwal
-    return redirect()->route('status.index');
 }
 
 

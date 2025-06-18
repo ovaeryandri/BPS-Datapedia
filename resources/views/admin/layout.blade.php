@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <link rel="shortcut icon" href="./img/fav.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{ asset('image/logo-bpskecil.png') }}" type="image/x-icon" />
   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css" />
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-  <title>Welcome To Cleopatra</title>
+  <title>Welcome To Admin</title>
 </head>
 
 <body class="bg-gray-100">
@@ -16,8 +16,8 @@
     class="md:fixed md:w-full md:top-0 md:z-20 flex flex-row flex-wrap items-center bg-white p-6 border-b border-gray-300">
     <!-- logo -->
     <div class="flex-none w-56 flex flex-row items-center">
-      <img src="img/logo.png" class="w-10 flex-none" />
-      <strong class="capitalize ml-1 flex-1">cleopatra</strong>
+      <img src="{{ asset('image/logo-bpsbiru.png') }}" class="w-56 flex-none" />
+      <strong class="capitalize ml-1 flex-1"></strong>
 
       <button id="sliderBtn" class="flex-none text-right text-gray-900 hidden md:block">
         <i class="fad fa-list-ul"></i>
@@ -37,78 +37,36 @@
       <!-- left -->
       <div
         class="text-gray-600 md:w-full md:flex md:flex-row md:justify-evenly md:pb-10 md:mb-10 md:border-b md:border-gray-200">
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-envelope-open-text"></i></a>
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-comments-alt"></i></a>
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-check-circle"></i></a>
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-calendar-exclamation"></i></a>
+
       </div>
       <!-- end left -->
 
       <!-- right -->
       <div class="flex flex-row-reverse items-center">
         <!-- user -->
-        <div class="dropdown relative md:static">
+        <div class="">
           <button class="menu-btn focus:outline-none focus:shadow-outline flex flex-wrap items-center">
             <div class="w-8 h-8 overflow-hidden rounded-full">
               <img class="w-full h-full object-cover" src="img/user.svg" />
             </div>
 
             <div class="ml-2 capitalize flex">
-              <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">moeSaid</h1>
-              <i class="fad fa-chevron-down ml-2 text-xs leading-none"></i>
+
+
+    @php
+    $admin = Session::get('adminLogin');
+@endphp
+
+@if($admin)
+    <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">
+        {{ $admin->nama }}
+    </h1>
+@endif
+
             </div>
           </button>
 
           <button class="hidden fixed top-0 left-0 z-10 w-full h-full menu-overflow"></button>
-
-          <div
-            class="text-gray-500 menu hidden md:mt-10 md:w-full rounded bg-white shadow-md absolute z-20 right-0 w-40 mt-5 py-2 animated faster">
-            <!-- item -->
-            <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
-              href="#">
-              <i class="fad fa-user-edit text-xs mr-1"></i>
-              edit my profile
-            </a>
-            <!-- end item -->
-
-            <!-- item -->
-            <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
-              href="#">
-              <i class="fad fa-inbox-in text-xs mr-1"></i>
-              my inbox
-            </a>
-            <!-- end item -->
-
-            <!-- item -->
-            <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
-              href="#">
-              <i class="fad fa-badge-check text-xs mr-1"></i>
-              tasks
-            </a>
-            <!-- end item -->
-
-            <!-- item -->
-            <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
-              href="#">
-              <i class="fad fa-comment-alt-dots text-xs mr-1"></i>
-              chats
-            </a>
-            <!-- end item -->
-
-            <hr />
-
-            <!-- item -->
-            <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
-              href="#">
-              <i class="fad fa-user-times text-xs mr-1"></i>
-              log out
-            </a>
-            <!-- end item -->
-          </div>
         </div>
         <!-- end user -->
 

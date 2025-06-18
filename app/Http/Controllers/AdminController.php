@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 use App\Models\admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
     public function index(){
         $admin = admin::all();
-        return view('admin.admin.index', compact('admin'));
+        $adminLogin = Session::get('adminLogin');
+        return view('admin.admin.index', compact('admin', 'adminLogin'));
     }
 
     public function create(){

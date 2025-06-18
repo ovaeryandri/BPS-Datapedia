@@ -1,14 +1,15 @@
 <?php
 
+// App\Rules\LoginAdminCheck.php
+
 namespace App\Rules;
 
-use Closure;
-use App\Models\Admin;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\admin;
 
-class LoginAdminCheck implements ValidationRule
+class LoginAdminCheck implements Rule
 {
     protected $request;
 
@@ -17,22 +18,24 @@ class LoginAdminCheck implements ValidationRule
         $this->request = $request;
     }
 
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    public function passes($attribute, $value)
     {
         $email = $this->request->input('email');
         $password = $this->request->input('password');
-        $loginStatus = false;
 
-        $admin = Admin::where('email', $email)->first();
+        $admin = admin::where('email', $email)->first();
 
         if ($admin && Hash::check($password, $admin->password)) {
-            $loginStatus = true;
             Session::put('loginStatus', true);
-            Session::put('ambilUser', $admin);
+            Session::put('adminLogin', $admin); // ⬅ simpan data admin ke session
+            return true;
         }
 
-        if (! $loginStatus) {
-            $fail('Email atau password salah.');
-        }
+        return false;
+    }
+
+    public function message()
+    {
+        return 'Email atau password salah.';
     }
 }

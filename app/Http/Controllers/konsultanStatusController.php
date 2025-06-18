@@ -4,32 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\konsultan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class konsultanStatusController extends Controller
 {
     public function index()
     {
         $konsultan = konsultan::findOrFail(session('konsultan_id'));
-        return view('jadwal.status', compact('konsultan'));
+        $konsultanLogin = Session::get('konsultanLogin');
+        return view('jadwal.status', compact('konsultan','konsultanLogin'));
     }
 
     public function store(Request $request)
-    {
-        $konsultan = konsultan::findOrFail(session('konsultan_id'));
+{
+    $konsultan = Konsultan::findOrFail(session('konsultan_id'));
 
-        if ($request->status == 'tidak tersedia') {
-            $request->validate([
-                'alasan' => 'required|string|max:255',
-            ]);
-            $konsultan->status = 'tidak tersedia';
-            $konsultan->alasan = $request->alasan;
-        } else {
-            $konsultan->status = 'tersedia';
-            $konsultan->alasan = null;
-        }
+    if ($request->status == 'tidak tersedia') {
+        $request->validate([
+            'alasan' => 'required|string|max:255',
+            'tanggal_mulai_tidak_tersedia' => 'required|date',
+            'tanggal_selesai_tidak_tersedia' => 'required|date|after_or_equal:tanggal_mulai_tidak_tersedia',
+        ]);
 
-        $konsultan->save();
+        $konsultan->status = 'tidak tersedia';
+        $konsultan->alasan = $request->alasan;
+        $konsultan->tanggal_mulai_tidak_tersedia = $request->tanggal_mulai_tidak_tersedia;
+        $konsultan->tanggal_selesai_tidak_tersedia = $request->tanggal_selesai_tidak_tersedia;
 
-        return redirect()->back()->with('success', 'Status berhasil diperbarui');
+    } else {
+        $konsultan->status = 'tersedia';
+        $konsultan->alasan = null;
+        $konsultan->tanggal_mulai_tidak_tersedia = null;
+        $konsultan->tanggal_selesai_tidak_tersedia = null;
     }
+
+    $konsultan->save();
+
+    return redirect()->back()->with('success', 'Status berhasil diperbarui');
+}
+
 }

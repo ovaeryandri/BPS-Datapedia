@@ -17,10 +17,10 @@ class LoggedInKonsultan
     public function handle(Request $request, Closure $next): Response
     {
 
-        $loginStatus = Session::get('loginStatus');
-        if ($loginStatus == False || !$loginStatus) {
-            return redirect()->route('loginKonsultan');
-        }
-        return $next($request);
+        if (!Session::get('loginStatus')) {
+        return redirect()->route('loginKonsultan');
+    }
+
+    return $next($request);
     }
 }

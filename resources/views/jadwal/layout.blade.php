@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <link rel="shortcut icon" href="./img/fav.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{ asset('image/logo-bpskecil.png') }}" type="image/x-icon" />
   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css" />
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-  <title>Welcome To Cleopatra</title>
+  <title>Welcome To Konsultan</title>
 </head>
 
 <body class="bg-gray-100">
@@ -16,8 +16,8 @@
     class="md:fixed md:w-full md:top-0 md:z-20 flex flex-row flex-wrap items-center bg-white p-6 border-b border-gray-300">
     <!-- logo -->
     <div class="flex-none w-56 flex flex-row items-center">
-      <img src="img/logo.png" class="w-10 flex-none" />
-      <strong class="capitalize ml-1 flex-1">cleopatra</strong>
+      <img src="{{ asset('image/logo-bpsbiru.png') }}" class="w-56 flex-none" />
+      <strong class="capitalize ml-1 flex-1"></strong>
 
       <button id="sliderBtn" class="flex-none text-right text-gray-900 hidden md:block">
         <i class="fad fa-list-ul"></i>
@@ -37,14 +37,7 @@
       <!-- left -->
       <div
         class="text-gray-600 md:w-full md:flex md:flex-row md:justify-evenly md:pb-10 md:mb-10 md:border-b md:border-gray-200">
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-envelope-open-text"></i></a>
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-comments-alt"></i></a>
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-check-circle"></i></a>
-        <a class="mr-2 transition duration-500 ease-in-out hover:text-gray-900" href="#" title="email"><i
-            class="fad fa-calendar-exclamation"></i></a>
+
       </div>
       <!-- end left -->
 
@@ -58,8 +51,15 @@
             </div>
 
             <div class="ml-2 capitalize flex">
-              <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">moeSaid</h1>
-              <i class="fad fa-chevron-down ml-2 text-xs leading-none"></i>
+               @php
+    $konsultan = Session::get('konsultanLogin');
+@endphp
+
+@if($konsultan)
+    <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">
+        {{ $konsultan->nama }}
+    </h1>
+@endif
             </div>
           </button>
 

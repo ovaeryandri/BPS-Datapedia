@@ -1,20 +1,16 @@
 <?php
 
+// App\Rules\LoginAdminCheck.php
+
 namespace App\Rules;
 
-use Closure;
-use App\Models\konsultan;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\konsultan;
 
-class LoginKonsultanCheck implements ValidationRule
+class LoginKonsultanCheck implements Rule
 {
-    /**
-     * Run the validation rule.
-     *
-     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     */
     protected $request;
 
     public function __construct($request)
@@ -22,22 +18,24 @@ class LoginKonsultanCheck implements ValidationRule
         $this->request = $request;
     }
 
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    public function passes($attribute, $value)
     {
         $email = $this->request->input('email');
         $password = $this->request->input('password');
-        $loginStatus = false;
 
         $konsultan = konsultan::where('email', $email)->first();
 
         if ($konsultan && Hash::check($password, $konsultan->password)) {
-            $loginStatus = true;
             Session::put('loginStatus', true);
-            Session::put('ambilUser', $konsultan);
+            Session::put('konsultanLogin', $konsultan); // ⬅ simpan data admin ke session
+            return true;
         }
 
-        if (! $loginStatus) {
-            $fail('Email atau password salah.');
-        }
+        return false;
+    }
+
+    public function message()
+    {
+        return 'Email atau password salah.';
     }
 }

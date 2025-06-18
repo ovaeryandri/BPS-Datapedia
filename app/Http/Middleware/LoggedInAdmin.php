@@ -17,10 +17,10 @@ class LoggedInAdmin
     public function handle(Request $request, Closure $next): Response
     {
 
-        $loginStatus = Session::get('loginStatus');
-        if ($loginStatus == False || !$loginStatus) {
-            return redirect()->route('loginAdmin');
-        }
-        return $next($request);
+        if (!Session::get('loginStatus')) {
+        return redirect()->route('loginAdmin');
+    }
+
+    return $next($request);
     }
 }

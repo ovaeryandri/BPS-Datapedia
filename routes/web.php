@@ -23,8 +23,6 @@ use App\Http\Controllers\Login\UserLogin;
 use App\Http\Middleware\LoginCheckUser;
 use App\Http\Middleware\SessionTimeout;
 
-Route::resource('jadwal', jadwalController::class);
-
 Route::middleware(LoggedInKonsultan::class)->group(function () {
 Route::get('/logoutKonsultan', [KonsultanLogin::class, 'logoutKonsultan'])->name('logoutKonsultan');
 Route::resource('status', konsultanStatusController::class);
@@ -32,6 +30,8 @@ Route::get('/konsultan/jadwal', [konsultanJadwalController::class, 'index'])->na
 });
 
 Route::middleware(LoggedInAdmin::class)->group(function () {
+Route::post('/jadwal/batal/{id}', [jadwalController::class, 'batal'])->name('jadwal.batal');
+Route::resource('jadwal', jadwalController::class);
 Route::resource('faq', faqController::class);
 Route::resource('konsultan', konsultanController::class);
 Route::resource('admin', AdminController::class);

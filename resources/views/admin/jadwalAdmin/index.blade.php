@@ -22,39 +22,60 @@
                         <th class="p-3 border border-blue-400 text-center">Konsultan</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    @foreach ($janjiTemu as $item)
-                    <tr class="bg-white hover:bg-gray-50 text-center">
-                        <td class="p-3 border">{{ $item->user->nama ?? '-' }}</td>
-                        <td class="p-3 border">{{ $item->user->no_hp }}</td>
-                        <td class="p-3 border">{{ $item->alamat }}</td>
-                        <td class="p-3 border">{{ $item->keperluan }}</td>
-                        <td class="p-3 border">{{ $item->tanggal }}</td>
-                        <td class="p-3 border">{{ $item->jenis }}</td>
-                        <td class="p-3 border">
-                            @if($item->jadwal)
-                                {{ $item->jadwal->konsultan->nama }}
-                            @else
-                                <form method="POST" action="{{ route('jadwal.store') }}" class="flex items-center space-x-2">
-                                    @csrf
-                                    <input type="hidden" name="janjitemu_id" value="{{ $item->id }}">
-
-                                    <select name="konsultan_id" class="border rounded p-1 text-sm" required>
-                                        <option value="">Pilih Konsultan</option>
-                                        @foreach ($konsultans as $konsultan)
-                                            <option value="{{ $konsultan->id }}">{{ $konsultan->nama }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                                        Atur
-                                    </button>
-                                </form>
-                            @endif
-                        </td>
-                    </tr>
+@foreach ($janjiTemu as $item)
+<tr class="bg-white hover:bg-gray-50 text-center">
+    <td class="p-3 border">{{ $item->user->nama ?? '-' }}</td>
+    <td class="p-3 border">{{ $item->user->no_hp }}</td>
+    <td class="p-3 border">{{ $item->alamat }}</td>
+    <td class="p-3 border">{{ $item->keperluan }}</td>
+    <td class="p-3 border">{{ $item->tanggal }}</td>
+    <td class="p-3 border">{{ $item->jenis }}</td>
+   <td class="p-3 border text-center">
+    @if($item->jadwal)
+        @if($item->jadwal->konsultan)
+            <div class="flex flex-col items-center space-y-1">
+                <span>{{ $item->jadwal->konsultan->nama }}</span>
+                <form method="POST" action="{{ route('jadwal.batal', $item->jadwal->id) }}" onsubmit="return confirm('Batalkan penjadwalan ini?')">
+                    @csrf
+                    <button type="submit" class="text-red-600 hover:underline text-sm">Batal</button>
+                </form>
+            </div>
+        @else
+            <form method="POST" action="{{ route('jadwal.store') }}" class="flex items-center space-x-2">
+                @csrf
+                <input type="hidden" name="janjitemu_id" value="{{ $item->id }}">
+                <select name="konsultan_id" class="border rounded p-1 text-sm" required>
+                    <option value="">Pilih Konsultan</option>
+                    @foreach ($konsultans as $konsultan)
+                        <option value="{{ $konsultan->id }}">{{ $konsultan->nama }}</option>
                     @endforeach
-                </tbody>
+                </select>
+                <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Atur</button>
+            </form>
+        @endif
+    @else
+        <form method="POST" action="{{ route('jadwal.store') }}" class="flex items-center space-x-2">
+            @csrf
+            <input type="hidden" name="janjitemu_id" value="{{ $item->id }}">
+            <select name="konsultan_id" class="border rounded p-1 text-sm" required>
+                <option value="">Pilih Konsultan</option>
+                @foreach ($konsultans as $konsultan)
+                    <option value="{{ $konsultan->id }}">{{ $konsultan->nama }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Atur</button>
+        </form>
+    @endif
+</td>
+
+
+</tr>
+@endforeach
+</tbody>
+
+
             </table>
 
             <!-- Pagination controls -->
