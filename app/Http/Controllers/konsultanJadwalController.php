@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Session;
 
 class konsultanJadwalController extends Controller
 {
-     public function index()
-    {
-        $konsultanId = Session::get('konsultan_id');
-        $jadwals = jadwal::with('janjitemu.user')
-                    ->where('konsultan_id', $konsultanId)
-                    ->get();
+    public function index()
+{
+    $konsultanId = Session::get('konsultan_id');
 
-        return view('jadwal.index', compact('jadwals'));
-    }
+    $jadwals = jadwal::with('janjitemu.user')
+                ->where('konsultan_id', $konsultanId)
+                ->whereNotNull('konsultan_id') // ⬅ Tambahan penting
+                ->get();
+
+    return view('jadwal.index', compact('jadwals'));
+}
+
 }

@@ -40,4 +40,25 @@ class janjitemuController extends Controller
     return redirect()->route('index')->with('success', 'Janji temu berhasil disimpan.');
 }
 
+   public function hapus($id)
+{
+    $janjiTemu = \App\Models\janjitemu::with('jadwal')->find($id);
+
+    if (!$janjiTemu) {
+        return redirect()->back()->with('error', 'Data janji temu tidak ditemukan.');
+    }
+
+    // Hapus jadwal jika ada
+    if ($janjiTemu->jadwal) {
+        $janjiTemu->jadwal->delete();
+    }
+
+    // Hapus janji temu
+    $janjiTemu->delete();
+
+    return redirect()->back()->with('success', 'Data janji temu berhasil dihapus.');
+}
+
+
+
 }

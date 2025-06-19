@@ -38,6 +38,7 @@ Route::resource('admin', AdminController::class);
 Route::resource('maklumat', maklumatController::class);
 Route::resource('layanan', layananController::class);
 Route::resource('standar', standarController::class);
+Route::delete('/janjitemu/{id}', [janjitemuController::class, 'hapus'])->name('janjitemu.hapus');
 Route::get('/logoutAdmin', [AdminLogin::class, 'logoutAdmin'])->name('logoutAdmin');
 
 });

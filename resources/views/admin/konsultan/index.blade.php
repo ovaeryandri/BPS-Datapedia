@@ -6,9 +6,11 @@
             <h2 class="text-xl font-bold text-blue-800">Data Konsultan</h2>
         </div>
 
-        <form method="POST" action="" class="p-6">
-            @csrf
-            <div class="mb-6">
+        <div class="p-6">
+                <a href="{{ route('konsultan.create') }}" class="px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 rounded">Tambah Data</a>
+            </div>
+
+            <div class="p-6">
                 <table class="w-full border-collapse">
                     <thead>
                         <tr class="bg-blue-300">
@@ -20,14 +22,14 @@
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="layanan-body">
                         <!-- Loop data dari controller Laravel -->
                         <?php
                             $no = 1;
                         ?>
                         @foreach ($konsultan as $item)
 
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 layanan-item-row">
                             <td class="p-3 border border-gray-200">
                                 {{ $no++ }}
                             </td>
@@ -82,12 +84,8 @@
 
                     </tbody>
                 </table>
+                <div id="pagination-controls" class="flex justify-center mt-6 space-x-2"></div>
             </div>
-
-            <div class="mt-6">
-                <a href="{{ route('konsultan.create') }}" class="px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 rounded">Tambah Data</a>
-            </div>
-        </form>
     </div>
 </div>
 

@@ -31,6 +31,7 @@
                 <div id="tanggal-box" class="mb-4" style="display: none;">
                     <label for="tanggal_mulai" class="block font-medium mb-1">Tanggal Mulai Tidak Tersedia:</label>
                     <input type="date" name="tanggal_mulai_tidak_tersedia"
+                    min="{{ now()->format('Y-m-d') }}"
                     value="{{ old('tanggal_mulai_tidak_tersedia', isset($konsultan->tanggal_mulai_tidak_tersedia) ? \Carbon\Carbon::parse($konsultan->tanggal_mulai_tidak_tersedia)->format('Y-m-d') : '') }}"
                     class="w-full border rounded p-2">
 
@@ -40,6 +41,7 @@
 
                     <label for="tanggal_selesai" class="block font-medium mt-2 mb-1">Tanggal Selesai Tidak Tersedia:</label>
                     <input type="date" name="tanggal_selesai_tidak_tersedia"
+                    min="{{ old('tanggal_mulai_tidak_tersedia', now()->format('Y-m-d')) }}"
                     value="{{ old('tanggal_selesai_tidak_tersedia', isset($konsultan->tanggal_selesai_tidak_tersedia) ? \Carbon\Carbon::parse($konsultan->tanggal_selesai_tidak_tersedia)->format('Y-m-d') : '') }}"
                     class="w-full border rounded p-2">
                     @error('tanggal_selesai_tidak_tersedia')

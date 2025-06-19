@@ -6,9 +6,12 @@
             <h2 class="text-xl font-bold text-blue-800">Data Maklmuat Layanan</h2>
         </div>
 
-        <form method="POST" action="" class="p-6">
-            @csrf
-            <div class="mb-6 link-container">
+          <div class="p-6">
+                <a href="{{ route('maklumat.create') }}" class="px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 rounded">Tambah Data</a>
+            </div>
+
+
+            <div class="p-6 link-container">
                 <table class="w-full border-collapse">
                     <thead>
                         <tr class="bg-blue-300">
@@ -56,10 +59,6 @@
                 <div id="pagination-controls" class="flex justify-center mt-6 space-x-2"></div>
             </div>
 
-            <div class="mt-6">
-                <a href="{{ route('maklumat.create') }}" class="px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 rounded">Tambah Data</a>
-            </div>
-        </form>
     </div>
 </div>
 

@@ -21,8 +21,9 @@ class janjitemu extends Model
         return $this->belongsTo(akunuser::class, 'users_id');
     }
 
-    public function jadwal()
+   public function jadwal()
 {
     return $this->hasOne(jadwal::class);
 }
+
 }
