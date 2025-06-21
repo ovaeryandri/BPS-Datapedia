@@ -23,13 +23,12 @@
                 <label for="gambar" class="block text-gray-700 font-medium mb-2">Gambar Layanan</label>
 
                 <div class="mb-4">
-
-                    <!-- Tampilkan file lama -->
                     @if($standar->gambar)
-                        <img src="{{ asset('storage/'.$standar->gambar) }}" class="w-[400px] h-96 object-cover mb-2" alt="gambar">
+                    <img id="preview" src="{{ asset('storage/'.$standar->gambar) }}" class="w-32 h-32 object-cover mb-2" alt="file">
+                    @else
+                    <img id="preview" class="w-32 h-32 object-cover mb-2 hidden" alt="preview">
                     @endif
-
-                </div>
+            </div>
 
                 <input type="file" name="gambar" id="gambar" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ $standar->gambar }}">
 

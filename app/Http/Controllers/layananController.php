@@ -60,12 +60,13 @@ class layananController extends Controller
     ];
 
     if ($request->hasFile('gambar')) {
-
+        // Hapus gambar lama jika ada
         if ($layanan->gambar) {
             Storage::disk('public')->delete($layanan->gambar);
         }
 
-        $filePath = $request->gambar('gambar')->store('files', 'public');
+        // Simpan gambar baru
+        $filePath = $request->file('gambar')->store('files', 'public');
         $data['gambar'] = $filePath;
     }
 
@@ -73,7 +74,6 @@ class layananController extends Controller
 
     return redirect()->route('layanan.index')->with('success', 'layanan Pelayanan Berhasil Diupdate');
 }
-
 
     public function destroy($id)
 {

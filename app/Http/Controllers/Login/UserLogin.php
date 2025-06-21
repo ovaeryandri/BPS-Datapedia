@@ -22,9 +22,14 @@ class UserLogin extends Controller
 
     public function prosesloginUser(Request $request)
 {
+
     $request->validate([
         'no_hp' => 'required|regex:/^08[0-9]{8,11}$/',
         'nama' => 'required|string',
+    ], [
+        'no_hp.required' => 'Nomor Handphone Tidak Boleh Kosong',
+        'no_hp.regex' => 'Nomor Handphone Tidak Valid',
+        'nama.required' => 'Username Tidak Boleh Kosong',
     ]);
 
     $user = akunuser::where('no_hp', $request->no_hp)
@@ -40,14 +45,15 @@ class UserLogin extends Controller
         ]);
 
         return redirect()->route('index');
+    } else {
+
+        return back()->withErrors([
+            'invalid_no_hp' => 'Nomor Salah atau Tidak Valid',
+            'invalid_nama' => 'Username Salah atau Tidak Valid',
+        ])->withInput();
     }
 
-    return back()->withErrors([
-        'no_hp' => 'nomor handphone salah atau tidak valid.'
-    ]);
 }
-
-
 
     public function logoutUser()
     {
@@ -62,7 +68,13 @@ class UserLogin extends Controller
     function daftar(Request $request){
         $request->validate([
             'no_hp' => 'required|regex:/^08[0-9]{8,11}$/|unique:users,no_hp',
-            'nama' => 'required|string|min:3',
+            'nama' => 'required|string|min:2',
+        ], [
+            'no_hp.required' => 'Nomor Handphone Wajib Diisi',
+            'no_hp.unique' => 'Nomor Handphone Telah Digunakan',
+            'no_hp.regex' => 'Nomor Handphone Salah',
+            'nama.required' => 'Username Wajib Diisi',
+            'nama.min' => 'Username Harus Lebih Dari 2 karakter',
         ]);
 
         $data = [

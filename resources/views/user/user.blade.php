@@ -17,6 +17,7 @@
                             </div>
                             <p class="font-semibold text-[#002B6A] text-lg speak-target" onmouseenter="speakOnHover(this)">Foto Kepala</p>
                             <p class="font-medium text-gray-600 speak-target" onmouseenter="speakOnHover(this)">BPS Provinsi</p>
+
                         </div>
                     </div>
                 </div>
@@ -113,8 +114,8 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="layanan-container">
                 @foreach ($layanan as $item)
                     <div class="layanan-item bg-white rounded-2xl shadow-lg border-2 border-[#002B6A] p-6 flex flex-col hover:shadow-xl transition-all duration-300">
-                        <div class="mb-4">
-                            <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->judul }}" class="h-56 w-full object-cover rounded-xl">
+                        <div class="mb-4 flex justify-center items-center">
+                            <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->judul }}" class="h-40 w-40 object-cover rounded-xl">
                         </div>
                         <h3 class="text-[#002B6A] font-bold text-xl mb-3 speak-target" onmouseenter="speakOnHover(this)">{{ $item->judul }}</h3>
                         <p class="text-gray-700 flex-grow mb-6 leading-relaxed speak-target" onmouseenter="speakOnHover(this)">{{ $item->deskripsi }}</p>
@@ -139,7 +140,8 @@
           <div class="center mx-auto container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ">
               @foreach ($maklumat as $item)
               <div class="shadow-lg rounded-xl overflow-hidden mx-4">
-                  <iframe src="{{ Storage::url($item->file) }}" width="100%" height="600px"></iframe>
+                  <iframe src="{{ Storage::url($item->file) }}#view=FitH" width="100%" height="600px" style="border: none;"></iframe>
+
                 </div>
 
                 @endforeach
@@ -167,25 +169,25 @@
     </div>
 
     {{-- FAQ Section --}}
-<section class="bg-[#002B6A] py-16 lg:py-20 theme-section theme-dark">
+<section class="bg-primary py-16 lg:py-20">
     <div class="container mx-auto px-4">
         <h2 class="text-center text-3xl lg:text-4xl font-bold mb-12 text-white speak-target" onmouseenter="speakOnHover(this)">
-            Frequently Asked Questions
+            Pertanyaan Yang Sering Ditanyakan
         </h2>
 
         <div class="max-w-4xl mx-auto space-y-4" id="faq-container">
             @foreach ($faq as $item)
                 <div x-data="{ open: false }" class="faq-item bg-white rounded-xl shadow-lg overflow-hidden">
-                    <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-50 transition-colors duration-200">
-                        <span class="font-semibold text-lg text-gray-800 pr-4 speak-target" onmouseenter="speakOnHover(this)">{{ $item->judul }}</span>
-                        <svg :class="{ 'rotate-180': open }" class="w-6 h-6 text-[#002B6A] transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition-colors duration-200">
+                        <span class="font-semibold text-lg text-gray-800 pr-4 speak-target" onmouseenter="speakOnHover(this)">
+                            {{ $item->judul }}
+                        </span>
+                        <svg :class="{ 'rotate-180': open }" class="w-6 h-6 text-gray-500 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
-                    <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0" class="px-6 pb-6">
-                        <div
-                            class="text-gray-700 leading-relaxed speak-target" onmouseenter="speakOnHover(this)"
-                        >
+                    <div x-show="open" x-transition class="px-6 pb-6">
+                        <div class="text-gray-700 leading-relaxed speak-target" onmouseenter="speakOnHover(this)">
                             {{ $item->deskripsi }}
                         </div>
                     </div>
@@ -197,16 +199,39 @@
     </div>
 </section>
 
+
+<!-- resources/views/chatbot.blade.php -->
+
+
     <!-- Widget Aksesibilitas -->
-<div x-data="{ open: false }" class="fixed bottom-6 right-6 z-50 ">
+<div x-data="{ open: false }" class="fixed bottom-6 right-6 z-50 flex gap-4 items-end">
+
+     <!-- Tombol Chatbot -->
+    <div>
+        <button
+            id="chatbot-toggle"
+            class="bg-gradient-to-br from-[#ffda6a] to-[#ffc107] rounded-full w-20 h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
+            style="box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 4h16v12H5.17L4 17.17V4zm16-2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
+            </svg>
+            <!-- Tooltip -->
+            <div class="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                Buka Chatbot
+                <div class="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+            </div>
+        </button>
+    </div>
+
     <!-- Tombol Utama -->
     <button
         @click="open = !open"
-        class="bg-gradient-to-br from-[#a3c2f5] to-[#004B9A] rounded-full w-24 h-24 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
+        class="bg-gradient-to-br from-[#a3c2f5] to-[#004B9A] rounded-full w-20 h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
         style="box-shadow: 0 8px 32px rgba(0, 43, 106, 0.4);"
     >
         <!-- Icon Aksesibilitas -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-white group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3M21 9v2a2 2 0 0 1-2 2h-1l-1.5 6h-2l1.3-5.4c-.4-.3-.9-.6-1.3-.6H9.5c-.4 0-.9.3-1.3.6L9.5 19h-2L6 13H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
 
@@ -227,35 +252,35 @@
             <span>Perbesar Text</span>
         </button>
 
-        <button onclick="adjustFontSize('decrease')" class="group flex items-center space-x-3 px-4 py-3 bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+        <button onclick="adjustFontSize('decrease')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
             </svg>
             <span>Perkecil Text</span>
         </button>
 
-        <button onclick="adjustFontSize('reset')" class="group flex items-center space-x-3 px-4 py-3 bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+        <button onclick="adjustFontSize('reset')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             <span>Reset Ukuran Text</span>
         </button>
 
-        <button onclick="setContrast('light')" class="group flex items-center space-x-3 px-4 py-3 bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+        <button onclick="setContrast('light')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             <span>Kontras Warna</span>
         </button>
 
-        <button onclick="setContrast('dark')" class="group flex items-center space-x-3 px-4 py-3 bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+        <button onclick="setContrast('dark')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             <span>Kontras Gelap</span>
         </button>
 
-        <button onclick="setContrast('default')" class="group flex items-center space-x-3 px-4 py-3 bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+        <button onclick="setContrast('default')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
@@ -264,6 +289,9 @@
 
 
     </div>
+    <div id="chatbot-container" style="display: none; position: fixed; bottom: 120px; right: 20px; width: 400px; height: 600px; z-index: 9999; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden;">
+    <iframe src="http://localhost:8501" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+</div>
 </div>
 
     {{-- Survey Section --}}
@@ -443,5 +471,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<script>
+        const toggleBtn = document.getElementById('chatbot-toggle');
+        const chatbotBox = document.getElementById('chatbot-container');
+
+        toggleBtn.addEventListener('click', () => {
+            chatbotBox.style.display = chatbotBox.style.display === 'none' ? 'block' : 'none';
+        });
+    </script>
 
 @endsection

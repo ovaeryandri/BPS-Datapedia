@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('keperluan');
             $table->string('tanggal');
-            $table->string('no_hp');
             $table->enum('jenis', ['online', 'offline'])->default('offline');
             $table->timestamps();
         });

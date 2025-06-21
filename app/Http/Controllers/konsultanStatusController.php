@@ -21,6 +21,7 @@ class konsultanStatusController extends Controller
 
     if ($request->status == 'tidak tersedia') {
         $request->validate([
+            'status' => 'required|in:tersedia,tidak tersedia',
             'alasan' => 'required|string|max:255',
             'tanggal_mulai_tidak_tersedia' => 'required|date|after_or_equal:today',
             'tanggal_selesai_tidak_tersedia' => 'required|date|after_or_equal:tanggal_mulai_tidak_tersedia',
@@ -28,8 +29,8 @@ class konsultanStatusController extends Controller
             'alasan.required' => 'Alasan Tidak Boleh Kosong',
             'tanggal_mulai_tidak_tersedia.required' => 'Tanggal Mulai tidak boleh kosong',
             'tanggal_mulai_tidak_tersedia.after_or_equal' => 'Tanggal Mulai Tidak Bisa jika tanggal nya sudah kemarin',
-            'tanggal_selesai_tidak_tersedia' => 'Tanggal Selesai tidak boleh kosong',
-            'tanggal_selesai_tidak_tersedia' => 'Tanggal Selesai Tidak Bisa Sebelum Tanggal Mulai',
+            'tanggal_selesai_tidak_tersedia.required' => 'Tanggal Selesai tidak boleh kosong',
+            'tanggal_selesai_tidak_tersedia.after_or_equal' => 'Tanggal Selesai Tidak Bisa Sebelum Tanggal Mulai',
         ]);
 
         $konsultan->status = 'tidak tersedia';
@@ -46,7 +47,7 @@ class konsultanStatusController extends Controller
 
     $konsultan->save();
 
-    return redirect()->back()->with('success', 'Status berhasil diperbarui');
+    return redirect()->route('status.index')->with('success', 'Status berhasil diperbarui');
 }
 
 }

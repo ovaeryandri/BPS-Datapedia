@@ -19,8 +19,14 @@ class janjitemuController extends Controller
     $request->validate([
         'alamat' => 'required|min:3|string',
         'keperluan' => 'required|min:3|string',
-        'tanggal' => 'required|date',
+        'tanggal' => 'required|date|after_or_equal:today',
         'jenis' => 'required|in:online,offline',
+    ], [
+        'alamat.required' => 'Alamat Tidak Boleh Kosong',
+        'keperluan.required' => 'Keperluan Tidak Boleh Kosong',
+        'tanggal.required' => 'Tanggal Tidak Boleh Kosong',
+        'tanggal.after_or_equal' => 'Tanggal Tidak Boleh Jika Sudah Kemarin',
+        'jenis.required' => 'Jenis Tidak Boleh Kosong',
     ]);
 
     $userId = Session::get('user_id'); // ✅ pastikan sudah terset saat login
@@ -37,28 +43,8 @@ class janjitemuController extends Controller
         'jenis' => $request->jenis,
     ]);
 
-    return redirect()->route('index')->with('success', 'Janji temu berhasil disimpan.');
+    return redirect()->route('janjitemu.index')->with('success', 'Janji temu berhasil disimpan.');
 }
-
-   public function hapus($id)
-{
-    $janjiTemu = \App\Models\janjitemu::with('jadwal')->find($id);
-
-    if (!$janjiTemu) {
-        return redirect()->back()->with('error', 'Data janji temu tidak ditemukan.');
-    }
-
-    // Hapus jadwal jika ada
-    if ($janjiTemu->jadwal) {
-        $janjiTemu->jadwal->delete();
-    }
-
-    // Hapus janji temu
-    $janjiTemu->delete();
-
-    return redirect()->back()->with('success', 'Data janji temu berhasil dihapus.');
-}
-
 
 
 }

@@ -26,9 +26,11 @@
 
                     <!-- Tampilkan file lama -->
                     @if($maklumat->file)
-
-                        <iframe src="{{ Storage::url($maklumat->file) }}" class="w-full h-96 object-cover mb-2"></iframe>
+                    <iframe id="preview-pdf" src="{{ Storage::url($maklumat->file) }}" class="w-full h-96 object-cover mb-2"></iframe>
+                    @else
+                    <iframe id="preview-pdf" class="w-full h-96 object-cover mb-2 hidden"></iframe>
                     @endif
+
 
                 </div>
 

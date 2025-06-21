@@ -19,6 +19,17 @@
         }
     </script>
     <style>
+
+        #successAlert {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        .hidden {
+            display: none !important;
+        }
+
         .form-floating {
             position: relative;
         }
@@ -183,12 +194,15 @@
                     <textarea
                         id="alamat"
                         name="alamat"
-                        placeholder=" "
+                        placeholder=""
                         rows="3"
                         class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
                         required
                     ></textarea>
                     <label for="alamat">Alamat Lengkap</label>
+                    @error('alamat')
+                         <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Keperluan -->
@@ -202,6 +216,9 @@
                         required
                     />
                     <label for="keperluan">Keperluan</label>
+                    @error('keperluan')
+                         <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Tanggal -->
@@ -209,11 +226,15 @@
                     <input
                         type="date"
                         id="tanggal"
+                        min="{{ old('tanggal', now()->format('Y-m-d')) }}"
                         name="tanggal"
                         class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
                         required
                     />
                     <label for="tanggal">Tanggal</label>
+                    @error('tanggal')
+                         <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Jenis -->
@@ -252,6 +273,9 @@
                             </div>
                         </label>
                     </div>
+                    @error('jenis')
+                         <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Submit Button -->
@@ -416,28 +440,29 @@
         }
 
         function showSuccessAlert() {
-            const successAlert = document.getElementById('successAlert');
-            successAlert.classList.remove('hidden');
+        const successAlert = document.getElementById('successAlert');
+        successAlert.classList.remove('hidden');
 
             // Auto redirect after 5 seconds
             setTimeout(() => {
                 redirectToIndex();
-            }, 5000);
+            }, 500);
         }
 
         function closeAlert() {
-            const successAlert = document.getElementById('successAlert');
-            const alertContainer = successAlert.querySelector('.alert-container');
+        const successAlert = document.getElementById('successAlert');
+        const alertContainer = successAlert.querySelector('.alert-container');
 
-            alertContainer.classList.add('fade-out');
-            successAlert.classList.add('fade-out');
+        alertContainer.classList.add('fade-out');
+        successAlert.classList.add('fade-out');
 
-            setTimeout(() => {
-                successAlert.classList.add('hidden');
-                successAlert.classList.remove('fade-out');
-                alertContainer.classList.remove('fade-out');
+        setTimeout(() => {
+            successAlert.classList.add('hidden');
+            successAlert.classList.remove('fade-out');
+            alertContainer.classList.remove('fade-out');
             }, 300);
         }
+
 
         function redirectToIndex() {
             closeAlert();
@@ -473,3 +498,6 @@
     </script>
 </body>
 </html>
+
+
+

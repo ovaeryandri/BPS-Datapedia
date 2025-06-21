@@ -52,17 +52,23 @@ class jadwalController extends Controller
     return redirect()->back()->with('success', 'Konsultan berhasil dibatalkan, silakan pilih ulang.');
 }
 
-    public function destroy($id)
+ public function hapus($id)
 {
-    $jadwal = Jadwal::find($id);
+    $janjiTemu = janjitemu::with('jadwal')->find($id);
 
-    if (!$jadwal) {
-        return redirect()->back()->with('error', 'Jadwal tidak ditemukan.');
+    if (!$janjiTemu) {
+        return redirect()->back()->with('error', 'Data janji temu tidak ditemukan.');
     }
 
-    $jadwal->delete();
+    // Hapus jadwal jika ada
+    if ($janjiTemu->jadwal) {
+        $janjiTemu->jadwal->delete();
+    }
 
-    return redirect()->back()->with('success', 'Jadwal berhasil dihapus.');
+    // Hapus janjittemu
+    $janjiTemu->delete();
+
+    return redirect()->back()->with('success', 'Data janji temu berhasil dihapus.');
 }
 
 

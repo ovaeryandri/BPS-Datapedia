@@ -78,7 +78,7 @@
 
         {{-- Jika ada jadwal, tampilkan tombol hapus jadwal --}}
         @if ($item->jadwal)
-            <form action="{{ route('jadwal.destroy', $item->jadwal->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jadwal ini?')">
+            <form action="{{ route('jadwal.batal', $item->jadwal->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jadwal ini?')">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="px-3 py-1 bg-yellow-300 hover:bg-yellow-400 text-yellow-800 rounded text-sm">Batalkan Jadwal</button>
@@ -86,7 +86,7 @@
         @endif
 
         {{-- Tombol hapus janji temu --}}
-        <form action="{{ route('janjitemu.hapus', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus janji temu ini?')">
+        <form action="{{ route('jadwal.hapus', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus janji temu ini?')">
             @csrf
             @method('DELETE')
             <button type="submit" class="px-3 py-1 bg-red-300 hover:bg-red-400 text-red-800 rounded text-sm">Hapus Janji Temu</button>

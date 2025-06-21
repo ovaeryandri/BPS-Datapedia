@@ -12,74 +12,73 @@
 
 <body class="bg-blue-50 flex items-center justify-center py-20 overflow-hidden">
 
-  <main class="w-9/12 max-h-screen rounded-2xl flex shadow-2xl">
+  <main class="w-full max-w-6xl mx-auto rounded-2xl flex flex-col lg:flex-row shadow-2xl bg-white">
 
-    <section class="w-full h-full bg-primary rounded-l-2xl px-5 py-8 pb-12 flex flex-col items-center">
-      <h1 class="text-white font-bold text-3xl">Selamat Datang </h1>
-      <div class="flex flex-col w-full items-center text-white font-semibold text-sm mt-5">
-        <p>Masukkan Email dan Username Anda</p>
-      </div>
+  <!-- Section Kiri -->
+  <section class="w-full lg:w-1/2 h-auto bg-primary rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none px-5 py-8 flex flex-col items-center">
+    <h1 class="text-white font-bold text-3xl text-center">Selamat Datang</h1>
+    <p class="text-white font-semibold text-sm mt-5 text-center">Masukkan Email dan Username Anda</p>
+    <img src="{{ asset('image/loginUser.png') }}" alt="" class="h-64 lg:h-96 mt-10 object-contain">
+  </section>
 
-      <img src="{{ asset('image/loginUser.png') }}" alt="" class="h-96 mt-10">
-    </section>
+  <!-- Form Login -->
 
-    <form action="{{ route('prosesloginUser') }}" method="POST"
-      class="w-full h-full rounded-r-2xl flex flex-col items-center px-20 py-8 pb-12">
-      @if (session('success'))
-        <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative">
-          {{ session('success') }}
+  <form action="{{ route('prosesloginUser') }}" method="POST"
+    class="w-full lg:w-1/2 h-auto flex flex-col items-center px-4 sm:px-8 lg:px-20 py-8">
+
+    @csrf
+
+    @if($errors->has('invalid_no_hp') || $errors->has('invalid_nama'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 w-full text-center">
+            {{ $errors->first('invalid_no_hp') ?? $errors->first('invalid_nama') }}
         </div>
-      @endif
-      @csrf
-      @if ($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-          <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-      @endif
-      <h1 class="text-black font-bold text-2xl">Silahkan Login</h1>
+    @endif
 
-      <div class="flex flex-col w-full mt-10 relative">
-        <label for="no_hp" class="text-black font-semibold text-sm mb-1">Nomor Handphone</label>
-        <img src="{{ asset('image/email.png') }}" alt="email" class="absolute left-3 top-8 flex items-center w-6 h-6">
-        <input type="text" name="no_hp" id="" required placeholder="Masukkan Nomor Handphone"
-          class="w-full h-max py-2 px-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+    @if (session('success'))
+      <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative w-full mb-4">
+        {{ session('success') }}
       </div>
+    @endif
 
-      <div class="flex flex-col w-full mt-5 relative">
-        <label for="nama" class="text-black font-semibold text-sm mb-1">Username</label>
-        <img src="{{ asset('image/user.png') }}" alt="nama" class="absolute left-3 top-8 flex items-center w-6 h-6">
-        <input type="text" name="nama" id="passwordInput" required placeholder="Masukkan Username"
-          class="w-full h-max py-2 px-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+    <h1 class="text-black font-bold text-2xl text-center">Silahkan Login</h1>
 
-        <button type="button" id="togglePassword" class="absolute right-3 top-9 text-gray-400 hover:text-gray-600">
-          <!-- Icon Mata -->
-          <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-        </button>
-      </div>
+    <!-- Input Nomor HP -->
+    <div class="flex flex-col w-full mt-8 relative">
+      <label for="no_hp" class="text-black font-semibold text-sm mb-1">Nomor Handphone</label>
+      <img src="{{ asset('image/phone.png') }}" alt="phone" class="absolute left-3 top-9 w-5 h-5">
+      <input type="text" name="no_hp" placeholder="Masukkan Nomor Handphone"
+        class="w-full py-2 px-10 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="{{ old('no_hp') }}">
+        @error('no_hp')
+            <p class="text-red-600 text-sm">{{ $message }}</p>
+          @enderror
+    </div>
 
-      <button type="submit"
-        class="w-full bg-primary py-2 rounded-xl text-white font-bold mt-7 cursor-pointer hover:bg-primary duration-150">
-        Masuk
-      </button>
+    <!-- Input Username -->
+    <div class="flex flex-col w-full mt-5 relative">
+      <label for="nama" class="text-black font-semibold text-sm mb-1">Username</label>
+      <img src="{{ asset('image/user.png') }}" alt="user" class="absolute left-3 top-9 w-5 h-5">
+      <input type="text" name="nama" id="passwordInput" placeholder="Masukkan Username"
+        class="w-full py-2 px-10 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="{{ old('nama') }}">
+        @error('nama')
+            <p class="text-red-600 text-sm">{{ $message }}</p>
+          @enderror
+    </div>
 
-      <div class="flex text-sm text-slate-600 font-semibold mt-5">
-        <p class="mr-1">Belum Memiliki Akun?</p>
-        <a href="{{ route('registerUser') }}" class="hover:underline text-primary"> Bikin akun dulu yuk!!</a>
-      </div>
+    <!-- Tombol Login -->
+    <button type="submit"
+      class="w-full bg-primary py-2 rounded-xl text-white font-bold mt-7 hover:bg-primary/90 transition">
+      Masuk
+    </button>
 
-    </form>
+    <!-- Link Registrasi -->
+    <div class="text-sm text-slate-600 font-semibold mt-5 text-center">
+      <p class="mr-1">Belum Memiliki Akun?
+        <a href="{{ route('registerUser') }}" class="hover:underline text-primary">Bikin akun dulu yuk!!</a>
+      </p>
+    </div>
+  </form>
+</main>
 
-  </main>
 
   @if (session('session_timeout'))
 <script>

@@ -14,47 +14,34 @@
   <main class="w-9/12 max-h-screen rounded-2xl flex shadow-2xl">
 
     <form action="{{ route('prosesregisterUser') }}" method="POST"
-      class="w-full h-full rounded-r-2xl flex flex-col items-center px-20 py-8 pb-12">
+    class="w-full h-full rounded-r-2xl flex flex-col items-center px-20 py-8 pb-12">
+    @csrf
       @if (session('success'))
         <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative">
           {{ session('success') }}
         </div>
       @endif
-      @csrf
-      @if ($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-          <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-      @endif
+
       <h1 class="text-black font-bold text-2xl">Silahkan Buat Akun</h1>
 
       <div class="flex flex-col w-full mt-10 relative">
         <label for="no_hp" class="text-black font-semibold text-sm mb-1">Nomor Handphone</label>
-        <img src="{{ asset('image/email.png') }}" alt="no_hp" class="absolute left-3 top-8 flex items-center w-6 h-6">
-        <input type="no_hp" name="no_hp" id="" required placeholder="Masukkan nomor handphone"
-          class="w-full h-max py-2 px-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+        <img src="{{ asset('image/phone.png') }}" alt="no_hp" class="absolute left-3 top-8 flex items-center w-6 h-6">
+        <input type="no_hp" name="no_hp" id="" placeholder="Masukkan nomor handphone"
+          class="w-full h-max py-2 px-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="{{ old('no_hp') }}">
+          @error('no_hp')
+            <p class="text-red-600 text-sm">{{ $message }}</p>
+          @enderror
       </div>
 
       <div class="flex flex-col w-full mt-5 relative">
         <label for="nama" class="text-black font-semibold text-sm mb-1">Username</label>
         <img src="{{ asset('image/user.png') }}" alt="nama" class="absolute left-3 top-8 flex items-center w-6 h-6">
-        <input type="text" name="nama" id="passwordInput" required placeholder="Masukkan Username"
-          class="w-full h-max py-2 px-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-
-        <button type="button" id="togglePassword" class="absolute right-3 top-9 text-gray-400 hover:text-gray-600">
-          <!-- Icon Mata -->
-          <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-        </button>
+        <input type="text" name="nama" id="passwordInput" placeholder="Masukkan Username"
+          class="w-full h-max py-2 px-11 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="{{ old('nama') }}">
+        @error('nama')
+        <p class="text-red-600 text-sm">{{ $message }}</p>
+        @enderror
       </div>
 
       <button type="submit"

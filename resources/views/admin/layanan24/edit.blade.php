@@ -12,24 +12,23 @@
             @csrf
 
             <div class="mb-4">
-                <label for="file" class="block text-gray-700 font-medium mb-2">Gambar Layanan</label>
+                <label for="gambar" class="block text-gray-700 font-medium mb-2">Gambar Layanan</label>
 
                 <div class="mb-4">
-
-                    <!-- Tampilkan file lama -->
                     @if($layanan->gambar)
-                        <img src="{{ asset('storage/'.$layanan->gambar) }}" class="w-32 h-32 object-cover mb-2" alt="file">
+                    <img id="preview" src="{{ asset('storage/'.$layanan->gambar) }}" class="w-32 h-32 object-cover mb-2" alt="file">
+                    @else
+                    <img id="preview" class="w-32 h-32 object-cover mb-2 hidden" alt="preview">
                     @endif
-
-                </div>
-
-                <input type="file" name="gambar" id="gambar" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ $layanan->gambar }}">
-
-                   @error('gambar')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-
             </div>
+
+                <input type="file" name="gambar" id="gambar" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" accept="image/*">
+
+                @error('gambar')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
 
             <div class="mb-4">
                 <label for="judul" class="block text-gray-700 font-medium mb-2">Judul Layanan</label>

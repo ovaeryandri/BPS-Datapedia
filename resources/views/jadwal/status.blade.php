@@ -19,13 +19,14 @@
                 <div class="mb-6">
                     <p class="font-semibold mb-2">Pilih status Anda:</p>
                     <label class="block mb-2">
-                        <input type="radio" name="status" value="tersedia" onclick="toggleFields(false)">
+                        <input type="radio" name="status" value="tersedia" onclick="toggleFields(false)" {{ old('status', $konsultan->status) == 'tersedia' ? 'checked' : '' }}>
                         ✅ Tersedia
                     </label>
                     <label class="block">
-                        <input type="radio" name="status" value="tidak tersedia" onclick="toggleFields(true)">
+                    <input type="radio" name="status" value="tidak tersedia" onclick="toggleFields(true)" {{ old('status', $konsultan->status) == 'tidak tersedia' ? 'checked' : '' }}>
                         ❌ Tidak Tersedia
                     </label>
+
                 </div>
 
                 <div id="tanggal-box" class="mb-4" style="display: none;">
@@ -124,7 +125,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        const status = "{{ $konsultan->status }}";
+        const status = "{{ old('status', $konsultan->status) }}";
         if (status === 'tidak tersedia') {
             document.querySelector('input[value="tidak tersedia"]').checked = true;
             toggleFields(true);

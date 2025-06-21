@@ -432,6 +432,40 @@
     });
 </script>
 
+<script>
+    document.getElementById('gambar').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('preview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('file').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('preview-pdf');
+
+        if (file && file.type === 'application/pdf') {
+            const fileURL = URL.createObjectURL(file);
+            preview.src = fileURL;
+            preview.classList.remove('hidden');
+        } else {
+            preview.src = "";
+            preview.classList.add('hidden');
+        }
+    });
+</script>
+
+
+
 </body>
 
 </html>

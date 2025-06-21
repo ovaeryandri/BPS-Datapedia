@@ -259,7 +259,7 @@
   body.light-mode button,
   body.light-mode p,
   body.light-mode span,
-  body.light-mode div,
+
   body.light-mode h1,
   body.light-mode h2,
   body.light-mode h3 {
@@ -271,7 +271,7 @@
   body.dark-mode button,
   body.dark-mode p,
   body.dark-mode span,
-  body.dark-mode div,
+
   body.dark-mode h1,
   body.dark-mode h2,
   body.dark-mode h3 {
@@ -290,7 +290,7 @@
     border: 1px solid #ccc;
   }
 
-  body.default-mode button {
+  .aksesibilitas button {
     background-color: #002B6A;
     color: white;
   }

@@ -58,7 +58,7 @@ class standarController extends Controller
             Storage::disk('public')->delete($standar->gambar);
         }
 
-        $filePath = $request->gambar('gambar')->store('files', 'public');
+        $filePath = $request->file('gambar')->store('files', 'public');
         $data['gambar'] = $filePath;
     }
 
