@@ -266,7 +266,28 @@
             <span>Reset Ukuran Text</span>
         </button>
 
-        <button onclick="setContrast('light')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+        <button onclick="setCursorSize('medium')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Ukuran Cursor Sedang</span>
+        </button>
+
+        <button onclick="setCursorSize('large')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Ukuran Cursor Besar</span>
+        </button>
+
+         <button onclick="resetCursor('')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Reset Ukuran Cursor</span>
+        </button>
+
+        {{-- <button onclick="setContrast('light')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
@@ -285,7 +306,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             <span>Reset Warna</span>
-        </button>
+        </button> --}}
 
 
     </div>

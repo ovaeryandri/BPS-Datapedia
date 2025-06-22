@@ -25,6 +25,14 @@
             font-family: 'Inter', sans-serif;
         }
 
+        .cursor-medium {
+            cursor: url('image/cursormedium.png'), auto;
+        }
+
+        .cursor-large {
+            cursor: url('image/cursorlarge.png'), auto;
+        }
+
         .gradient-bg {
             background: linear-gradient(135deg, #002B6A 0%, #0D4A8F 50%, #1E5BA8 100%);
         }
@@ -778,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     </script>
 
-    <script>
+    {{-- <script>
     // Fungsi suara saat hover
     function speakOnHover(element) {
         const text = element.innerText.trim();
@@ -808,7 +816,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-</script>
+</script> --}}
 
 <script>
     let baseFontSizes = new Map(); // Simpan ukuran awal setiap elemen
@@ -840,7 +848,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 </script>
 
-<script>
+{{-- <script>
   function setContrast(mode) {
     const body = document.getElementById('body');
     body.classList.remove('default-mode', 'light-mode', 'dark-mode');
@@ -860,10 +868,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const saved = localStorage.getItem('contrast-mode');
     if (saved) setContrast(saved);
   });
+</script> --}}
+
+{{-- Untuk Cursor --}}
+<script>
+
+  function setCursorSize(size) {
+    // Selalu reset class sebelumnya
+    document.body.classList.remove('cursor-medium', 'cursor-large');
+
+    if (size === 'medium') {
+      document.body.classList.add('cursor-medium');
+      localStorage.setItem('cursorSize', 'medium');
+    } else if (size === 'large') {
+      document.body.classList.add('cursor-large');
+      localStorage.setItem('cursorSize', 'large');
+    }
+  }
+
+  function resetCursor() {
+    document.body.classList.remove('cursor-medium', 'cursor-large');
+    localStorage.removeItem('cursorSize');
+  }
 </script>
-
-
-
 
 
 </body>
