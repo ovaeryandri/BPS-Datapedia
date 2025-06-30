@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Login;
 use App\Http\Controllers\Controller;
 use App\Models\akunuser;
 use Illuminate\Http\Request;
-use App\Rules\LoginUserCheck;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -33,10 +35,22 @@ class UserLogin extends Controller
         'password.min' => 'Password Minimal 5 Karakter',
     ]);
 
-    // Cek user berdasarkan no_hp
+    // Buat throttle key berdasarkan nomor HP + IP
+    $throttleKey = Str::lower($request->no_hp) . '|' . $request->ip();
+
+    if (RateLimiter::tooManyAttempts($throttleKey, 10)) {
+        $seconds = RateLimiter::availableIn($throttleKey);
+        return back()->withErrors([
+            'no_hp' => "Terlalu banyak percobaan login. Silakan coba lagi dalam $seconds detik."
+        ])->withInput();
+    }
+
     $user = akunuser::where('no_hp', $request->no_hp)->first();
 
     if ($user && Hash::check($request->password, $user->password)) {
+        // Reset percobaan jika login berhasil
+        RateLimiter::clear($throttleKey);
+
         session([
             'loginStatus' => true,
             'user' => $user,
@@ -45,13 +59,17 @@ class UserLogin extends Controller
         ]);
 
         return redirect()->route('index');
-    } else {
-        return back()->withErrors([
-            'invalid_no_hp' => 'Nomor Salah atau Tidak Valid',
-            'invalid_password' => 'Password Salah atau Tidak Valid',
-        ])->withInput();
     }
+
+    // Tambah percobaan login
+    RateLimiter::hit($throttleKey, 120); // 120 detik = 2 menit
+
+    return back()->withErrors([
+        'invalid_no_hp' => 'Nomor Salah atau Tidak Valid',
+        'invalid_password' => 'Password Salah atau Tidak Valid',
+    ])->withInput();
 }
+
     public function logoutUser()
     {
         Session::flush();

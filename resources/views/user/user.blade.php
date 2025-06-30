@@ -201,7 +201,7 @@
                     <img src="{{ asset('image/antrianonline.png') }}" alt="Ambil Antrian Online" class="h-48 w-auto mx-auto object-contain">
                 </div>
                 <div class="w-full">
-                    <a href="{{ route('janjitemu.online') }}" target="_blank" class="block w-full">
+                    <a href="{{ route('janjitemu.online') }}" class="block w-full">
                         <button class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
                             <span>Janji Temu Online</span>
                             <img src="{{ asset('image/tiket.png') }}" width="24" height="24" alt="Tiket" class="flex-shrink-0">
@@ -276,8 +276,8 @@
             @foreach ($maklumat as $item)
             <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <iframe src="{{ Storage::url($item->file) }}#view=FitH"
-                            class="w-full h-[400px] border-none"></iframe>
+                    <img src="{{ Storage::url($item->file) }}#view=FitH"
+                            class="w-full h-[600px] border-none"></img>
                 </div>
             </div>
             @endforeach
@@ -308,7 +308,7 @@
             <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                     <img src="{{ Storage::url($item->gambar) }}"
-                         class="w-full h-[400px] object-cover rounded-xl">
+                         class="w-full h-[600px] object-cover rounded-xl">
                 </div>
             </div>
             @endforeach

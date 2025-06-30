@@ -21,7 +21,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="file" class="block text-gray-700 font-medium mb-2">file (Bentuk File) Pdf|Word</label>
+                <label for="file" class="block text-gray-700 font-medium mb-2">gambar (Bentuk File) Jpg|Png</label>
                 <input type="file" name="file" id="file" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('file') }}" required>
 
                 @error('file')

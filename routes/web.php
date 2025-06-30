@@ -37,13 +37,8 @@ Route::middleware(LoggedInUser::class)->group(function () {
     Route::post('/klik-konsultasi', [konsultasiController::class, 'store'])->name('konsultasi.klik');
     Route::get('/user/jumlah', [konsultasiController::class, 'jumlah'])->name('konsultasi.jumlah');
     Route::get('/user/konsultasi', [konsultasiController::class, 'index'])->name('konsultasi.index');
-    Route::resource('janjitemu', janjitemuController::class)->except(['show']);
     Route::resource('profile', profileController::class)->except(['show']);
-    // web.php
-    Route::post('/update-username', [profileController::class, 'updateUsername']);
-    Route::post('/update-phone', [profileController::class, 'updatePhone']);
-    Route::post('/update-password', [profileController::class, 'updatePassword']);
-
+    Route::resource('janjitemu', janjitemuController::class)->except(['show']);
     Route::get('/janjitemu/online', [janjitemuController::class, 'indexOnline'])->name('janjitemu.online');
     Route::get('/janjitemu/jadwal', [janjitemuController::class, 'indexJadwal'])->name('janjitemu.jadwal');
     Route::put('/janjitemu/{id}/batal', [janjitemuController::class, 'batal'])->name('janjitemu.batal');

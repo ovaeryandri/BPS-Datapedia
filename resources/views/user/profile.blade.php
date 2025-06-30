@@ -68,186 +68,20 @@
           </div>
 
           <!-- Tombol Aksi -->
-          <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <button onclick="editUsername()" class="bg-primary hover:bg-blue-800 text-white py-3 px-6 rounded-xl flex items-center justify-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
-              <span>Ubah Username</span>
-            </button>
+          <div class="mt-8 grid grid-cols-1 gap-4">
+            <a href="{{ route('profile.edit', $user->id) }}" class="bg-primary hover:bg-blue-800 text-white py-3 px-6 rounded-xl flex items-center justify-center gap-2">
 
-            <button onclick="editPhone()" class="bg-primary hover:bg-blue-800 text-white py-3 px-6 rounded-xl flex items-center justify-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3l2 7-2 1a11 11 0 005.5 5.5l1-2 7 2v3a2 2 0 01-2 2h-1c-7 0-13-6-13-13V5z" />
-              </svg>
-              <span>Ubah No HP</span>
-            </button>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Edit Profil</span>
+            </a>
 
-            <button onclick="changePassword()" class="bg-primary hover:bg-blue-800 text-white py-3 px-6 rounded-xl flex items-center justify-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-              </svg>
-              <span>Ubah Password</span>
-            </button>
           </div>
         </div>
       </div>
     </div>
   </main>
-
-  <!-- SweetAlert Script -->
-  <script>
-
-
-    function changePassword() {
-  Swal.fire({
-    title: 'Ubah Password',
-    html: `
-      <div class="text-left space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Password Lama</label>
-          <input type="password" id="oldPassword"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Masukkan password lama">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
-          <input type="password" id="newPassword"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Masukkan password baru">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password Baru</label>
-          <input type="password" id="confirmPassword"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Ulangi password baru">
-        </div>
-      </div>
-    `,
-    showCancelButton: true,
-    confirmButtonText: 'Ubah Password',
-    cancelButtonText: 'Batal',
-    confirmButtonColor: '#6366F1',
-    cancelButtonColor: '#6B7280',
-    focusConfirm: false,
-    customClass: {
-      popup: 'w-full max-w-xl'  // Modal lebih lebar
-    },
-    preConfirm: () => {
-      const oldPass = document.getElementById('oldPassword').value;
-      const newPass = document.getElementById('newPassword').value;
-      const confirmPass = document.getElementById('confirmPassword').value;
-
-      if (!oldPass || !newPass || !confirmPass) {
-        Swal.showValidationMessage('Semua kolom wajib diisi!');
-        return false;
-      }
-
-      if (newPass !== confirmPass) {
-        Swal.showValidationMessage('Konfirmasi password tidak cocok!');
-        return false;
-      }
-
-      return { oldPass, newPass };
-    }
-  }).then(result => {
-    if (result.isConfirmed) {
-      fetch('/update-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-          old_password: result.value.oldPass,
-          new_password: result.value.newPass
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          Swal.fire('Berhasil', 'Password berhasil diubah!', 'success');
-        } else {
-          Swal.fire('Gagal', data.message || 'Gagal mengubah password', 'error');
-        }
-      });
-    }
-  });
-}
-
-function editUsername() {
-  Swal.fire({
-    title: 'Ubah Username',
-    input: 'text',
-    inputLabel: 'Username Baru',
-    inputPlaceholder: 'Masukkan username baru',
-    showCancelButton: true,
-    confirmButtonText: 'Simpan',
-    confirmButtonColor: '#002B6A',
-    cancelButtonText: 'Batal',
-    preConfirm: (newUsername) => {
-      if (!newUsername) {
-        Swal.showValidationMessage('Username tidak boleh kosong');
-      }
-      return newUsername;
-    }
-  }).then(result => {
-    if (result.isConfirmed) {
-      fetch('/update-username', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ username: result.value })
-      })
-      .then(res => res.json())
-      .then(data => {
-        Swal.fire('Berhasil', 'Username berhasil diubah!', 'success')
-        .then(() => location.reload());
-      });
-    }
-  });
-}
-
-function editPhone() {
-  Swal.fire({
-    title: 'Ubah Nomor HP',
-    input: 'text',
-    inputLabel: 'Nomor HP Baru',
-    inputPlaceholder: 'Contoh: 628123456789',
-    showCancelButton: true,
-    confirmButtonText: 'Simpan',
-    confirmButtonColor: '#002B6A',
-    cancelButtonText: 'Batal',
-    preConfirm: (phone) => {
-      if (!phone) {
-        Swal.showValidationMessage('Nomor HP tidak boleh kosong');
-      }
-      return phone;
-    }
-  }).then(result => {
-    if (result.isConfirmed) {
-      fetch('/update-phone', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ no_hp: result.value })
-      })
-      .then(res => res.json())
-      .then(data => {
-        Swal.fire('Berhasil', 'Nomor HP berhasil diubah!', 'success')
-        .then(() => location.reload());
-      });
-    }
-  });
-}
-
-  </script>
-
-
 
 </body>
 </html>

@@ -18,92 +18,42 @@ class profileController extends Controller
     return view('user.profile', compact('user'));
 }
 
-// ProfilController.php
-public function updateUsername(Request $request) {
-    $user = akunuser::find(session('user')->id);
-    $user->nama = $request->username;
-    $user->save();
-
-    // Update session
-    session(['user' => $user]);
-
-    return response()->json(['status' => 'success']);
-}
-
-
-public function updatePhone(Request $request) {
-    $user = akunuser::find(session('user')->id);
-    $user->no_hp = $request->no_hp;
-    $user->save();
-
-    // Update session
-    session(['user' => $user]);
-
-    return response()->json(['status' => 'success']);
-}
-
-public function updatePassword(Request $request)
-{
-    $request->validate([
-        'old_password' => 'required',
-        'new_password' => 'required|min:6|confirmed',
-    ]);
-
-    $user = akunuser::find(session('user')->id);
-
-    if (!Hash::check($request->old_password, $user->password)) {
-        return response()->json(['status' => 'error', 'message' => 'Password lama salah'], 422);
-    }
-
-    $user->password = Hash::make($request->new_password);
-    $user->save();
-
-    // Update session
-    session(['user' => $user]);
-
-    return response()->json(['status' => 'success']);
-}
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $user = akunuser::findOrFail($id);
+        return view('user.editProfile', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+   public function update(Request $request, $id)
+{
+    $user = akunuser::findOrFail($id);
+
+    // Validasi
+    $request->validate([
+        'nama' => 'required|string|max:100',
+        'no_hp' => 'required|regex:/^62[0-9]{9,13}$/',
+        'password' => 'nullable|string|min:5',
+    ]);
+
+    // Simpan data
+    $user->nama = $request->nama;
+    $user->no_hp = $request->no_hp;
+
+    if (!empty($request->password)) {
+        $user->password = Hash::make($request->password);
     }
+
+    $user->save();
+
+    return redirect()->route('profile.index')->with('success', 'Profil berhasil diperbarui!');
+}
+
 
     /**
      * Remove the specified resource from storage.

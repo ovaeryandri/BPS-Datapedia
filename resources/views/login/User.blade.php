@@ -194,9 +194,10 @@
                    class="w-full py-4 px-12 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white input-focus transition-all duration-300 text-gray-700"
                    value="{{ old('no_hp') }}">
           </div>
-          @error('no_hp')
-            <p class="text-red-500 text-sm mt-2 ml-1">{{ $message }}</p>
-          @enderror
+          @if ($errors->has('no_hp'))
+            <p class="text-red-500 text-sm">{{ $errors->first('no_hp') }}</p>
+        @endif
+
         </div>
 
         <div class="mb-8 fade-in-up delay-300">

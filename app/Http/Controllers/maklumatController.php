@@ -20,7 +20,7 @@ class maklumatController extends Controller
     public function store(Request $request){
         $request->validate([
             'judul' => 'required|string|min:3',
-            'file' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $filePath = $request->file('file')->store('files','public');

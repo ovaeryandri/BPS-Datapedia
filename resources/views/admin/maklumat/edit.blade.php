@@ -23,16 +23,12 @@
                 <label for="file" class="block text-gray-700 font-medium mb-2">file</label>
 
                 <div class="mb-4">
-
-                    <!-- Tampilkan file lama -->
                     @if($maklumat->file)
-                    <iframe id="preview-pdf" src="{{ Storage::url($maklumat->file) }}" class="w-full h-96 object-cover mb-2"></iframe>
+                    <img id="preview" src="{{ asset('storage/'.$maklumat->file) }}" class="w-32 h-32 object-cover mb-2" alt="file">
                     @else
-                    <iframe id="preview-pdf" class="w-full h-96 object-cover mb-2 hidden"></iframe>
+                    <img id="preview" class="w-32 h-32 object-cover mb-2 hidden" alt="preview">
                     @endif
-
-
-                </div>
+            </div>
 
                 <input type="file" name="file" id="file" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ $maklumat->file }}">
 
