@@ -171,7 +171,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold text-primary mb-2">Form Janji Temu</h1>
+            <h1 class="text-3xl font-bold text-primary mb-2">Form Konsultasi</h1>
             <p class="text-gray-600">Silakan lengkapi data di bawah ini dengan benar</p>
         </div>
 
@@ -182,99 +182,152 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
-                    Data Janji Temu
+                    Data Diri
                 </h2>
             </div>
 
-            <form class="p-8 space-y-6" method="POST" action="{{ route('janjitemu.store') }}" id="janjiTemuForm">
+            <form class="p-8 space-y-6" method="POST" action="{{ route('konsultasi.klik') }}" id="janjiTemuForm">
                 @csrf
 
                 <!-- Alamat -->
                 <div class="form-floating">
-                    <textarea
-                        id="alamat"
-                        name="alamat"
+                    <input
+                        type="text"
+                        id="nama"
+                        name="nama"
                         placeholder=""
                         rows="3"
                         class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
                         required
-                    ></textarea>
-                    <label for="alamat">Alamat Lengkap</label>
-                    @error('alamat')
+                    ></input>
+                    <label for="nama">Nama Lengkap</label>
+                    @error('nama')
                          <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Keperluan -->
+                <!-- Jenis -->
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Jenis Kelamin</label>
+                    <div class="grid grid-cols-2 gap-4">
+
+                        <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 transition-colors group">
+                            <input
+                                type="radio"
+                                name="jenis_kelamin"
+                                value="pria"
+                                class="radio-custom mr-3"
+                                required
+                            />
+
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                <span class="font-medium text-gray-700 group-hover:text-primary transition-colors">Pria</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 transition-colors group">
+                            <input
+                                type="radio"
+                                name="jenis_kelamin"
+                                value="wanita"
+                                class="radio-custom mr-3"
+                                required
+                            />
+
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                <span class="font-medium text-gray-700 group-hover:text-primary transition-colors">Wanita</span>
+                            </div>
+                        </label>
+
+
+                    </div>
+                    @error('jenis_kelamin')
+                         <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <div class="form-floating">
                     <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder=""
+                        rows="3"
+                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
+                        required
+                    ></input>
+                    <label for="email">Email</label>
+                    @error('email')
+                         <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="form-floating">
+                    <input
+                        id="instansi"
+                        name="instansi"
                         type="text"
+                        placeholder=""
+                        rows="3"
+                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
+                        required
+                    ></input>
+                    <label for="instansi">Instansi Asal</label>
+                    @error('instansi')
+                         <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="form-floating">
+                    <input
                         id="keperluan"
                         name="keperluan"
-                        placeholder=" "
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
+                        type="text"
+                        placeholder=""
+                        rows="3"
+                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
                         required
-                    />
-                    <label for="keperluan">Keperluan</label>
+                    ></input>
+                    <label for="keperluan">Keperluan Anda</label>
                     @error('keperluan')
                          <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Tanggal -->
                 <div class="form-floating">
                     <input
-                        type="date"
-                        id="tanggal"
-                        min="{{ old('tanggal', now()->format('Y-m-d')) }}"
-                        name="tanggal"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
+                        id="data_diminta"
+                        name="data_diminta"
+                        type="text"
+                        placeholder=""
+                        rows="3"
+                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
                         required
-                    />
-                    <label for="tanggal">Tanggal</label>
-                    @error('tanggal')
+                    ></input>
+                    <label for="data_diminta">Data Yang Diminta</label>
+                    @error('data_diminta')
                          <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="form-floating">
-    <input
-        type="time"
-        id="jam"
-        name="jam"
-        value="{{ old('jam') }}"
-        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
-        required
-    />
-    <label for="jam">Jam</label>
-    @error('jam')
-        <p class="text-red-600 text-sm">{{ $message }}</p>
-    @enderror
-</div>
+                    <input
+                        id="lainnya"
+                        name="lainnya"
+                        type="text"
+                        placeholder=""
+                        rows="3"
+                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
 
-
-                <!-- Jenis -->
-                <div class="space-y-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Jenis Layanan</label>
-                    <div class="grid grid-cols-1 gap-4">
-
-                        <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 transition-colors group">
-                            <input
-                                type="radio"
-                                name="jenis"
-                                value="offline"
-                                class="radio-custom mr-3"
-                                required
-                            />
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                </svg>
-                                <span class="font-medium text-gray-700 group-hover:text-primary transition-colors">Offline</span>
-                            </div>
-                        </label>
-                    </div>
-                    @error('jenis')
+                    ></input>
+                    <label for="lainnya">Keperluan Lainnya (Jika Ada)</label>
+                    @error('lainnya')
                          <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
@@ -290,7 +343,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span>Buat Janji Temu</span>
+                        <span>Buat Konsultasi</span>
                     </button>
                 </div>
 
@@ -301,57 +354,6 @@
                     </p>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- Success Alert Modal -->
-    <div id="successAlert" class="fixed inset-0 hidden bg-black bg-opacity-50 alert-overlay z-50 items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full alert-container">
-            <!-- Success Icon with Animation -->
-            <div class="text-center p-8">
-                <div class="relative inline-flex items-center justify-center">
-                    <!-- Pulse Ring -->
-                    <div class="absolute w-20 h-20 bg-green-400 rounded-full pulse-ring"></div>
-                    <!-- Success Circle -->
-                    <div class="relative w-20 h-20 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center success-icon shadow-lg">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path class="success-check" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                </div>
-
-                <!-- Success Text -->
-                <div class="mt-6">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Berhasil!</h3>
-                    <p class="text-gray-600 mb-6">Janji temu Anda telah berhasil dibuat. Kami akan menghubungi Anda segera untuk konfirmasi.</p>
-
-                    <!-- Success Details -->
-                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                        <div class="flex items-center justify-center space-x-2 text-green-700">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="font-medium">Data tersimpan dengan aman</span>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="space-y-3">
-                        <button
-                            onclick="redirectToIndex()"
-                            class="w-full bg-gradient-to-r from-primary to-primary-light text-white font-semibold py-3 px-6 rounded-lg hover:from-primary-dark hover:to-primary transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-                        >
-                            Kembali ke Beranda
-                        </button>
-                        <button
-                            onclick="closeAlert()"
-                            class="w-full bg-gray-100 text-gray-700 font-medium py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors duration-200"
-                        >
-                            Tutup
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

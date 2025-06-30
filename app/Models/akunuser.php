@@ -17,6 +17,7 @@ class akunuser extends Authenticatable
     protected $fillable = [
         "nama",
         "no_hp",
+        "password",
     ];
 
     public function janjiTemu()

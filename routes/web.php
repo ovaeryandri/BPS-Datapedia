@@ -21,8 +21,11 @@ use App\Http\Middleware\LoginCheckKonsultan;
 use App\Http\Middleware\LoggedInKonsultan;
 use App\Http\Middleware\LoggedInUser;
 use App\Http\Controllers\Login\UserLogin;
+use App\Http\Controllers\petugasController;
+use App\Http\Controllers\profileController;
 use App\Http\Middleware\LoginCheckUser;
 use App\Http\Middleware\SessionTimeout;
+use App\Models\janjitemu;
 
 Route::middleware(LoggedInKonsultan::class)->group(function () {
 Route::get('/logoutKonsultan', [KonsultanLogin::class, 'logoutKonsultan'])->name('logoutKonsultan');
@@ -33,17 +36,32 @@ Route::get('/konsultan/jadwal', [konsultanJadwalController::class, 'index'])->na
 Route::middleware(LoggedInUser::class)->group(function () {
     Route::post('/klik-konsultasi', [konsultasiController::class, 'store'])->name('konsultasi.klik');
     Route::get('/user/jumlah', [konsultasiController::class, 'jumlah'])->name('konsultasi.jumlah');
-    Route::resource('janjitemu', janjitemuController::class);
+    Route::get('/user/konsultasi', [konsultasiController::class, 'index'])->name('konsultasi.index');
+    Route::resource('janjitemu', janjitemuController::class)->except(['show']);
+    Route::resource('profile', profileController::class)->except(['show']);
+    // web.php
+    Route::post('/update-username', [profileController::class, 'updateUsername']);
+    Route::post('/update-phone', [profileController::class, 'updatePhone']);
+    Route::post('/update-password', [profileController::class, 'updatePassword']);
+
+    Route::get('/janjitemu/online', [janjitemuController::class, 'indexOnline'])->name('janjitemu.online');
+    Route::get('/janjitemu/jadwal', [janjitemuController::class, 'indexJadwal'])->name('janjitemu.jadwal');
+    Route::put('/janjitemu/{id}/batal', [janjitemuController::class, 'batal'])->name('janjitemu.batal');
+
 });
 
 Route::middleware(LoggedInAdmin::class)->group(function () {
 Route::post('/jadwal/batal/{id}', [jadwalController::class, 'batal'])->name('jadwal.batal');
 Route::resource('jadwal', jadwalController::class);
-Route::resource('faq', faqController::class);
+Route::post('/jadwal/{id}/terima', [jadwalController::class, 'terima'])->name('jadwal.terima');
+Route::post('/jadwal/{id}/tolak', [jadwalController::class, 'tolak'])->name('jadwal.tolak');
+Route::resource('faq', faqController::class)->except(['show']);
+Route::get('/faq/pesan', [faqController::class, 'pesan'])->name('faq.pesan');
 Route::resource('konsultan', konsultanController::class);
 Route::resource('admin', AdminController::class);
 Route::resource('maklumat', maklumatController::class);
 Route::resource('layanan', layananController::class);
+Route::resource('petugas', petugasController::class);
 Route::resource('standar', standarController::class);
 Route::delete('/jadwal/hapus/{id}', [jadwalController::class, 'hapus'])->name('jadwal.hapus');
 Route::get('/logoutAdmin', [AdminLogin::class, 'logoutAdmin'])->name('logoutAdmin');

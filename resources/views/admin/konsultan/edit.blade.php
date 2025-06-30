@@ -28,6 +28,40 @@
             </div>
 
             <div class="mb-4">
+                <label for="gambar" class="block text-gray-700 font-medium mb-2">Foto Konsultan</label>
+
+                <div class="mb-4">
+                    @if($layanan->gambar)
+                    <img id="preview" src="{{ asset('storage/'.$layanan->gambar) }}" class="w-32 h-32 object-cover mb-2" alt="file">
+                    @else
+                    <img id="preview" class="w-32 h-32 object-cover mb-2 hidden" alt="preview">
+                    @endif
+            </div>
+
+                <input type="file" name="gambar" id="gambar" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" accept="image/*">
+
+                @error('gambar')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="posisi" class="block text-gray-700 font-medium mb-2">Posisi di BPS </label>
+                <input type="text" name="posisi" id="posisi" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ $konsultan->posisi }}">
+
+                    <p class="text-red-500 text-sm mt-1"></p>
+
+            </div>
+
+            <div class="mb-4">
+                <label for="keahlian" class="block text-gray-700 font-medium mb-2">Bidang Keahlian Konsultan</label>
+                <input type="text" name="keahlian" id="keahlian" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ $konsultan->keahlian }}">
+
+                    <p class="text-red-500 text-sm mt-1"></p>
+
+            </div>
+
+            <div class="mb-4">
                 <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
                 <input type="password" name="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
 

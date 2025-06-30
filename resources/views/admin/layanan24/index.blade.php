@@ -33,6 +33,7 @@
                                     Lihat File
                                 </a>
                             </td>
+                            
                             <td class="p-3 border border-gray-200">
                                 <div class="w-40 line-clamp-2">{{ $item->judul }}</div>
                             </td>

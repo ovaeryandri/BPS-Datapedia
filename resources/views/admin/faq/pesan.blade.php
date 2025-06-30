@@ -1,0 +1,62 @@
+@extends('admin.layout')
+@section('content')
+<div class="w-full p-6 bg-gray-100 ">
+    <div class="w-full bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-blue-400 p-4">
+            <h2 class="text-xl font-bold text-blue-800">Pesan Masuk Dari Wa</h2>
+        </div>
+
+            <div class="p-6 link-container">
+                <table class="w-full border-collapse">
+                    <thead>
+
+                        <tr class="bg-blue-300">
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">No</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Nama</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Instansi</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Keperluan</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Data Yang Diminta</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Lainnya</th>
+                        </tr>
+                    </thead>
+                    <tbody id="layanan-body">
+                        @foreach ($faq as $index => $item)
+
+                        <tr class="hover:bg-gray-50 layanan-item-row">
+                            <td class="p-3 border border-gray-200 text-center">
+                                {{ $index + 1 }}
+                            </td>
+
+                            <td class="p-3 border border-gray-200">
+                                {{ $item->nama }}
+                            </td>
+
+                            <td class="p-3 border border-gray-200">
+                                {{ $item->instansi }}
+                            </td>
+
+                            <td class="p-3 border border-gray-200">
+                                {{ $item->keperluan }}
+                            </td>
+
+                            <td class="p-3 border border-gray-200">
+                                {{ $item->data_diminta }}
+                            </td>
+
+                            <td class="p-3 border border-gray-200">
+                                {{ $item->lainnya }}
+                            </td>
+
+                        </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+                <div id="pagination-controls" class="flex justify-center mt-6 space-x-2"></div>
+            </div>
+    </div>
+</div>
+
+<!-- Script untuk konfirmasi delete -->
+
+@endsection

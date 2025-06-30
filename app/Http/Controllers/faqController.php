@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\faq;
+use App\Models\konsultasiKlik;
 use Illuminate\Http\Request;
 
 class faqController extends Controller
@@ -9,6 +10,11 @@ class faqController extends Controller
     public function index(){
         $faq = faq::all();
         return view('admin.faq.index', compact('faq'));
+    }
+
+    public function pesan(){
+        $faq = konsultasiKlik::latest()->get();
+        return view('admin.faq.pesan', compact('faq'));
     }
 
     public function create(){

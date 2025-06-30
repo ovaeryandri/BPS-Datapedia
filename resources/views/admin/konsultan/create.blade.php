@@ -7,39 +7,80 @@
             <h2 class="text-xl font-bold text-blue-800">Buat Akun Konsultan</h2>
         </div>
 
-        <form method="POST" action="{{ route('konsultan.store') }}" class="p-6">
+        <form method="POST" action="{{ route('konsultan.store') }}" class="p-6" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
                 <label for="email" class="block text-gray-700 font-medium mb-2">Email Konsultan</label>
-                <input type="email" name="email" placeholder="Masukkan email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('email') }}" required>
+                <input type="email" name="email" placeholder="Masukkan email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" required>
 
-                    <p class="text-red-500 text-sm mt-1"></p>
+                    @error('email')
+
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
 
             </div>
 
             <div class="mb-4">
                 <label for="nama" class="block text-gray-700 font-medium mb-2">Nama Konsultan</label>
-                <input type="text" name="nama" placeholder="Masukkan nama" id="nama" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('nama') }}" required>
+                <input type="text" name="nama" placeholder="Masukkan nama" id="nama" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{old('nama')}}" required>
 
-                    <p class="text-red-500 text-sm mt-1"></p>
+                    @error('nama')
+
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
 
             </div>
 
             <div class="mb-4">
+                <label for="gambar" class="block text-gray-700 font-medium mb-2">Foto Konsultan JPG|PNG|JPEG</label>
+                <input type="file" name="gambar" id="gambar" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" required>
+
+                @error('gambar')
+
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+
+            </div>
+
+            <div class="mb-4">
+                <label for="posisi" class="block text-gray-700 font-medium mb-2">Posisi Di BPS</label>
+                <input type="text" name="posisi" placeholder="Masukkan posisi" id="posisi" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('posisi') }}" required>
+
+                    @error('posisi')
+
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="keahlian" class="block text-gray-700 font-medium mb-2">Bidang Keahlian Konsultan</label>
+                <input type="text" name="keahlian" placeholder="Masukkan keahlian" id="keahlian" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('keahlian') }}" required>
+
+                    @error('keahlian')
+
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
                 <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
-                <input type="password" name="password" placeholder="Masukkan Password" id="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('password') }}" required>
+                <input type="password" name="password" placeholder="Masukkan Password" id="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" required>
 
-                    <p class="text-red-500 text-sm mt-1"></p>
+                    @error('password')
 
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-4">
                 <label for="no_hp" class="block text-gray-700 font-medium mb-2">Nomor Handphone</label>
                 <input type="number" name="no_hp" placeholder="Masukkan Nomor Handphone" id="no_hp" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('no_hp') }}" required>
 
-                    <p class="text-red-500 text-sm mt-1"></p>
+                    @error('no_hp')
 
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-6">
@@ -48,7 +89,6 @@
                     <span class="ml-2 text-gray-700">Saya Sebagai Admin</span>
                 </label>
 
-                    <p class="text-red-500 text-sm mt-1"></p>
 
             </div>
 

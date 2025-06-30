@@ -7,7 +7,7 @@
   <link rel="shortcut icon" href="{{ asset('image/logo-bpskecil.png') }}" type="image/x-icon" />
   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css" />
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-  <title>Welcome To Admin</title>
+  <title>Welcome To Jadwal Janji Temu</title>
 </head>
 
 <body class="bg-gray-100">
@@ -53,7 +53,7 @@
             <div class="ml-2 capitalize flex">
 
 
-    @php
+    {{-- @php
     $admin = Session::get('adminLogin');
 @endphp
 
@@ -61,7 +61,7 @@
     <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">
         {{ $admin->nama }}
     </h1>
-@endif
+@endif --}}
 
             </div>
           </button>
@@ -303,37 +303,7 @@
         </div>
         <!-- end sidebar toggle -->
 
-        <p class="uppercase text-xs text-blue-600 mb-4 tracking-wider">Role User</p>
-
-        <!-- link -->
-        <a href="{{ route('admin.index') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-chart-pie text-xs mr-2"></i>
-          Admin
-        </a>
-
-        <!-- link -->
-        <a href="{{ route('dataUser') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-chart-pie text-xs mr-2"></i>
-          user
-        </a>
-
-        <a href="{{ route('konsultan.index') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-chart-pie text-xs mr-2"></i>
-          konsultan statistik
-        </a>
-
-        <a href="{{ route('petugas.index') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-chart-pie text-xs mr-2"></i>
-          Petugas Hari Ini
-        </a>
-        <!-- end link -->
-
-
-        <p class="uppercase text-xs text-blue-600 mb-4 mt-4 tracking-wider">Layanan</p>
+        <p class="uppercase text-xs text-blue-600 mb-4 mt-4 tracking-wider">Jadwal Janji Temu</p>
 
         <!-- link -->
         <a href="{{ route('jadwal.index') }}"
@@ -342,48 +312,6 @@
           Jadwal Janji Temu
         </a>
 
-        <a href="{{ route('layanan.index') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-envelope-open-text text-xs mr-2"></i>
-          layanan 24 jam
-        </a>
-        <!-- end link -->
-
-        <!-- link -->
-        <a href="{{ route('standar.index') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-comments text-xs mr-2"></i>
-          standar pelayanan
-        </a>
-
-        <a href="{{ route('maklumat.index') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-comments text-xs mr-2"></i>
-          maklumat layanan
-        </a>
-        <!-- end link -->
-
-        <p class="uppercase text-xs text-blue-600 mb-4 mt-4 tracking-wider">FAQ</p>
-
-        <!-- link -->
-        <a href="{{ route('faq.pesan') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-text text-xs mr-2"></i>
-          Pertanyaan Dari Whatsapp
-        </a>
-
-        <a href="{{ route('faq.index') }}"
-          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-          <i class="fad fa-text text-xs mr-2"></i>
-          Frequently Ask Question
-        </a>
-
-        <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Logout</p>
-                <a href="{{ route('logoutAdmin') }}"
-                    class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
-                    <i class="fad fa-text text-xs mr-2"></i>
-                    Log Out
-                </a>
         <!-- end link -->
 
       </div>

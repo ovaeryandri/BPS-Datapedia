@@ -6,6 +6,7 @@ use App\Models\jadwal;
 use App\Models\janjitemu;
 use App\Models\konsultan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class jadwalController extends Controller
 {
@@ -69,6 +70,42 @@ class jadwalController extends Controller
     $janjiTemu->delete();
 
     return redirect()->back()->with('success', 'Data janji temu berhasil dihapus.');
+}
+
+public function terima($id)
+{
+    $janjiTemu = janjitemu::with('user')->findOrFail($id);
+    $janjiTemu->status = 'diterima';
+    $janjiTemu->save();
+
+    $no_hp = $janjiTemu->user->no_hp;
+
+    // Simpan ke tabel notifikasi atau kirim ke Node.js via file atau Redis
+    DB::table('notifikasi_wa')->insert([
+        'no_hp' => $no_hp,
+        'pesan' => "Halo, janji temu Anda pada tanggal {$janjiTemu->tanggal} pukul {$janjiTemu->jam} telah *DITERIMA*. Terima kasih.",
+        'created_at' => now(),
+        'status' => 'pending',
+    ]);
+
+    return redirect()->back()->with('success', 'Janji temu diterima dan notifikasi akan dikirim.');
+}
+
+public function tolak(Request $request, $id)
+{
+    $janji = janjitemu::with('user')->findOrFail($id);
+    $janji->status = 'ditolak';
+    $janji->save();
+
+    DB::table('notifikasi_wa')->insert([
+        'no_hp' => $janji->user->no_hp,
+        'pesan' => "Halo {$janji->user->nama}, mohon maaf, janji temu Anda pada tanggal {$janji->tanggal} *DITOLAK*. ❌",
+        'status' => 'pending',
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
+
+    return redirect()->back()->with('success', 'Janji temu ditolak dan notifikasi dikirim.');
 }
 
 

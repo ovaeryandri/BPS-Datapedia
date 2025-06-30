@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\akunuser;
 use Illuminate\Http\Request;
 use App\Rules\LoginUserCheck;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class UserLogin extends Controller
@@ -20,41 +21,37 @@ class UserLogin extends Controller
         return view('login.User');
     }
 
-    public function prosesloginUser(Request $request)
+   public function prosesloginUser(Request $request)
 {
-
     $request->validate([
-        'no_hp' => 'required|regex:/^08[0-9]{8,11}$/',
-        'nama' => 'required|string',
+        'no_hp' => 'required|regex:/^62[0-9]{9,12}$/',
+        'password' => 'required|min:5|string',
     ], [
         'no_hp.required' => 'Nomor Handphone Tidak Boleh Kosong',
         'no_hp.regex' => 'Nomor Handphone Tidak Valid',
-        'nama.required' => 'Username Tidak Boleh Kosong',
+        'password.required' => 'Password Tidak Boleh Kosong',
+        'password.min' => 'Password Minimal 5 Karakter',
     ]);
 
-    $user = akunuser::where('no_hp', $request->no_hp)
-                    ->where('nama', $request->nama)
-                    ->first();
+    // Cek user berdasarkan no_hp
+    $user = akunuser::where('no_hp', $request->no_hp)->first();
 
-    if ($user) {
+    if ($user && Hash::check($request->password, $user->password)) {
         session([
             'loginStatus' => true,
             'user' => $user,
             'user_id' => $user->id,
-            'lastActivityTime' => time(), // Set waktu aktivitas awal
+            'lastActivityTime' => time(),
         ]);
 
         return redirect()->route('index');
     } else {
-
         return back()->withErrors([
             'invalid_no_hp' => 'Nomor Salah atau Tidak Valid',
-            'invalid_nama' => 'Username Salah atau Tidak Valid',
+            'invalid_password' => 'Password Salah atau Tidak Valid',
         ])->withInput();
     }
-
 }
-
     public function logoutUser()
     {
         Session::flush();
@@ -67,19 +64,23 @@ class UserLogin extends Controller
 
     function daftar(Request $request){
         $request->validate([
-            'no_hp' => 'required|regex:/^08[0-9]{8,11}$/|unique:users,no_hp',
+            'no_hp' => 'required|regex:/^62[0-9]{9,12}$/',
             'nama' => 'required|string|min:2',
+            'password' => 'required|string|min:5',
         ], [
             'no_hp.required' => 'Nomor Handphone Wajib Diisi',
             'no_hp.unique' => 'Nomor Handphone Telah Digunakan',
             'no_hp.regex' => 'Nomor Handphone Salah',
             'nama.required' => 'Username Wajib Diisi',
             'nama.min' => 'Username Harus Lebih Dari 2 karakter',
+            'password.required' => 'Password Wajib Diisi',
+            'password.min' => 'Password Harus Lebih Dari 5 karakter',
         ]);
 
         $data = [
             'no_hp' => $request->no_hp,
             'nama' => $request->nama,
+            'password' => Hash::make($request->password),
         ];
 
         akunuser::create($data);

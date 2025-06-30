@@ -13,7 +13,9 @@ class janjitemu extends Model
         'alamat',
         'keperluan',
         'tanggal',
+        'jam',
         'jenis',
+        'status',
     ];
 
     public function user()

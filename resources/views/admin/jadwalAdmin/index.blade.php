@@ -20,8 +20,11 @@
                         <th class="p-3 border border-blue-400 text-center">Keperluan</th>
                         <th class="p-3 border border-blue-400 text-center">Tanggal</th>
                         <th class="p-3 border border-blue-400 text-center">Jenis Janji Temu</th>
+                        <th class="p-3 border border-blue-400 text-center">Status</th>
+                        <th class="p-3 border border-blue-400 text-center">Konfirmasi</th>
                         <th class="p-3 border border-blue-400 text-center">Konsultan</th>
                         <th class="p-3 border border-blue-400 text-center">Aksi</th>
+                        <th class="p-3 border border-blue-400 text-center">Alasan Batal Dari User</th>
                     </tr>
                 </thead>
 
@@ -35,6 +38,27 @@
                     <td class="p-3 border">{{ $item->keperluan }}</td>
                     <td class="p-3 border">{{ $item->tanggal }}</td>
                     <td class="p-3 border">{{ $item->jenis }}</td>
+                    <td class="p-3 border">
+    <span class="px-2 py-1 rounded text-white text-sm
+        {{ $item->status == 'menunggu' ? 'bg-yellow-500' : ($item->status == 'diterima' ? 'bg-green-500' : 'bg-red-500') }}">
+        {{ ucfirst($item->status) }}
+    </span>
+</td>
+<td class="p-3 border">
+    @if($item->status === 'menunggu')
+        <form action="{{ route('jadwal.terima', $item->id) }}" method="POST" class="mb-1">
+            @csrf
+            <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-sm">Terima</button>
+        </form>
+        <form action="{{ route('jadwal.tolak', $item->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded text-sm">Tolak</button>
+        </form>
+    @else
+        <span class="text-gray-500 text-sm italic">Sudah diproses</span>
+    @endif
+</td>
+
                     <td class="p-3 border text-center">
                         @if($item->jadwal)
                             @if($item->jadwal->konsultan)
@@ -91,6 +115,14 @@
             @method('DELETE')
             <button type="submit" class="px-3 py-1 bg-red-300 hover:bg-red-400 text-red-800 rounded text-sm">Hapus Janji Temu</button>
         </form>
+
+        <td class="p-3 border text-center">
+                    @if($item->status == 'batal')
+                    {{ $item->alasan_batal }}
+                    @else
+                    -
+                    @endif
+                    </td>
 
     </div>
 </td>

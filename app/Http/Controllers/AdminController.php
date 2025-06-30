@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function store(Request $request){
         $request->validate([
             'email' => 'required|unique:admins|string',
-            'nama' => 'required|min:5|string',
+            'nama' => 'required|min:2|string',
             'password' => 'required|min:5|string',
         ]);
 
@@ -44,7 +44,7 @@ class AdminController extends Controller
 {
     $request->validate([
         'email' => 'required|string|email|unique:admins,email,' . $admin->id,
-        'nama' => 'required|string|min:5',
+        'nama' => 'required|string|min:2',
         'password' => 'nullable|string|min:5',
     ]);
 

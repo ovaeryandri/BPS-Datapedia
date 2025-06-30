@@ -13,6 +13,9 @@ class konsultan extends Model
     protected $fillable = [
         "email",
         "nama",
+        'gambar',
+        'posisi',
+        'keahlian',
         "password",
         "no_hp",
     ];

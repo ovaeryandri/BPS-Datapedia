@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\konsultan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class konsultanController extends Controller
 {
@@ -17,22 +18,35 @@ class konsultanController extends Controller
         return view('admin.konsultan.create', compact('konsultan'));
     }
 
-    public function store(Request $request){
-        $request->validate([
-            'email' => 'required|unique:konsultans|string',
-            'nama' => 'required|min:5|string',
-            'password' => 'required|min:5|string',
-            'no_hp' => 'required|string',
-        ]);
+    public function store(Request $request)
+{
+    $request->validate([
+        'email' => 'required|unique:konsultans|string',
+        'nama' => 'required|string',
+        'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'posisi' => 'required|string',
+        'keahlian' => 'required|string',
+        'password' => 'required|min:5|string',
+        'no_hp' => 'required|string',
+    ]);
 
-        konsultan::create([
-            "email" => $request->email,
-            "nama" => $request->nama,
-            "password" => Hash::make($request->password),
-            "no_hp" => $request->no_hp,
-        ]);
-        return redirect()->route('konsultan.index')->with('success', 'konsultan Berhasil Ditambah');
-    }
+    // ✅ Upload file
+    $filePath = $request->file('gambar')->store('files', 'public');
+    // dd($filePath);
+    // ✅ Simpan data ke DB
+    konsultan::create([
+        "email" => $request->email,
+        "nama" => $request->nama,
+        "gambar" => $filePath,
+        "posisi" => $request->posisi,
+        "keahlian" => $request->keahlian,
+        "password" => Hash::make($request->password),
+        "no_hp" => $request->no_hp,
+    ]);
+
+    return redirect()->route('konsultan.index')->with('success', 'Konsultan berhasil ditambahkan.');
+}
+
 
     public function edit($id){
         $konsultan = konsultan::findOrFail($id);
@@ -42,12 +56,28 @@ class konsultanController extends Controller
     public function update(Request $request, konsultan $konsultan){
         $request->validate([
             'email' => 'unique:konsultans|string',
-            'nama' => 'min:5|string',
+            'nama' => 'string',
+            'posisi' => 'string',
+            'keahlian' => 'string',
             'password' => 'nullable|min:5|string',
             'no_hp' => 'string',
         ]);
 
         $konsultan->email = $request->email;
+        $konsultan->nama = $request->nama;
+        $konsultan->posisi = $request->posisi;
+        $konsultan->keahlian = $request->keahlian;
+        $konsultan->no_hp = $request->no_hp;
+
+        if ($request->hasFile('gambar')) {
+
+        if ($konsultan->gambar) {
+            Storage::disk('public')->delete($konsultan->gambar);
+        }
+
+        $filePath = $request->file('gambar')->store('files', 'public');
+        $konsultan['gambar'] = $filePath;
+    }
 
         if ($request->filled('password')) {
             $konsultan->password = Hash::make($request->password);
@@ -60,6 +90,11 @@ class konsultanController extends Controller
 
     public function destroy($id){
         $konsultan = konsultan::findOrFail($id);
+
+        if ($konsultan->gambar) {
+        Storage::disk('public')->delete($konsultan->gambar);
+    }
+
         $konsultan->delete();
         return redirect()->route('konsultan.index')->with('success', 'Admin Berhasil Dihapus');
     }

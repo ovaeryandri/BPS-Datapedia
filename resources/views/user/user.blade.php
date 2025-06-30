@@ -53,120 +53,274 @@
         </div>
     </section>
 
-    {{-- Layanan Kami Section --}}
-    <section class="bg-[#002B6A] py-16 lg:py-20 theme-section theme-dark">
-        <div class="container mx-auto px-4">
-            <h2 class="text-center text-3xl lg:text-4xl font-bold mb-12 text-white speak-target" onmouseenter="speakOnHover(this)">
-                Layanan Kami
-            </h2>
+{{-- Petugas --}}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {{-- Kartu 1 - Hubungi Layanan --}}
-                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
-                    <div class="mb-6">
-                        <img src="{{ asset('image/konsultasii.png') }}" alt="Hubungi Layanan" class="h-48 w-auto mx-auto object-contain">
+    {{-- 🔹 PETUGAS HARI INI --}}
+    @if($petugas && $petugas->konsultan)
+    <div class="mb-10">
+        <h2 class="text-2xl font-bold text-blue-900 mb-4">👨‍💼 Petugas Hari Ini</h2>
+        <div class="bg-blue-100 border border-blue-300 rounded-2xl shadow-md p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+            <img src="{{ Storage::url($petugas->konsultan->gambar) }}" class="h-32 w-32 object-cover rounded-xl border">
+            <div class="text-center sm:text-left">
+                <h3 class="text-xl font-bold text-black">{{ $petugas->konsultan->nama }}</h3>
+                <p class="text-sm text-black">Jabatan : {{ $petugas->konsultan->posisi }}</p>
+                <p class="text-sm text-black">Bidang Keahlian : {{ $petugas->konsultan->keahlian }}</p>
+                <p class="text-xs text-black mt-1">📞 {{ $petugas->konsultan->no_hp }} | ✉️ {{ $petugas->konsultan->email }}</p>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    {{-- 🔹 SEMUA PETUGAS --}}
+    <h2 class="text-2xl font-bold text-blue-900 mb-4">👨‍💼 Semua Petugas</h2>
+
+    @php
+        $itemsPerPage = 6;
+        $totalPages = ceil(count($konsultan) / $itemsPerPage);
+    @endphp
+
+    {{-- Desktop (Grid + Pagination) --}}
+    <div id="gridPetugas" class="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach ($konsultan as $index => $item)
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden petugas-card" data-index="{{ $index }}">
+            <div class="p-6">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-6">
+                    <div class="rounded-2xl overflow-hidden flex-shrink-0">
+                        <img src="{{ Storage::url($item->gambar) }}" class="h-40 w-40 object-cover rounded-xl">
                     </div>
-                    <form method="POST" action="{{ route('konsultasi.klik') }}" class="w-full">
-                        @csrf
-                        <button type="submit" class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
-                            <span>Hubungi Layanan</span>
+                    <div class="flex-1 min-w-0 text-center sm:text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $item->nama }}</h3>
+                        <p class="text-sm text-primary font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
+                        <p class="text-xs text-gray-500">Jabatan : {{ $item->posisi }}</p>
+                        <p class="text-xs text-gray-500">{{ $item->email }}</p>
+                    </div>
+                </div>
+                <div class="space-y-3 mb-6">
+                    <div class="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium text-center">
+                        Bidang Keahlian : {{ $item->keahlian }}
+                    </div>
+                </div>
+                <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                    Info Lebih Lanjut
+                </button>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    {{-- Pagination control --}}
+    <div id="paginationControls" class="hidden lg:flex justify-center flex-wrap gap-2 mt-8">
+        @for ($i = 1; $i <= $totalPages; $i++)
+        <button onclick="paginatePetugas({{ $i }})" class="pagination-btn px-4 py-2 rounded border text-sm font-medium text-blue-800 border-blue-400 hover:bg-blue-100">
+            {{ $i }}
+        </button>
+        @endfor
+    </div>
+
+    {{-- Mobile (Carousel) --}}
+    <div class="lg:hidden relative overflow-hidden mt-10">
+        <button onclick="slidePrev('mobilePetugasWrapper')" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">❮</button>
+
+        <div id="mobilePetugasWrapper" class="flex transition-transform duration-700 ease-in-out gap-4">
+            @foreach ($konsultan as $item)
+            <div class="flex-shrink-0 w-full px-4">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex flex-col items-center gap-4 mb-6">
+                            <div class="rounded-2xl overflow-hidden">
+                                <img src="{{ Storage::url($item->gambar) }}" class="h-40 w-40 object-cover rounded-xl">
+                            </div>
+                            <div class="text-center">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $item->nama }}</h3>
+                                <p class="text-sm text-primary font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
+                                <p class="text-xs text-gray-500">Jabatan : {{ $item->posisi }}</p>
+                                <p class="text-xs text-gray-500">{{ $item->email }}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium text-center">
+                                Bidang Keahlian : {{ $item->keahlian }}
+                            </div>
+                        </div>
+                        <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                            Info Lebih Lanjut
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <button onclick="slideNext('mobilePetugasWrapper')" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">❯</button>
+    </div>
+
+</div>
+
+    {{-- Layanan Kami Section --}}
+    <section id="konsultasi" class="bg-[#002B6A] py-16 lg:py-20 theme-section theme-dark">
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl lg:text-4xl font-bold mb-12 text-white speak-target" onmouseenter="speakOnHover(this)">
+            Layanan Konsultasi
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {{-- Kartu 1 - Hubungi Layanan --}}
+            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
+                <div class="mb-6">
+                    <img src="{{ asset('image/konsultasii.png') }}" alt="Hubungi Layanan" class="h-48 w-auto mx-auto object-contain">
+                </div>
+                <div class="w-full">
+                    <a href="{{ route('konsultasi.index') }}" class="block w-full">
+                        <button class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
+                            <span>Konsultasi</span>
                             <img src="{{ asset('image/wa.png') }}" width="24" height="24" alt="WhatsApp" class="flex-shrink-0">
                         </button>
-                    </form>
+                    </a>
                 </div>
+            </div>
 
-                {{-- Kartu 2 - Buat Janji Temu --}}
-                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
-                    <div class="mb-6">
-                        <img src="{{ asset('image/meet.png') }}" alt="Buat Janji Temu" class="h-48 w-auto mx-auto object-contain">
-                    </div>
-                    <a href="{{ route('janjitemu.index') }}" class="w-full">
+            {{-- Kartu 2 - Buat Janji Temu --}}
+            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
+                <div class="mb-6">
+                    <img src="{{ asset('image/meet.png') }}" alt="Buat Janji Temu" class="h-48 w-auto mx-auto object-contain">
+                </div>
+                <div class="w-full">
+                    <a href="{{ route('janjitemu.index') }}" class="block w-full">
                         <button class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
-                            <span>Buat Janji Temu</span>
+                            <span>Janji Temu Offline</span>
                             <img src="{{ asset('image/form.png') }}" width="24" height="24" alt="Form" class="flex-shrink-0">
                         </button>
                     </a>
                 </div>
+            </div>
 
-                {{-- Kartu 3 - Antrian Online --}}
-                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
-                    <div class="mb-6">
-                        <img src="{{ asset('image/antrianonline.png') }}" alt="Ambil Antrian Online" class="h-48 w-auto mx-auto object-contain">
-                    </div>
-                    <a href="https://webapps.bps.go.id/babel/antrianbabel/frontend/web/index.php?r=site/index#services" target="_blank" class="w-full">
+            {{-- Kartu 3 - Antrian Online --}}
+            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
+                <div class="mb-6">
+                    <img src="{{ asset('image/antrianonline.png') }}" alt="Ambil Antrian Online" class="h-48 w-auto mx-auto object-contain">
+                </div>
+                <div class="w-full">
+                    <a href="{{ route('janjitemu.online') }}" target="_blank" class="block w-full">
                         <button class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
-                            <span>Ambil Antrian Online</span>
+                            <span>Janji Temu Online</span>
                             <img src="{{ asset('image/tiket.png') }}" width="24" height="24" alt="Tiket" class="flex-shrink-0">
                         </button>
                     </a>
                 </div>
             </div>
         </div>
-    </section>
+
+        @if ($janjiTemu && in_array($janjiTemu->jenis, ['online', 'offline']))
+        <div class="mt-10 text-center">
+            <a href="{{ route('janjitemu.jadwal') }}" class="inline-block bg-white hover:bg-gray-400 text-primary font-semibold py-3 px-6 rounded-xl transition duration-300">
+                Lihat Jadwal Janji Temu
+            </a>
+        </div>
+        @endif
+    </div>
+</section>
+
 
     {{-- Layanan 24 Jam Section --}}
     <section class="bg-gray-50 py-16 lg:py-20 theme-section theme-light">
-        <div class="container mx-auto px-4">
-            <h2 class="text-center text-[#002B6A] text-3xl lg:text-4xl font-bold mb-12 speak-target" onmouseenter="speakOnHover(this)">
-                Layanan 24 Jam
-            </h2>
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-[#002B6A] text-3xl lg:text-4xl font-bold mb-12 speak-target" onmouseenter="speakOnHover(this)">
+            Layanan 24 Jam
+        </h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="layanan-container">
-                @foreach ($layanan as $item)
-                    <div class="layanan-item bg-white rounded-2xl shadow-lg border-2 border-[#002B6A] p-6 flex flex-col hover:shadow-xl transition-all duration-300">
-                        <div class="mb-4 flex justify-center items-center">
-                            <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->judul }}" class="h-40 w-40 object-cover rounded-xl">
-                        </div>
-                        <h3 class="text-[#002B6A] font-bold text-xl mb-3 speak-target" onmouseenter="speakOnHover(this)">{{ $item->judul }}</h3>
-                        <p class="text-gray-700 flex-grow mb-6 leading-relaxed speak-target" onmouseenter="speakOnHover(this)">{{ $item->deskripsi }}</p>
-                        <a href="{{ $item->link }}" target="_blank" class="bg-[#002B6A] hover:bg-[#003875] text-white text-center rounded-full px-6 py-3 font-semibold transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
-                            Kunjungi Website
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-            <div id="layanan-pagination" class="flex justify-center mt-8 space-x-2"></div>
-        </div>
-    </section>
-
-    {{-- Maklumat dan Jenis Layanan Section --}}
-    <div class="bg-[#002B6A] py-30 theme-section theme-dark">
-
-          <h1 class="text-center text-3xl font-bold mb-30 text-white speak-target" onmouseenter="speakOnHover(this)">
-              Maklumat dan Jenis Layanan
-          </h1>
-
-
-          <div class="center mx-auto container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ">
-              @foreach ($maklumat as $item)
-              <div class="shadow-lg rounded-xl overflow-hidden mx-4">
-                  <iframe src="{{ Storage::url($item->file) }}#view=FitH" width="100%" height="600px" style="border: none;"></iframe>
-
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="layanan-container">
+    @foreach ($layanan as $item)
+        <div class="layanan-item bg-white rounded-2xl shadow-lg border-2 border-[#002B6A] p-6 flex flex-col justify-between min-h-[460px] hover:shadow-xl transition-all duration-300">
+            <div>
+                <div class="mb-4 flex justify-center items-center">
+                    <img src="{{ Storage::url($item->gambar) }}" alt="{{ $item->judul }}" class="h-40 w-40 object-cover rounded-xl mx-auto">
                 </div>
-
-                @endforeach
+                <h3 class="text-[#002B6A] text-center font-bold text-xl mb-3 speak-target" onmouseenter="speakOnHover(this)">
+                    {{ $item->judul }}
+                </h3>
+                <p class="text-gray-700 leading-relaxed text-sm mb-6 speak-target" onmouseenter="speakOnHover(this)">
+                    {{ $item->deskripsi }}
+                </p>
             </div>
+            <a href="{{ $item->link }}" target="_blank"
+               class="w-full block text-center bg-[#002B6A] hover:bg-[#003875] text-white rounded-full px-6 py-3 font-semibold transition-colors duration-300 speak-target"
+               onmouseenter="speakOnHover(this)">
+                Kunjungi Website
+            </a>
+        </div>
+    @endforeach
+</div>
+
+
+        <div id="layanan-pagination" class="flex justify-center mt-8 space-x-2"></div>
     </div>
+</section>
 
 
-    {{-- Standar Pelayanan Section --}}
-    <div class="bg-white py-30 theme-section theme-light">
 
-        <h1 class="text-center text-3xl font-bold mb-30 text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">
-            Standar Layanan
-        </h1>
+{{-- === MAKLUMAT DAN JENIS LAYANAN === --}}
+<div class="bg-[#002B6A] py-16 overflow-hidden relative">
+    <h1 class="text-center text-3xl font-bold mb-10 text-white">
+        Maklumat dan Jenis Layanan
+    </h1>
 
-        <div class="center mx-auto container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-            @foreach ($standar as $item)
+    <div class="container mx-auto px-4 md:px-6 lg:px-8 relative overflow-hidden">
+        {{-- PANAH KIRI --}}
+        <button onclick="slidePrev('maklumatWrapper')" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">
+            ❮
+        </button>
 
-            <div class="shadow-lg rounded-xl overflow-hidden mx-4">
-                <img src="{{ Storage::url($item->gambar) }}" class="w-full h-[600px] object-fill rounded-xl">
+        {{-- WRAPPER KONTEN --}}
+        <div id="maklumatWrapper" class="flex transition-transform duration-700 ease-in-out gap-4">
+            @foreach ($maklumat as $item)
+            <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <iframe src="{{ Storage::url($item->file) }}#view=FitH"
+                            class="w-full h-[400px] border-none"></iframe>
+                </div>
             </div>
             @endforeach
-
-
         </div>
+
+        {{-- PANAH KANAN --}}
+        <button onclick="slideNext('maklumatWrapper')" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">
+            ❯
+        </button>
     </div>
+</div>
+
+{{-- === STANDAR LAYANAN === --}}
+<div class="bg-white py-16 overflow-hidden relative">
+    <h1 class="text-center text-3xl font-bold mb-10 text-[#002B6A]">
+        Standar Layanan
+    </h1>
+
+    <div class="container mx-auto px-4 md:px-6 lg:px-8 relative overflow-hidden">
+        {{-- PANAH KIRI --}}
+        <button onclick="slidePrev('standarWrapper')" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-[#002B6A] text-white p-2 rounded-full shadow-md hover:bg-blue-800">
+            ❮
+        </button>
+
+        {{-- WRAPPER KONTEN --}}
+        <div id="standarWrapper" class="flex transition-transform duration-700 ease-in-out gap-4">
+            @foreach ($standar as $item)
+            <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="{{ Storage::url($item->gambar) }}"
+                         class="w-full h-[400px] object-cover rounded-xl">
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        {{-- PANAH KANAN --}}
+        <button onclick="slideNext('standarWrapper')" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-[#002B6A] text-white p-2 rounded-full shadow-md hover:bg-blue-800">
+            ❯
+        </button>
+    </div>
+</div>
+
 
     {{-- FAQ Section --}}
 <section class="bg-primary py-16 lg:py-20">
@@ -175,7 +329,7 @@
             Pertanyaan Yang Sering Ditanyakan
         </h2>
 
-        <div class="max-w-4xl mx-auto space-y-4" id="faq-container">
+        <div class="container mx-auto space-y-4" id="faq-container">
             @foreach ($faq as $item)
                 <div x-data="{ open: false }" class="faq-item bg-white rounded-xl shadow-lg overflow-hidden">
                     <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition-colors duration-200">
@@ -204,116 +358,71 @@
 
 
     <!-- Widget Aksesibilitas -->
-<div x-data="{ open: false }" class="fixed bottom-6 right-6 z-50 flex gap-4 items-end">
-
-     <!-- Tombol Chatbot -->
+<div x-data="{ open: false }" class="fixed bottom-6 right-6 z-50 flex gap-4 items-end flex-col md:flex-row">
+    <!-- Tombol Chatbot -->
     <div>
         <button
             id="chatbot-toggle"
-            class="bg-gradient-to-br from-[#ffda6a] to-[#ffc107] rounded-full w-20 h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
+            class="bg-gradient-to-br from-[#ffda6a] to-[#ffc107] rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
             style="box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-12 md:h-12 text-white group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M4 4h16v12H5.17L4 17.17V4zm16-2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
             </svg>
-            <!-- Tooltip -->
-            <div class="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+            <div class="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-xs md:text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
                 Buka Chatbot
                 <div class="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
             </div>
         </button>
     </div>
 
-    <!-- Tombol Utama -->
+    <!-- Tombol Aksesibilitas Utama -->
     <button
         @click="open = !open"
-        class="bg-gradient-to-br from-[#a3c2f5] to-[#004B9A] rounded-full w-20 h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
+        class="bg-gradient-to-br from-[#a3c2f5] to-[#004B9A] rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
         style="box-shadow: 0 8px 32px rgba(0, 43, 106, 0.4);"
     >
-        <!-- Icon Aksesibilitas -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-12 md:h-12 text-white group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3M21 9v2a2 2 0 0 1-2 2h-1l-1.5 6h-2l1.3-5.4c-.4-.3-.9-.6-1.3-.6H9.5c-.4 0-.9.3-1.3.6L9.5 19h-2L6 13H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
-
-        <!-- Tooltip -->
-        <div class="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+        <div class="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-xs md:text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
             Aksesibilitas
             <div class="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
         </div>
     </button>
 
     <!-- Tombol Tambahan -->
-    <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95 translate-y-4" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-4" class="flex flex-col items-end space-y-3 mb-4 ">
-
-        <button onclick="adjustFontSize('increase')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-[#002B6A] font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-            </svg>
-            <span>Perbesar Text</span>
-        </button>
-
-        <button onclick="adjustFontSize('decrease')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-            </svg>
-            <span>Perkecil Text</span>
-        </button>
-
-        <button onclick="adjustFontSize('reset')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            <span>Reset Ukuran Text</span>
-        </button>
-
-        <button onclick="setCursorSize('medium')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            <span>Ukuran Cursor Sedang</span>
-        </button>
-
-        <button onclick="setCursorSize('large')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            <span>Ukuran Cursor Besar</span>
-        </button>
-
-         <button onclick="resetCursor('')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            <span>Reset Ukuran Cursor</span>
-        </button>
-
-        {{-- <button onclick="setContrast('light')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            <span>Kontras Warna</span>
-        </button>
-
-        <button onclick="setContrast('dark')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            <span>Kontras Gelap</span>
-        </button>
-
-        <button onclick="setContrast('default')" class="group flex items-center space-x-3 px-4 py-3 theme-section theme-dark bg-primary text-sm text-primary font-medium rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-100" style="backdrop-filter: blur(10px); background: #002B6A">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            <span>Reset Warna</span>
-        </button> --}}
-
-
+    <div
+        x-show="open"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+        x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+        x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
+        class="flex flex-col items-end space-y-3 mb-4"
+    >
+        <!-- Tombol-tombol aksesibilitas (tetap pakai yang kamu punya sebelumnya) -->
+        <!-- Perbesar Text, Perkecil Text, Reset Ukuran Text, dsb -->
+        <!-- ⬇️ PASTE tombol-tombol aksesibilitas kamu di sini ⬇️ -->
+        <!-- Misal: -->
+        <button onclick="adjustFontSize('increase')" class="px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Perbesar Teks</button>
+        <button onclick="adjustFontSize('decrease')" class="px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Perkecil Teks</button>
+        <button onclick="adjustFontSize('reset')" class="px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Reset Teks</button>
+        <button onclick="adjustFontSize('cursor-medium')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Sedang</button>
+        <button onclick="adjustFontSize('cursor-large')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Besar</button>
+        <button onclick="adjustFontSize('cursorSize')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Reset Cursor</button>
+        <!-- ...dan lainnya -->
     </div>
-    <div id="chatbot-container" style="display: none; position: fixed; bottom: 120px; right: 20px; width: 400px; height: 600px; z-index: 9999; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden;">
-    <iframe src="http://localhost:8501" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+
+    <!-- Iframe Chatbot -->
+    <div id="chatbot-container"
+        class="rounded-xl overflow-hidden shadow-xl border"
+        style="display: none; position: fixed; bottom: 120px; right: 20px; width: 90vw; max-width: 400px; height: 70vh; z-index: 9999;">
+        <iframe src="http://localhost:8501" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+    </div>
 </div>
-</div>
+
 
     {{-- Survey Section --}}
     <section class="bg-gray-50 py-16 lg:py-20 theme-section theme-light">

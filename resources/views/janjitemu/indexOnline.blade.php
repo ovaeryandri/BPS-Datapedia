@@ -257,22 +257,23 @@
                 <div class="space-y-3">
                     <label class="block text-sm font-medium text-gray-700 mb-3">Jenis Layanan</label>
                     <div class="grid grid-cols-1 gap-4">
-
                         <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 transition-colors group">
                             <input
                                 type="radio"
                                 name="jenis"
-                                value="offline"
+                                value="online"
                                 class="radio-custom mr-3"
                                 required
                             />
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                 </svg>
-                                <span class="font-medium text-gray-700 group-hover:text-primary transition-colors">Offline</span>
+                                <span class="font-medium text-gray-700 group-hover:text-primary transition-colors">Online</span>
                             </div>
                         </label>
+
+
                     </div>
                     @error('jenis')
                          <p class="text-red-600 text-sm">{{ $message }}</p>

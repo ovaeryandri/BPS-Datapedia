@@ -29,6 +29,28 @@
             cursor: url('image/cursormedium.png'), auto;
         }
 
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll {
+  animation: scrollLeft 60s linear infinite;
+}
+
+/* Hilangkan scrollbar di mobile (opsional) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
         .cursor-large {
             cursor: url('image/cursorlarge.png'), auto;
         }
@@ -185,7 +207,9 @@
             left: 80%;
             animation-delay: 4s;
         }
-
+ #mobile-menu {
+    transition: all 0.3s ease-in-out;
+  }
 /*
 
         .service-image {
@@ -217,7 +241,7 @@
         }
 
         .login-btn {
-            color: #60a5fa;
+            color: white;
             font-weight: 500;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -325,34 +349,64 @@
                 </svg> --}}
 
                 <!-- Navigation -->
-                <div class="relative pt-6 px-4 sm:px-6 lg:px-8 fade-in">
-                    <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start glass-effect rounded-xl p-4" aria-label="Global">
-                        <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-                            <div class="flex items-center justify-between w-40">
-                                <img src="{{ asset('image/logo-bps.png') }}" alt="BPS Logo" class="h-12 w-auto">
-                            </div>
-                        </div>
+                <div id="home" class="relative pt-4 px-4 sm:px-6 lg:px-8 fade-in">
+  <nav class="relative glass-effect rounded-xl p-4" aria-label="Global">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <img src="{{ asset('image/logo-bps.png') }}" alt="BPS Logo" class="h-12 w-auto">
+      </div>
 
-                        <div class="hidden md:flex md:items-center md:ml-10 md:pr-4 md:space-x-6">
-                            <a href="#" class="nav-link font-medium text-white hover:text-blue-100 speak-target" onmouseenter="speakOnHover(this)" >Beranda</a>
-                            <a href="#" class="nav-link font-medium text-white hover:text-blue-100 speak-target" onmouseenter="speakOnHover(this)" >Tentang Kami</a>
-                            <a href="#" class="nav-link font-medium text-white hover:text-blue-100 speak-target" onmouseenter="speakOnHover(this)" >FAQ</a>
+      <!-- Hamburger Button -->
+      <div class="md:hidden">
+        <button type="button" onclick="toggleMenu()" class="text-white focus:outline-none">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
 
-                            <!-- Session logic - choose one condition -->
-                            <!-- Option 1: If user is logged in -->
-                             @if(session('loginStatus') && session('user'))
-                            <form action="{{ route('logoutUser') }}" method="POST" class="inline-block">
-                                @csrf
-                                <button type="submit" class="logout-btn speak-target" onmouseenter="speakOnHover(this)" >Logout</button>
-                            </form>
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex md:items-center md:space-x-6">
+        <a href="#home" class="nav-link font-medium text-white hover:text-blue-100 speak-target" onmouseenter="speakOnHover(this)">Beranda</a>
+        <a href="{{ url('/') }}#konsultasi" class="nav-link font-medium text-white hover:text-blue-100 speak-target" onmouseenter="speakOnHover(this)">Konsultasi</a>
 
-                            @else
-                            <!-- Option 2: If user is not logged in -->
-                            <a href="{{ route('loginUser') }}" class="login-btn speak-target" onmouseenter="speakOnHover(this)" >Login</a>
-                            @endif
-                        </div>
-                    </nav>
-                </div>
+        @if(session('loginStatus') && session('user'))
+          <a href="{{ route('profile.index') }}" class="nav-link font-medium text-white hover:text-blue-100">Profil</a>
+        @else
+          <button type="button" onclick="showLoginAlert()" class="nav-link font-medium text-white hover:text-blue-100">Profil</button>
+        @endif
+
+        @if(session('loginStatus') && session('user'))
+          <form action="{{ route('logoutUser') }}" method="POST" class="inline-block">
+            @csrf
+            <button type="submit" class="logout-btn speak-target " onmouseenter="speakOnHover(this)">Logout</button>
+          </form>
+        @else
+          <a href="{{ route('loginUser') }}" class="login-btn speak-target" onmouseenter="speakOnHover(this)">Login</a>
+        @endif
+      </div>
+    </div>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu" class="md:hidden mt-4 space-y-2 hidden flex-col">
+      <a href="#home" class="block text-white font-medium hover:text-blue-100">Beranda</a>
+      <a href="{{ url('/') }}#konsultasi" class="block text-white font-medium hover:text-blue-100">Konsultasi</a>
+
+      @if(session('loginStatus') && session('user'))
+        <a href="{{ route('profile.index') }}" class="block text-white font-medium hover:text-blue-100">Profil</a>
+        <form action="{{ route('logoutUser') }}" method="POST">
+          @csrf
+          <button type="submit" class="block w-full text-left text-white font-medium hover:text-blue-100">Logout</button>
+        </form>
+      @else
+        <button onclick="showLoginAlert()" class="block w-full text-left text-white font-medium hover:text-blue-100">Profil</button>
+        <a href="{{ route('loginUser') }}" class="block text-white font-medium hover:text-blue-100">Login</a>
+      @endif
+    </div>
+  </nav>
+</div>
 
                 <!-- Main Content -->
                 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
@@ -396,11 +450,11 @@
                                 </a>
                             </div>
                             <div class="">
-                                <a href="#" class="btn-secondary w-full flex items-center justify-center px-8 py-4 border-0 text-base font-medium rounded-xl text-white relative overflow-hidden speak-target" onmouseenter="speakOnHover(this)">
+                                <a href="https://webapps.bps.go.id/babel/antrianbabel/frontend/web/index.php?r=site/index#services" class="btn-secondary w-full flex items-center justify-center px-8 py-4 border-0 text-base font-medium rounded-xl text-white relative overflow-hidden speak-target" target="_blank" onmouseenter="speakOnHover(this)">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                     </svg>
-                                    Layanan Kami
+                                    Ambil Antrian Online
                                 </a>
                             </div>
                         </div>
@@ -690,63 +744,183 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <!-- Toggle Script -->
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  }
+</script>
+
+    <script>
+const carouselStates = {
+    mobilePetugasWrapper: { index: 0 }
+};
+
+function updateSlide(id) {
+    const wrapper = document.getElementById(id);
+    const items = wrapper.children;
+    const itemWidth = items[0].offsetWidth + 16;
+    const index = carouselStates[id].index;
+    wrapper.style.transform = `translateX(-${index * itemWidth}px)`;
+}
+
+function slideNext(id) {
+    const wrapper = document.getElementById(id);
+    const maxIndex = wrapper.children.length - 1;
+
+    carouselStates[id].index++;
+    if (carouselStates[id].index > maxIndex) carouselStates[id].index = 0;
+
+    updateSlide(id);
+}
+
+function slidePrev(id) {
+    const wrapper = document.getElementById(id);
+    const maxIndex = wrapper.children.length - 1;
+
+    carouselStates[id].index--;
+    if (carouselStates[id].index < 0) carouselStates[id].index = maxIndex;
+
+    updateSlide(id);
+}
+
+function startAutoSlide(id, interval = 10000) {
+    setInterval(() => {
+        slideNext(id);
+    }, interval);
+}
+
+function paginatePetugas(page) {
+    const itemsPerPage = 6;
+    const cards = document.querySelectorAll(".petugas-card");
+    cards.forEach((card, index) => {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        card.style.display = (index >= start && index < end) ? 'block' : 'none';
+    });
+
+    document.querySelectorAll(".pagination-btn").forEach(btn => {
+        btn.classList.remove('bg-blue-800', 'text-white');
+    });
+    const activeBtn = document.querySelectorAll(".pagination-btn")[page - 1];
+    if (activeBtn) activeBtn.classList.add('bg-blue-800', 'text-white');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateSlide("mobilePetugasWrapper");
+    startAutoSlide("mobilePetugasWrapper");
+    paginatePetugas(1);
+
+    window.addEventListener("resize", () => {
+        updateSlide("mobilePetugasWrapper");
+    });
+});
+</script>
+
 
 <script>
-        $(".center").slick({
-    centerMode: true,
-    centerPadding: "",
-    slidesToShow: 2,
-    autoplay: true,
-    speed: 500,
-    nav: true,
-    responsive: [
-        {
-            breakpoint: 768,
-            settings: {
-                arrows: true,
-                centerMode: true,
-                centerPadding: "40px",
-                slidesToShow: 3,
-            },
-        },
-        {
-            breakpoint: 480,
-            settings: {
-                arrows: false,
-                centerMode: true,
-                centerPadding: "40px",
-                slidesToShow: 1,
-            },
-        },
-        {
-            breakpoint: 1024,
-            settings: {
-                arrows: true,
-                centerMode: true,
-                centerPadding: "40px",
-                slidesToShow: 3,
-            },
-        },
-        {
-            breakpoint: 1280,
-            settings: {
-                arrows: true,
-                centerMode: true,
-                centerPadding: "40px",
-                slidesToShow: 3,
-            },
-        },
-        {
-            breakpoint: 1536,
-            settings: {
-                arrows: true,
-                centerMode: true,
-                centerPadding: "40px",
-                slidesToShow: 3,
-            },
-        },
-    ],
+const carouselStates = {
+    maklumatWrapper: { index: 0 },
+    standarWrapper: { index: 0 }
+};
+
+function updateSlide(id) {
+    const wrapper = document.getElementById(id);
+    const items = wrapper.children;
+    const itemWidth = items[0].offsetWidth + 16; // +gap-4 (16px)
+    const visible = 3;
+    const maxIndex = items.length - visible;
+
+    const index = carouselStates[id].index;
+    wrapper.style.transform = `translateX(-${index * itemWidth}px)`;
+}
+
+function slideNext(id) {
+    const wrapper = document.getElementById(id);
+    const visible = 3;
+    const maxIndex = wrapper.children.length - visible;
+
+    carouselStates[id].index++;
+    if (carouselStates[id].index > maxIndex) carouselStates[id].index = 0;
+
+    updateSlide(id);
+}
+
+function slidePrev(id) {
+    const wrapper = document.getElementById(id);
+    const visible = 3;
+    const maxIndex = wrapper.children.length - visible;
+
+    carouselStates[id].index--;
+    if (carouselStates[id].index < 0) carouselStates[id].index = maxIndex;
+
+    updateSlide(id);
+}
+
+function startAutoSlide(id, interval = 10000) {
+    setInterval(() => {
+        slideNext(id);
+    }, interval);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateSlide("maklumatWrapper");
+    updateSlide("standarWrapper");
+
+    startAutoSlide("maklumatWrapper");
+    startAutoSlide("standarWrapper");
+
+    window.addEventListener("resize", () => {
+        updateSlide("maklumatWrapper");
+        updateSlide("standarWrapper");
+    });
 });
+</script>
+
+<script>
+function showLoginAlert() {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Akses Ditolak',
+        text: 'Kamu belum login, silakan login terlebih dahulu.',
+        confirmButtonColor: '#002B6A',
+        confirmButtonText: 'Login',
+        cancelButtonText: 'Batal',
+        showCancelButton: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{{ route('loginUser') }}";
+        }
+    });
+}
+</script>
+
+
+
+    <script>
+    function showKonsultanInfo(nama, posisi, keahlian, no_hp, email, gambarUrl) {
+        const container = document.createElement("div");
+        container.className = "fixed bottom-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 w-80 z-50 animate-fade-in-down";
+        container.innerHTML = `
+            <div class="flex items-start gap-3">
+                <img src="${gambarUrl}" class="w-16 h-16 object-cover rounded-lg border">
+                <div>
+                    <p class="font-bold text-gray-800">${nama}</p>
+                    <p class="text-sm text-gray-600 mb-1">${posisi}</p>
+                    <p class="text-sm text-blue-700">${keahlian}</p>
+                    <p class="text-sm text-gray-500 mt-2">📞 ${no_hp}<br>✉️ ${email}</p>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(container);
+
+        // Hilangkan toast setelah 5 detik
+        setTimeout(() => {
+            container.remove();
+        }, 5000);
+    }
 
   document.addEventListener('DOMContentLoaded', function () {
     const itemsPerPage = 6;
