@@ -85,6 +85,7 @@ public function terima($id)
         'no_hp' => $no_hp,
         'pesan' => "Halo, janji temu Anda pada tanggal {$janjiTemu->tanggal} pukul {$janjiTemu->jam} telah *DITERIMA*. Terima kasih.",
         'created_at' => now(),
+        'updated_at' => now(),
         'status' => 'pending',
     ]);
 
@@ -106,6 +107,37 @@ public function tolak(Request $request, $id)
     ]);
 
     return redirect()->back()->with('success', 'Janji temu ditolak dan notifikasi dikirim.');
+}
+
+public function formZoom($id)
+{
+    $janjiTemu = janjitemu::with('user')->findOrFail($id);
+
+    if ($janjiTemu->jenis !== 'online' || $janjiTemu->status !== 'diterima') {
+        return redirect()->back()->with('error', 'Janji temu ini bukan online atau belum diterima.');
+    }
+
+    return view('admin.jadwalAdmin.zomm', compact('janjiTemu'));
+}
+
+public function kirimZoom(Request $request, $id)
+{
+    $request->validate([
+        'link_zoom' => 'required|url',
+    ]);
+
+    $janjiTemu = janjitemu::with('user')->findOrFail($id);
+
+    // Kirim ke notifikasi_wa
+    DB::table('notifikasi_wa')->insert([
+        'no_hp' => $janjiTemu->user->no_hp,
+        'pesan' => "Halo {$janjiTemu->user->nama}, ini adalah Link Zoom untuk janji temu Anda:\n\n📅 {$janjiTemu->tanggal}, ⏰ {$janjiTemu->jam}\n🔗 Link: {$request->link_zoom}",
+        'status' => 'pending',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return redirect()->route('jadwal.index')->with('success', 'Link Zoom berhasil dikirim.');
 }
 
 

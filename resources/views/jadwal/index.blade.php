@@ -17,7 +17,7 @@
                         <th class="p-3 border border-blue-400 text-center">No HP</th>
                         <th class="p-3 border border-blue-400 text-center">Alamat</th>
                         <th class="p-3 border border-blue-400 text-center">Keperluan</th>
-                        <th class="p-3 border border-blue-400 text-center">Tanggal</th>
+                        <th class="p-3 border border-blue-400 text-center">Tanggal dan Jam</th>
                         <th class="p-3 border border-blue-400 text-center">Jenis Janji Temu</th>
 
                     </tr>
@@ -29,8 +29,8 @@
             <td class="p-3 border">{{ $item->janjitemu->user->no_hp ?? '-'}}</td>
             <td class="p-3 border">{{ $item->janjitemu->alamat }}</td>
             <td class="p-3 border">{{ $item->janjitemu->keperluan }}</td>
-            <td class="p-3 border">{{ $item->janjitemu->tanggal }}</td>
-            <td class="p-3 border">{{ $item->janjitemu->jenis }}</td>
+            <td class="p-3 border">{{ $item->janjitemu->tanggal }} Pada Pukul {{ $item->janjitemu->jam }}</td>
+            <td class="p-3 border">{{ $item->janjitemu->jenis }} {{ $item->janjitemu->zoom_link }}</td>
         </tr>
     @empty
         <tr>

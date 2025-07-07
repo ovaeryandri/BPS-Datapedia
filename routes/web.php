@@ -47,7 +47,10 @@ Route::middleware(LoggedInUser::class)->group(function () {
 
 Route::middleware(LoggedInAdmin::class)->group(function () {
 Route::post('/jadwal/batal/{id}', [jadwalController::class, 'batal'])->name('jadwal.batal');
+Route::get('/user', [UserLogin::class, 'dataUser'])->name('dataUser');
 Route::resource('jadwal', jadwalController::class);
+Route::get('/jadwal/{id}/zoom', [JadwalController::class, 'formZoom'])->name('jadwal.zoom');
+Route::post('/jadwal/{id}/zoom', [JadwalController::class, 'kirimZoom'])->name('jadwal.kirimZoom');
 Route::post('/jadwal/{id}/terima', [jadwalController::class, 'terima'])->name('jadwal.terima');
 Route::post('/jadwal/{id}/tolak', [jadwalController::class, 'tolak'])->name('jadwal.tolak');
 Route::resource('faq', faqController::class)->except(['show']);
@@ -73,16 +76,19 @@ Route::middleware(LoginCheckKonsultan::class)->group(function () {
     Route::post('/prosesloginKonsultan', [KonsultanLogin::class, 'prosesloginKonsultan'])->name('prosesloginKonsultan');
 });
 
+    Route::post('/logoutUser', [UserLogin::class, 'logoutUser'])->name('logoutUser');
+    Route::get('/loginUser', [UserLogin::class, 'loginUser'])->name('loginUser');
+    Route::post('/prosesloginUser', [UserLogin::class, 'prosesloginUser'])->name('prosesloginUser');
+    Route::get('/registerUser', [UserLogin::class, 'registerUser'])->name('registerUser');
+    Route::post('/prosesregisterUser', [UserLogin::class, 'daftar'])->name('prosesregisterUser');
+
 Route::middleware([SessionTimeout::class])->group(function (){
     Route::resource('/', HomeController::class);
 });
 
-Route::post('/logoutUser', [UserLogin::class, 'logoutUser'])->name('logoutUser');
-Route::get('/loginUser', [UserLogin::class, 'loginUser'])->name('loginUser');
-Route::post('/prosesloginUser', [UserLogin::class, 'prosesloginUser'])->name('prosesloginUser');
-Route::get('/registerUser', [UserLogin::class, 'registerUser'])->name('registerUser');
-Route::post('/prosesregisterUser', [UserLogin::class, 'daftar'])->name('prosesregisterUser');
-Route::get('/user', [UserLogin::class, 'dataUser'])->name('dataUser');
+
+
+
 
 
 

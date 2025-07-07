@@ -18,6 +18,7 @@
                             <th class="p-3 text-center text-blue-800 border border-blue-400">No</th>
                             <th class="p-3 text-center text-blue-800 border border-blue-400">Petugas Hari Ini</th>
                             <th class="p-3 text-center text-blue-800 border border-blue-400">Tanggal</th>
+                            <th class="p-3 text-center text-blue-800 border border-blue-400">Aksi</th>
 
                         </tr>
                     </thead>

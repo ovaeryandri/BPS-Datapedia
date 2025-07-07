@@ -40,10 +40,11 @@ class faqController extends Controller
         return view('admin.faq.edit', compact('faq'));
     }
 
-    public function update(Request $request, $faq){
+    public function update(Request $request, $id){
+        $faq = faq::findOrFail($id);
         $request->validate([
-            'judul' => 'min:5|string',
-            'deskripsi' => 'min:5|string',
+            'judul' => 'string',
+            'deskripsi' => 'string',
         ]);
         $data = [
             "judul" => $request->judul,

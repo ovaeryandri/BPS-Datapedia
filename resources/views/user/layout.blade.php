@@ -354,7 +354,7 @@ html {
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <div class="flex items-center">
-        <img src="{{ asset('image/logo-bps.png') }}" alt="BPS Logo" class="h-12 w-auto">
+        <img src="{{ asset('image/logo-bps.png') }}" alt="BPS Logo" class="h-24 w-auto">
       </div>
 
       <!-- Hamburger Button -->
@@ -412,8 +412,8 @@ html {
                 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                     <div class="sm:text-center lg:text-left slide-up">
                         <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl text-shadow">
-                            <span class="block speak-target" onmouseenter="speakOnHover(this)">Selamat Datang Di Datapedia</span>
-                            <span class="block speak-target" style="color: #a3c2f5;" onmouseenter="speakOnHover(this)">Badan Pusat Statistik</span>
+                            <span class="block speak-target" onmouseenter="speakOnHover(this)">Datapedia</span>
+                            <span class="block speak-target" style="color: #a3c2f5;" onmouseenter="speakOnHover(this)">Media Konsultasi Statistik Langsung</span>
                         </h1>
 
                         <div class="mt-6 p-6 glass-effect rounded-xl">
@@ -442,7 +442,7 @@ html {
 
                         <div class="mt-8 sm:mt-11 sm:flex sm:justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-4">
                             <div class="">
-                                <a href="#" class="btn-primary w-full flex items-center justify-center px-8 py-4 border-0 text-base font-medium rounded-xl text-blue-900 relative overflow-hidden speak-target" onmouseenter="speakOnHover(this)">
+                                <a href="{{ route('konsultasi.index') }}" class="btn-primary w-full flex items-center justify-center px-8 py-4 border-0 text-base font-medium rounded-xl text-blue-900 relative overflow-hidden speak-target" onmouseenter="speakOnHover(this)">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                     </svg>
