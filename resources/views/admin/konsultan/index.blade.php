@@ -2,6 +2,33 @@
 @section('content')
 <div class="w-full p-6 bg-gray-100 ">
     <div class="w-full bg-white rounded-lg shadow-md overflow-hidden">
+        @php
+    use App\Models\Konsultan;
+    use Illuminate\Support\Carbon;
+
+    $notifikasiKonsultan = Konsultan::where('status', 'tidak tersedia')
+        ->whereNotNull('status_updated_at')
+        ->where('status_updated_at', '>=', Carbon::now()->subDays(30))
+        ->get();
+@endphp
+
+@if ($notifikasiKonsultan->count())
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-lg">
+        <strong>Notifikasi:</strong> Ada <strong>{{ $notifikasiKonsultan->count() }}</strong> konsultan yang mengubah status menjadi
+        <span class="font-semibold text-red-600">tidak tersedia</span> dalam 30 hari terakhir:
+        <ul class="list-disc ml-6 mt-2 text-sm">
+            @foreach ($notifikasiKonsultan as $k)
+                <li>
+                    {{ $k->nama }} –
+                    {{ $k->status_updated_at ? \Carbon\Carbon::parse($k->status_updated_at)->translatedFormat('d F Y H:i') : 'tidak diketahui' }}
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+        {{-- Akhir notifikasi --}}
+
         <div class="bg-blue-400 p-4">
             <h2 class="text-xl font-bold text-blue-800">Data Konsultan</h2>
         </div>

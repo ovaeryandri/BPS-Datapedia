@@ -25,29 +25,29 @@ class konsultanStatusController extends Controller
             'alasan' => 'required|string|max:255',
             'tanggal_mulai_tidak_tersedia' => 'required|date|after_or_equal:today',
             'tanggal_selesai_tidak_tersedia' => 'required|date|after_or_equal:tanggal_mulai_tidak_tersedia',
-        ], [
-            'alasan.required' => 'Alasan Tidak Boleh Kosong',
-            'tanggal_mulai_tidak_tersedia.required' => 'Tanggal Mulai tidak boleh kosong',
-            'tanggal_mulai_tidak_tersedia.after_or_equal' => 'Tanggal Mulai Tidak Bisa jika tanggal nya sudah kemarin',
-            'tanggal_selesai_tidak_tersedia.required' => 'Tanggal Selesai tidak boleh kosong',
-            'tanggal_selesai_tidak_tersedia.after_or_equal' => 'Tanggal Selesai Tidak Bisa Sebelum Tanggal Mulai',
         ]);
 
-        $konsultan->status = 'tidak tersedia';
-        $konsultan->alasan = $request->alasan;
-        $konsultan->tanggal_mulai_tidak_tersedia = $request->tanggal_mulai_tidak_tersedia;
-        $konsultan->tanggal_selesai_tidak_tersedia = $request->tanggal_selesai_tidak_tersedia;
+        $konsultan->update([
+            'status' => 'tidak tersedia',
+            'alasan' => $request->alasan,
+            'tanggal_mulai_tidak_tersedia' => $request->tanggal_mulai_tidak_tersedia,
+            'tanggal_selesai_tidak_tersedia' => $request->tanggal_selesai_tidak_tersedia,
+            'status_updated_at' => now(),
+        ]);
 
     } else {
-        $konsultan->status = 'tersedia';
-        $konsultan->alasan = null;
-        $konsultan->tanggal_mulai_tidak_tersedia = null;
-        $konsultan->tanggal_selesai_tidak_tersedia = null;
+        $konsultan->update([
+            'status' => 'tersedia',
+            'alasan' => null,
+            'tanggal_mulai_tidak_tersedia' => null,
+            'tanggal_selesai_tidak_tersedia' => null,
+            'status_updated_at' => now(),
+        ]);
     }
-
-    $konsultan->save();
 
     return redirect()->route('status.index')->with('success', 'Status berhasil diperbarui');
 }
+
+
 
 }

@@ -13,6 +13,7 @@ class petugas extends Model
     protected $fillable = [
         "konsultan_id",
         "tanggal",
+        "status",
     ];
 
     public function konsultan()

@@ -792,7 +792,7 @@ function startAutoSlide(id, interval = 10000) {
 }
 
 function paginatePetugas(page) {
-    const itemsPerPage = 6;
+    const itemsPerPage = 8;
     const cards = document.querySelectorAll(".petugas-card");
     cards.forEach((card, index) => {
         const start = (page - 1) * itemsPerPage;

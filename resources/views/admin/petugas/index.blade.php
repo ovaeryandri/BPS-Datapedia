@@ -25,7 +25,7 @@
 
                     <tbody id="layanan-body">
                         @foreach ($petugas as $index => $item)
-                        <tr class="layanan-item-row hover:bg-gray-50 ">
+                        <tr class="layanan-item-row hover:bg-gray-50">
                             <td class="p-3 border border-gray-200 text-center">{{ $index + 1 }}</td>
 
 
@@ -35,6 +35,18 @@
                             <td class="p-3 border border-gray-200 ">
                             <div class="w-64 line-clamp-2 overflow text-center-hidden text-ellipsis">{{ $item->tanggal }}</div>
                             </td>
+
+                            <td class="p-3 border border-gray-200">
+                                    <div class="flex space-x-2">
+                                        <a href="{{ route('petugas.edit', $item->id) }}" class="px-3 py-1 bg-blue-300 hover:bg-blue-400 text-blue-800 rounded">Edit</a>
+
+                           <form action="{{ route('petugas.destroy', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        <button type="submit" class="px-3 py-1 bg-red-300 hover:bg-red-400 text-red-800 rounded">Hapus</button>
+                                    </form>
+                                    </div>
+                                </td>
 
                         </tr>
                         @endforeach

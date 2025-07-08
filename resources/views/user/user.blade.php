@@ -101,9 +101,9 @@
                         Bidang Keahlian : {{ $item->keahlian }}
                     </div>
                 </div>
-                <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                {{-- <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
                     Info Lebih Lanjut
-                </button>
+                </button> --}}
             </div>
         </div>
         @endforeach
@@ -156,7 +156,6 @@
     </div>
 
 </div>
-
     {{-- Layanan Kami Section --}}
     <section id="konsultasi" class="bg-[#002B6A] py-16 lg:py-20 theme-section theme-dark">
     <div class="container mx-auto px-4">

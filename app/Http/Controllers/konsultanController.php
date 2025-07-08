@@ -57,6 +57,7 @@ class konsultanController extends Controller
         $request->validate([
             'email' => 'unique:konsultans|string',
             'nama' => 'string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'posisi' => 'string',
             'keahlian' => 'string',
             'password' => 'nullable|min:5|string',

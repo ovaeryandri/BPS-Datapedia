@@ -11,13 +11,20 @@ class konsultan extends Model
     protected $table = 'konsultans';
 
     protected $fillable = [
-        "email",
-        "nama",
-        'gambar',
-        'posisi',
-        'keahlian',
-        "password",
-        "no_hp",
+    "email",
+    "nama",
+    "gambar",
+    "posisi",
+    "keahlian",
+    "status",
+    "status_updated_at",
+    "alasan",
+    "password",
+    "no_hp",
+    "created_at",
+    "updated_at",
+    "tanggal_mulai_tidak_tersedia",
+    "tanggal_selesai_tidak_tersedia",
     ];
     public function jadwals()
 {

@@ -39,12 +39,9 @@ class petugasController extends Controller
 }
 
 
-
-
     public function create(Request $request)
 {
-    $konsultan = Konsultan::all();
-    // Ambil hanya 1 petugas hari ini
+    $konsultan = Konsultan::where('status', 'tersedia')->get();
     $petugas = Petugas::where('tanggal', Carbon::today())->first();
 
     return view('admin.petugas.create', compact('konsultan', 'petugas'));
@@ -59,27 +56,35 @@ class petugasController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit($id)
+{
+    $petugas = Petugas::findOrFail($id);
+    $konsultan = Konsultan::all();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    return view('admin.petugas.edit', compact('petugas', 'konsultan'));
+}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'konsultan_id' => 'required|exists:konsultans,id',
+        'tanggal' => 'required|date',
+    ]);
+
+    $petugas = Petugas::findOrFail($id);
+    $petugas->update([
+        'konsultan_id' => $request->konsultan_id,
+        'tanggal' => $request->tanggal,
+    ]);
+
+    return redirect()->route('petugas.index')->with('success', 'Data petugas berhasil diperbarui.');
+}
+
+public function destroy($id)
+{
+    $petugas = Petugas::findOrFail($id);
+    $petugas->delete();
+
+    return redirect()->route('petugas.index')->with('success', 'Data petugas berhasil dihapus.');
+}
 }
