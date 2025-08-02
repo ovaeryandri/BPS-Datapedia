@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css" />
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
   <title>Welcome To Admin</title>
+  <style>
+.ellipsis-3-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+
 </head>
 
 <body class="bg-gray-100">
@@ -361,6 +371,12 @@
           <i class="fad fa-comments text-xs mr-2"></i>
           maklumat layanan
         </a>
+
+        <a href="{{ route('jam-operasional.index') }}"
+          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
+          <i class="fad fa-comments text-xs mr-2"></i>
+         Jam Operasional
+        </a>
         <!-- end link -->
 
         <p class="uppercase text-xs text-blue-600 mb-4 mt-4 tracking-wider">FAQ</p>
@@ -459,6 +475,8 @@
         }
     });
 </script>
+
+@stack('scripts')
 
 <script>
     document.getElementById('file').addEventListener('change', function (e) {

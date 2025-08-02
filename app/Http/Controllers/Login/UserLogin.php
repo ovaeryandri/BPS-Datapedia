@@ -25,6 +25,11 @@ class UserLogin extends Controller
 
    public function prosesloginUser(Request $request)
 {
+    // Tambahkan 62 otomatis
+    $request->merge([
+        'no_hp' => '62' . ltrim($request->no_hp, '0')
+    ]);
+
     $request->validate([
         'no_hp' => 'required|regex:/^62[0-9]{9,12}$/',
         'password' => 'required|min:5|string',
@@ -35,7 +40,6 @@ class UserLogin extends Controller
         'password.min' => 'Password Minimal 5 Karakter',
     ]);
 
-    // Buat throttle key berdasarkan nomor HP + IP
     $throttleKey = Str::lower($request->no_hp) . '|' . $request->ip();
 
     if (RateLimiter::tooManyAttempts($throttleKey, 10)) {
@@ -48,7 +52,6 @@ class UserLogin extends Controller
     $user = akunuser::where('no_hp', $request->no_hp)->first();
 
     if ($user && Hash::check($request->password, $user->password)) {
-        // Reset percobaan jika login berhasil
         RateLimiter::clear($throttleKey);
 
         session([
@@ -61,14 +64,14 @@ class UserLogin extends Controller
         return redirect()->route('index');
     }
 
-    // Tambah percobaan login
-    RateLimiter::hit($throttleKey, 120); // 120 detik = 2 menit
+    RateLimiter::hit($throttleKey, 120);
 
     return back()->withErrors([
         'invalid_no_hp' => 'Nomor Salah atau Tidak Valid',
         'invalid_password' => 'Password Salah atau Tidak Valid',
     ])->withInput();
 }
+
 
     public function logoutUser()
     {
@@ -81,27 +84,33 @@ class UserLogin extends Controller
     }
 
     function daftar(Request $request){
-        $request->validate([
-            'no_hp' => 'required|regex:/^62[0-9]{9,12}$/',
-            'nama' => 'required|string|min:2',
-            'password' => 'required|string|min:5',
-        ], [
-            'no_hp.required' => 'Nomor Handphone Wajib Diisi',
-            'no_hp.unique' => 'Nomor Handphone Telah Digunakan',
-            'no_hp.regex' => 'Nomor Handphone Salah',
-            'nama.required' => 'Username Wajib Diisi',
-            'nama.min' => 'Username Harus Lebih Dari 2 karakter',
-            'password.required' => 'Password Wajib Diisi',
-            'password.min' => 'Password Harus Lebih Dari 5 karakter',
-        ]);
+    // Tambahkan 62 otomatis
+    $request->merge([
+        'no_hp' => '62' . ltrim($request->no_hp, '0')
+    ]);
 
-        $data = [
-            'no_hp' => $request->no_hp,
-            'nama' => $request->nama,
-            'password' => Hash::make($request->password),
-        ];
+    $request->validate([
+        'no_hp' => 'required|unique:users,no_hp|regex:/^62[0-9]{9,12}$/',
+        'nama' => 'required|string|min:2',
+        'password' => 'required|string|min:5',
+    ], [
+        'no_hp.required' => 'Nomor Handphone Wajib Diisi',
+        'no_hp.unique' => 'Nomor Handphone Telah Digunakan',
+        'no_hp.regex' => 'Nomor Handphone Salah',
+        'nama.required' => 'Username Wajib Diisi',
+        'nama.min' => 'Username Harus Lebih Dari 2 karakter',
+        'password.required' => 'Password Wajib Diisi',
+        'password.min' => 'Password Harus Lebih Dari 5 karakter',
+    ]);
 
-        akunuser::create($data);
-        return redirect()->route('loginUser')->with('success', 'Pendaftaran Berhasil');
-    }
+    $data = [
+        'no_hp' => $request->no_hp,
+        'nama' => $request->nama,
+        'password' => Hash::make($request->password),
+    ];
+
+    akunuser::create($data);
+    return redirect()->route('loginUser')->with('success', 'Pendaftaran Berhasil');
+}
+
 }

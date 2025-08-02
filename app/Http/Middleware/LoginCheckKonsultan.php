@@ -18,7 +18,7 @@ class LoginCheckKonsultan
     {
         $loginStatus = Session::get('loginStatus');
         if ($loginStatus) {
-            return redirect()->route('jadwal.index');
+            return redirect()->route('status.index');
         }
         return $next($request);
     }

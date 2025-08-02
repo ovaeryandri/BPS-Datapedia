@@ -17,6 +17,7 @@
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Keperluan</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Data Yang Diminta</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Lainnya</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="layanan-body">
@@ -46,6 +47,17 @@
                             <td class="p-3 border border-gray-200">
                                 {{ $item->lainnya }}
                             </td>
+
+                            <td class="p-3 border border-gray-200">
+                                    <div class="flex space-x-2">
+
+                           <form action="{{ route('faq.destroy', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        <button type="submit" class="px-3 py-1 bg-red-300 hover:bg-red-400 text-red-800 rounded">Hapus</button>
+                                    </form>
+                                    </div>
+                                </td>
 
                         </tr>
                         @endforeach

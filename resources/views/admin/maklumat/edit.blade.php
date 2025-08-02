@@ -7,6 +7,17 @@
             <h2 class="text-xl font-bold text-blue-800">Ubah Maklumat Layanan</h2>
         </div>
 
+         @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong>Terjadi kesalahan:</strong>
+        <ul class="list-disc pl-5 mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <form method="POST" action="{{ route('maklumat.update',$maklumat->id) }}" enctype="multipart/form-data" class="p-6">
             @method('PUT')
             @csrf

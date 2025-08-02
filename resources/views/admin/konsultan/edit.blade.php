@@ -7,7 +7,19 @@
             <h2 class="text-xl font-bold text-blue-800">Ubah Akun Konsultan</h2>
         </div>
 
-        <form method="POST" action="{{ route('konsultan.update',$konsultan->id) }}" class="p-6">
+        @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong>Terjadi kesalahan:</strong>
+        <ul class="list-disc pl-5 mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+        <form method="POST" action="{{ route('konsultan.update',$konsultan->id) }}" class="p-6" enctype="multipart/form-data">
             @method('PUT')
             @csrf
 
@@ -31,8 +43,8 @@
                 <label for="gambar" class="block text-gray-700 font-medium mb-2">Foto Konsultan</label>
 
                 <div class="mb-4">
-                    @if($layanan->gambar)
-                    <img id="preview" src="{{ asset('storage/'.$layanan->gambar) }}" class="w-32 h-32 object-cover mb-2" alt="file">
+                    @if($konsultan->gambar)
+                    <img id="preview" src="{{ asset('storage/'.$konsultan->gambar) }}" class="w-32 h-32 object-cover mb-2" alt="file">
                     @else
                     <img id="preview" class="w-32 h-32 object-cover mb-2 hidden" alt="preview">
                     @endif

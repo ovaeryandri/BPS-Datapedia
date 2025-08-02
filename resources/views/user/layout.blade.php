@@ -4,123 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>DATAPEDIA BPS </title>
-    @vite(['resources/css/app.css'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>DATAPEDIA BPS</title>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" crossorigin="anonymous" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+    <!-- External JS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        .glass-effect {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .card-hover {
+        transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .carousel-container {
+        overflow: hidden;
+    }
+
+    .carousel-slide {
+        min-height: 400px;
+    }
+
+    .carousel-slide .grid {
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+        .carousel-slide .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .carousel-slide .grid {
+            grid-template-columns: 1fr;
+        }
+
+        .carousel-slide {
+            min-height: auto;
+        }
+    }
+
+    .nav-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .nav-dot.active {
+        background: white;
+        transform: scale(1.2);
+    }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         * {
             font-family: 'Inter', sans-serif;
         }
 
-        .cursor-medium {
-            cursor: url('image/cursormedium.png'), auto;
+        html {
+            scroll-behavior: smooth;
         }
 
-@keyframes scrollLeft {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-scroll {
-  animation: scrollLeft 60s linear infinite;
-}
-
-/* Hilangkan scrollbar di mobile (opsional) */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;  /* IE/Edge */
-  scrollbar-width: none;     /* Firefox */
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-        .cursor-large {
-            cursor: url('image/cursorlarge.png'), auto;
-        }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, #002B6A 0%, #0D4A8F 50%, #1E5BA8 100%);
-        }
-
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .fade-in {
-            animation: fadeIn 1s ease-out;
-        }
-
-        .slide-up {
-            animation: slideUp 0.8s ease-out;
-        }
-
-        /* .bounce-gentle {
-            animation: bounceGentle 2s infinite;
-        } */
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-/*
-        @keyframes bounceGentle {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        } */
-
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: linear-gradient(90deg, #a3c2f5, #ffffff);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+        /* Modern Gradient Background */
+        .gradient-hero {
+            background: linear-gradient(135deg, #001a3d 0%, #002B6A 25%, #003d8f 50%, #0052b8 75%, #0066e0 100%);
             position: relative;
             overflow: hidden;
         }
 
-        .btn-primary::before {
+        .gradient-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 43, 106, 0.15) 0%, rgba(0, 82, 184, 0.1) 50%, rgba(0, 102, 224, 0.1) 100%);
+            z-index: 1;
+        }
+
+        /* Glassmorphism Effects */
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            background: rgba(0, 43, 106, 0.9);
+            border-bottom: 1px solid rgba(0, 82, 184, 0.2);
+            box-shadow: 0 4px 32px rgba(0, 43, 106, 0.3);
+        }
+
+        .glass-card {
+            backdrop-filter: blur(16px);
+            background: rgba(0, 43, 106, 0.1);
+            border: 2px solid rgba(27, 179, 254, 0.2);
+            box-shadow: 0 32px 32px rgba(0, 43, 106, 0.2);
+        }
+
+        /* Modern Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 82, 184, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(0, 102, 224, 0.8); }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-slideInRight {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* Modern Button Styles */
+        .btn-modern {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #002B6A, #0052b8);
+            box-shadow: 0 4px 15px rgba(0, 43, 106, 0.4);
+        }
+
+        .btn-modern::before {
             content: '';
             position: absolute;
             top: 0;
@@ -131,359 +191,323 @@ html {
             transition: left 0.5s;
         }
 
-        .btn-primary:hover::before {
+        .btn-modern:hover::before {
             left: 100%;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        .btn-modern:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 82, 184, 0.6);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #001a40 0%, #002855 100%);
-            box-shadow: 0 4px 15px rgba(0, 26, 64, 0.3);
-            transition: all 0.3s ease;
+        .btn-secondary-modern {
             position: relative;
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #001a3d, #002B6A);
+            border: 1px solid rgba(0, 82, 184, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 26, 61, 0.3);
         }
 
-        .btn-secondary::before {
+        .btn-secondary-modern:hover {
+            transform: translateY(-2px) scale(1.02);
+            background: linear-gradient(135deg, #001327, #001a3d);
+            box-shadow: 0 8px 30px rgba(0, 43, 106, 0.4);
+        }
+
+        /* Navigation Enhancements */
+        .nav-link-modern {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .nav-link-modern::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background: linear-gradient(90deg, #0052b8, #0066e0);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
 
-        .btn-secondary:hover::before {
-            left: 100%;
+        .nav-link-modern:hover::after {
+            width: 80%;
         }
 
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 26, 64, 0.4);
-            background: linear-gradient(135deg, #00142d 0%, #001e3d 100%);
+        .nav-link-modern:hover {
+            background: rgba(0, 82, 184, 0.1);
+            color: #66c2ff;
         }
 
-        .floating-shapes {
+        /* Floating Elements */
+        .floating-orb {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 43, 106, 0.15), rgba(0, 82, 184, 0.1));
+            filter: blur(1px);
+        }
+
+        .orb-1 {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 10%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        .orb-3 {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 60%;
             animation: float 6s ease-in-out infinite;
         }
 
-        .shape:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
+        /* Sticky Navbar */
+        .navbar-sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
 
-        .shape:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            top: 60%;
-            left: 20%;
-            animation-delay: 2s;
+        .navbar-scrolled {
+            backdrop-filter: blur(20px);
+            background: rgba(0, 43, 106, 0.98);
+            border-bottom: 1px solid rgba(0, 82, 184, 0.3);
+            box-shadow: 0 4px 32px rgba(0, 43, 106, 0.4);
         }
 
-        .shape:nth-child(3) {
-            width: 60px;
-            height: 60px;
-            top: 30%;
-            left: 80%;
-            animation-delay: 4s;
+        /* Mobile Menu Animation */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
- #mobile-menu {
-    transition: all 0.3s ease-in-out;
-  }
-/*
+
+        .mobile-menu.open {
+            max-height: 300px;
+        }
+
+        /* Service Image Effects */
+        .service-image-container {
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
 
         .service-image {
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
-            transition: transform 0.3s ease;
-        } */
-
-        /* .service-image:hover {
-            transform: scale(1.05);
-        } */
-
-        .text-shadow {
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        .logout-btn {
-            color: rgb(255, 60, 60);
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 6px;
+        .service-image:hover {
+            transform: rotateY(5deg) rotateX(5deg) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
         }
 
-        .logout-btn:hover {
-            color: #f63b3b;
-            background: rgba(250, 96, 96, 0.1);
-            transform: translateY(-1px);
+        /* Professional Badge */
+        .status-badge {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        .login-btn {
-            color: white;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 6px;
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .orb-1, .orb-2, .orb-3 {
+                opacity: 0.5;
+            }
         }
-
-        .login-btn:hover {
-            color: #3b82f6;
-            background: rgba(96, 165, 250, 0.1);
-            transform: translateY(-1px);
-        }
-
-   /* Tema section */
-  .theme-section.theme-dark {
-    background-color: #002B6A;
-    color: white;
-  }
-
-  .theme-section.theme-light {
-    background-color: white;
-    color: #1F2937;
-  }
-
-  body.light-mode .theme-section.theme-dark {
-    background-color: #E0F2FE;
-    color: #1F2937;
-  }
-
-  body.light-mode .theme-section.theme-light {
-    background-color: #fefefe;
-    color: #1F2937;
-  }
-
-  body.dark-mode .theme-section.theme-dark {
-    background-color: #000000;
-    color: #ffffff;
-  }
-
-  body.dark-mode .theme-section.theme-light {
-    background-color: #1a1a1a;
-    color: #f1f1f1;
-  }
-
-  /* Teks umum */
-  body.light-mode a,
-  body.light-mode button,
-  body.light-mode p,
-  body.light-mode span,
-
-  body.light-mode h1,
-  body.light-mode h2,
-  body.light-mode h3 {
-    color: #1f2937 !important;
-    background-color: transparent;
-  }
-
-  body.dark-mode a,
-  body.dark-mode button,
-  body.dark-mode p,
-  body.dark-mode span,
-
-  body.dark-mode h1,
-  body.dark-mode h2,
-  body.dark-mode h3 {
-    color: #f1f1f1 !important;
-    background-color: transparent;
-  }
-
-  /* Tombol */
-  body.dark-mode button {
-    background-color: #1a1a1a;
-    border: 1px solid #ccc;
-  }
-
-  body.light-mode button {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-  }
-
-  .aksesibilitas button {
-    background-color: #002B6A;
-    color: white;
-  }
-
     </style>
-
 </head>
-<body id="body" class="default-mode">
 
-<div class="relative overflow-hidden bg-primary theme-section theme-dark">
-        <!-- Floating Shapes Background -->
-        <div class="floating-shapes">
-            <div class="shape"></div>
-            <div class="shape"></div>
-            <div class="shape"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto">
-            <div class="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-                <!-- Decorative SVG with enhanced styling -->
-                {{-- <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 transform translate-x-1/2 opacity-20"
-                     style="color: #a3c2f5;" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                    <polygon points="50,0 100,0 50,100 0,100" />
-                </svg> --}}
-
-                <!-- Navigation -->
-                <div id="home" class="relative pt-4 px-4 sm:px-6 lg:px-8 fade-in">
-  <nav class="relative glass-effect rounded-xl p-4" aria-label="Global">
-    <div class="flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center">
-        <img src="{{ asset('image/logo-bps.png') }}" alt="BPS Logo" class="h-24 w-auto">
-      </div>
-
-      <!-- Hamburger Button -->
-      <div class="md:hidden">
-        <button type="button" onclick="toggleMenu()" class="text-white focus:outline-none">
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex md:items-center md:space-x-6">
-        <a href="#home" class="nav-link font-medium text-white hover:text-blue-100 speak-target" onmouseenter="speakOnHover(this)">Beranda</a>
-        <a href="{{ url('/') }}#konsultasi" class="nav-link font-medium text-white hover:text-blue-100 speak-target" onmouseenter="speakOnHover(this)">Konsultasi</a>
-
-        @if(session('loginStatus') && session('user'))
-          <a href="{{ route('profile.index') }}" class="nav-link font-medium text-white hover:text-blue-100">Profil</a>
-        @else
-          <button type="button" onclick="showLoginAlert()" class="nav-link font-medium text-white hover:text-blue-100">Profil</button>
-        @endif
-
-        @if(session('loginStatus') && session('user'))
-          <form action="{{ route('logoutUser') }}" method="POST" class="inline-block">
-            @csrf
-            <button type="submit" class="logout-btn speak-target " onmouseenter="speakOnHover(this)">Logout</button>
-          </form>
-        @else
-          <a href="{{ route('loginUser') }}" class="login-btn speak-target" onmouseenter="speakOnHover(this)">Login</a>
-        @endif
-      </div>
-    </div>
-
-    <!-- Mobile Menu (Hidden by default) -->
-    <div id="mobile-menu" class="md:hidden mt-4 space-y-2 hidden flex-col">
-      <a href="#home" class="block text-white font-medium hover:text-blue-100">Beranda</a>
-      <a href="{{ url('/') }}#konsultasi" class="block text-white font-medium hover:text-blue-100">Konsultasi</a>
-
-      @if(session('loginStatus') && session('user'))
-        <a href="{{ route('profile.index') }}" class="block text-white font-medium hover:text-blue-100">Profil</a>
-        <form action="{{ route('logoutUser') }}" method="POST">
-          @csrf
-          <button type="submit" class="block w-full text-left text-white font-medium hover:text-blue-100">Logout</button>
-        </form>
-      @else
-        <button onclick="showLoginAlert()" class="block w-full text-left text-white font-medium hover:text-blue-100">Profil</button>
-        <a href="{{ route('loginUser') }}" class="block text-white font-medium hover:text-blue-100">Login</a>
-      @endif
-    </div>
-  </nav>
-</div>
-
-                <!-- Main Content -->
-                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                    <div class="sm:text-center lg:text-left slide-up">
-                        <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl text-shadow">
-                            <span class="block speak-target" onmouseenter="speakOnHover(this)">Datapedia</span>
-                            <span class="block speak-target" style="color: #a3c2f5;" onmouseenter="speakOnHover(this)">Media Konsultasi Statistik Langsung</span>
-                        </h1>
-
-                        <div class="mt-6 p-6 glass-effect rounded-xl">
-                            <h2 class="text-xl font-semibold text-white mb-3 flex items-center speak-target" onmouseenter="speakOnHover(this)">
-                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Jam Layanan
-                            </h2>
-                            <div class="text-white space-y-1">
-                                <div class="flex items-center speak-target" onmouseenter="speakOnHover(this)">
-                                    <h2 class="w-24 font-medium">Senin - Kamis</h2>
-                                    <h2 class="mx-2">:</h2>
-                                    <h2>08.00 - 15.30 WIB</h2>
-                                </div>
-                                <div class="flex items-center speak-target" onmouseenter="speakOnHover(this)">
-                                    <h2 class="w-24 font-medium">Jumat</h2>
-                                    <h2 class="mx-2">:</h2>
-                                    <h2>08.00 - 16.00 WIB</h2>
-                                </div>
-                                <div class="mt-2 text-sm text-white italic speak-target" onmouseenter="speakOnHover(this)">
-                                    Tanpa Jeda Pelayanan
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-8 sm:mt-11 sm:flex sm:justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-4">
-                            <div class="">
-                                <a href="{{ route('konsultasi.index') }}" class="btn-primary w-full flex items-center justify-center px-8 py-4 border-0 text-base font-medium rounded-xl text-blue-900 relative overflow-hidden speak-target" onmouseenter="speakOnHover(this)">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                    </svg>
-                                    Hubungi Kami
-                                </a>
-                            </div>
-                            <div class="">
-                                <a href="https://webapps.bps.go.id/babel/antrianbabel/frontend/web/index.php?r=site/index#services" class="btn-secondary w-full flex items-center justify-center px-8 py-4 border-0 text-base font-medium rounded-xl text-white relative overflow-hidden speak-target" target="_blank" onmouseenter="speakOnHover(this)">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                    </svg>
-                                    Ambil Antrian Online
-                                </a>
-                            </div>
-                        </div>
+<body class="antialiased">
+    <!-- Modern Sticky Navigation -->
+    <nav id="navbar" class="navbar-sticky glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo Section -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <img class="h-28 w-auto transition-transform duration-300 hover:scale-105"
+                             src="{{ asset('image/logo-bps.png') }}"
+                             alt="BPS Logo">
                     </div>
-                </main>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="#home" class="nav-link-modern text-white font-medium">Beranda</a>
+                    <a href="#konsultasi" class="nav-link-modern text-white font-medium">Konsultasi</a>
+                    @if(session('loginStatus') && session('user'))
+                    <a href="{{ route('profile.index') }}" class="nav-link-modern text-white font-medium">Profil</a>
+                    @else
+                    <button type="button" onclick="showLoginAlert()" class="nav-link-modern text-white font-medium">Profil</button>
+                    @endif
+
+                    @if(session('loginStatus') && session('user'))
+                    <form action="{{ route('logoutUser') }}" method="POST" class="inline-block">
+                    @csrf
+                    <button type="submit" class="btn-modern text-red-500 px-6 py-2 rounded-lg font-medium " onmouseenter="speakOnHover(this)">Logout</button>
+                    </form>
+
+                    @else
+
+                    <a href="{{ route('loginUser') }}" class="btn-modern text-white px-6 py-2 rounded-lg font-medium">
+                        Login
+                    </a>
+                    @endif
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white hover:text-gray-300 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 bg-slate-800/50 rounded-lg mt-2">
+                    <a href="#home" class="block px-3 py-2 text-white hover:bg-white/10 rounded-md">Beranda</a>
+                    <a href="#konsultasi" class="block px-3 py-2 text-white hover:bg-white/10 rounded-md">Konsultasi</a>
+                    <a href="#profil" class="block px-3 py-2 text-white hover:bg-white/10 rounded-md">Profil</a>
+                    <a href="#login" class="block px-3 py-2 text-center bg-blue-800 text-white rounded-md mt-4">Login</a>
+                </div>
             </div>
         </div>
+    </nav>
 
-        <!-- Right Side Image -->
-        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 flex items-center justify-center px-6 mt-12 lg:mt-0">
-            <div class="max-w-md bounce-gentle">
-                <div class="relative">
-                    <!-- Glowing effect behind image -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-bg-primary to-blue-500 rounded-2xl blur-2xl opacity-20 transform scale-110"></div>
-                    <img class="service-image h-auto w-full relative z-10 rounded-2xl"
-                         src="{{ asset('image/service.png') }}"
-                         alt="Customer Service 24/7">
+    <!-- Hero Section -->
+    <section id="home" class="gradient-hero min-h-screen relative">
+        <!-- Floating Orbs -->
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
 
-                    <!-- Floating badge -->
-                    <div class="absolute -top-4 -right-4 bg-gradient-to-r from-green-400 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg z-20 ">
-                        ✓ 24/7 Online
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center min-h-screen pt-20">
+                <!-- Left Content -->
+                <div class="animate-fadeInUp">
+                    <div class="space-y-8">
+                        <div>
+                            <h1 class="text-3xl lg:text-5xl font-black text-white leading-tight">
+                                <span class="block">Media Konsultasi</span>
+                                <span class="block bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent pb-4">
+                                    Statistik Langsung
+                                </span>
+                            </h1>
+                            <p class="mt-6 text-xl text-gray-300 leading-relaxed max-w-2xl">
+                                Platform konsultasi statistik terdepan dengan teknologi modern untuk memberikan layanan terbaik bagi masyarakat Indonesia.
+                            </p>
+                        </div>
+
+                        <!-- Service Hours Card -->
+                        <div class="glass-card rounded-2xl p-6">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <div class="flex items-center justify-center w-10 h-10 bg-blue-500/20 rounded-full">
+                                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-semibold text-white">Jam Layanan</h3>
+                            </div>
+
+                            <div class="space-y-3 text-gray-300">
+
+                    @forelse ($jamOperasional as $jam)
+                    <div class="flex justify-between items-center text-base">
+                        <span class="font-medium">{{ $jam->keterangan_hari }}</span>
+
+                        {{-- Format jam menggunakan titik sesuai permintaan awal --}}
+                        <span class="font-medium px-3 py-1 rounded-md text-sm">
+                            {{ \Carbon\Carbon::parse($jam->jam_mulai)->format('H.i') }} - {{ \Carbon\Carbon::parse($jam->jam_selesai)->format('H.i') }} WIB
+                        </span>
+                    </div>
+                @empty
+                    <div class="text-center text-slate-500 py-4">
+                        <p>Informasi jam operasional belum tersedia saat ini.</p>
+                    </div>
+                @endforelse
+
+                                {{-- <div class="flex justify-between items-center">
+                                    <span class="font-medium">Senin - Kamis</span>
+                                    <span>08.00 - 16.00 WIB</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Jumat</span>
+                                    <span>08.00 - 16.30 WIB</span>
+                                </div> --}}
+                                <div class="pt-2 border-t border-blue-600">
+                                    <p class="text-sm text-blue-200 italic">✨ Tanpa Jeda Pelayanan</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="https://wa.me/6282226602929"
+                               class="btn-modern flex items-center justify-center px-8 py-4 rounded-xl text-white font-semibold group">
+                                <svg class="w-5 h-5 mr-3 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                                Hubungi Petugas
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Content - Service Image -->
+                <div class="animate-slideInRight">
+                    <div class="service-image-container animate-float">
+                        <div class="relative">
+                            <!-- Glow Effect -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-blue-700/20 rounded-2xl blur-3xl transform scale-110"></div>
+
+                            <!-- Main Image -->
+                            <img class="service-image relative z-10 w-full max-w-md mx-auto"
+                                 src="{{ asset('image/service.png') }}"
+                                 alt="Customer Service">
+
+                            <!-- Status Badge -->
+                            <div class="status-badge absolute -top-4 -right-4 px-4 py-2 rounded-full text-white text-sm font-semibold z-20">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                    <span>24/7 Online</span>
+                                </div>
+                            </div>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Decorative elements -->
-        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-20"></div>
-    </div>
+        <!-- Bottom Gradient -->
+        <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-primary to-transparent"></div>
+    </section>
 
 {{-- END JUMBOTRON --}}
 @yield('content')
@@ -685,19 +709,9 @@ html {
     </div>
 </footer>
 
-<!-- JavaScript untuk update tahun otomatis -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Update current year
-    const currentYearElement = document.getElementById('current-year');
-    if (currentYearElement) {
-        currentYearElement.textContent = new Date().getFullYear();
-    }
-});
-</script>
-
 <!-- Custom CSS untuk styling tambahan -->
 <style>
+
     /* Smooth hover effects */
     footer a {
         position: relative;
@@ -746,13 +760,188 @@ document.addEventListener('DOMContentLoaded', function() {
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- Toggle Script -->
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    let currentSlide = 0;
+    const carouselWrapper = document.getElementById('carouselWrapper');
+    const originalSlides = document.querySelectorAll('.carousel-slide:not(.duplicate-slide)');
+    const allSlides = document.querySelectorAll('.carousel-slide');
+    const totalOriginalSlides = originalSlides.length;
+    let isTransitioning = false;
+
+    // Generate navigation dots based on original slides only
+    function generateDots() {
+        const dotsContainer = document.getElementById('dotsContainer');
+        dotsContainer.innerHTML = '';
+
+        // Only show dots if we have more than one slide
+        if (totalOriginalSlides > 1) {
+            for (let i = 0; i < totalOriginalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot';
+                if (i === 0) dot.classList.add('active');
+                dot.setAttribute('data-slide', i);
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+    }
+
+    // Update carousel position
+    function updateCarousel(smooth = true) {
+        if (!smooth) {
+            carouselWrapper.style.transition = 'none';
+        } else {
+            carouselWrapper.style.transition = 'transform 0.5s ease-in-out';
+        }
+
+        const translateX = -(currentSlide * 100);
+        carouselWrapper.style.transform = `translateX(${translateX}%)`;
+
+        // Update dots
+        const dots = document.querySelectorAll('.nav-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    // Go to specific slide
+    function goToSlide(slideIndex) {
+        if (isTransitioning || slideIndex >= totalOriginalSlides) return;
+        currentSlide = slideIndex;
+        updateCarousel();
+    }
+
+    // Next slide with seamless loop
+    function nextSlide() {
+        if (isTransitioning) return;
+        if (totalOriginalSlides <= 1) return; // Don't slide if only one slide
+
+        isTransitioning = true;
+        currentSlide++;
+        updateCarousel();
+
+        // Check if we need to loop back
+        setTimeout(() => {
+            if (currentSlide >= totalOriginalSlides) {
+                currentSlide = 0;
+                updateCarousel(false); // Jump without animation
+            }
+            isTransitioning = false;
+        }, 500);
+    }
+
+    // Previous slide with seamless loop
+    function prevSlide() {
+        if (isTransitioning) return;
+        if (totalOriginalSlides <= 1) return; // Don't slide if only one slide
+
+        isTransitioning = true;
+
+        if (currentSlide <= 0) {
+            // Jump to the duplicate slide, then slide back
+            currentSlide = totalOriginalSlides;
+            updateCarousel(false);
+            setTimeout(() => {
+                currentSlide = totalOriginalSlides - 1;
+                updateCarousel();
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 500);
+            }, 50);
+        } else {
+            currentSlide--;
+            updateCarousel();
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 500);
+        }
+    }
+
+    // Event listeners
+    document.getElementById('nextBtn').addEventListener('click', nextSlide);
+    document.getElementById('prevBtn').addEventListener('click', prevSlide);
+
+    // Auto slide every 4 seconds (only if more than one slide)
+    let autoSlideInterval;
+    if (totalOriginalSlides > 1) {
+        autoSlideInterval = setInterval(nextSlide, 4000);
+
+        // Pause auto-slide on hover
+        const carouselContainer = document.querySelector('.carousel-container');
+        carouselContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+
+        carouselContainer.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(nextSlide, 4000);
+        });
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        generateDots();
+        updateCarousel(false);
+    });
+
+    // Initialize
+    generateDots();
+    updateCarousel(false);
+
+    // Hide navigation if only one slide
+    if (totalOriginalSlides <= 1) {
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('prevBtn').style.display = 'none';
+    }
+});
+
+  window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('open');
+
+            // Toggle hamburger icon
+            const icon = this.querySelector('svg path');
+            if (mobileMenu.classList.contains('open')) {
+                icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+
   function toggleMenu() {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
   }
-</script>
 
-    <script>
 const carouselStates = {
     mobilePetugasWrapper: { index: 0 }
 };
@@ -816,69 +1005,93 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSlide("mobilePetugasWrapper");
     });
 });
-</script>
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Fungsi untuk menginisialisasi sebuah carousel
+    function initCarousel(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
 
-<script>
-const carouselStates = {
-    maklumatWrapper: { index: 0 },
-    standarWrapper: { index: 0 }
-};
+        const wrapper = container.querySelector('.carousel-wrapper');
+        const items = container.querySelectorAll('.carousel-item');
+        const prevBtn = container.querySelector('button[data-action="prev"]');
+        const nextBtn = container.querySelector('button[data-action="next"]');
 
-function updateSlide(id) {
-    const wrapper = document.getElementById(id);
-    const items = wrapper.children;
-    const itemWidth = items[0].offsetWidth + 16; // +gap-4 (16px)
-    const visible = 3;
-    const maxIndex = items.length - visible;
+        if (!wrapper || items.length === 0 || !prevBtn || !nextBtn) {
+            if(prevBtn) prevBtn.style.display = 'none';
+            if(nextBtn) nextBtn.style.display = 'none';
+            return;
+        }
 
-    const index = carouselStates[id].index;
-    wrapper.style.transform = `translateX(-${index * itemWidth}px)`;
-}
+        let currentIndex = 0;
+        let itemWidth = 0;
 
-function slideNext(id) {
-    const wrapper = document.getElementById(id);
-    const visible = 3;
-    const maxIndex = wrapper.children.length - visible;
+        function moveNext() {
+            const { maxIndex } = calculateDimensions();
+            if (maxIndex < 0) return;
+            currentIndex++;
+            if (currentIndex > maxIndex) {
+                currentIndex = 0;
+            }
+            updateCarousel();
+        }
 
-    carouselStates[id].index++;
-    if (carouselStates[id].index > maxIndex) carouselStates[id].index = 0;
+        function movePrev() {
+            const { maxIndex } = calculateDimensions();
+            if (maxIndex < 0) return;
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = maxIndex;
+            }
+            updateCarousel();
+        }
 
-    updateSlide(id);
-}
+        function calculateDimensions() {
+            if (items.length > 1) {
+                const item1Left = items[0].getBoundingClientRect().left;
+                const item2Left = items[1].getBoundingClientRect().left;
+                itemWidth = item2Left - item1Left;
+            } else if (items.length === 1) {
+                itemWidth = items[0].offsetWidth + 16;
+            }
 
-function slidePrev(id) {
-    const wrapper = document.getElementById(id);
-    const visible = 3;
-    const maxIndex = wrapper.children.length - visible;
+            const visibleItems = Math.max(1, Math.round(wrapper.parentElement.offsetWidth / items[0].offsetWidth));
+            const maxIndex = items.length - visibleItems;
 
-    carouselStates[id].index--;
-    if (carouselStates[id].index < 0) carouselStates[id].index = maxIndex;
+            const isScrollable = items.length > visibleItems;
+            prevBtn.style.display = isScrollable ? 'block' : 'none';
+            nextBtn.style.display = isScrollable ? 'block' : 'none';
 
-    updateSlide(id);
-}
+            return { maxIndex, isScrollable };
+        }
 
-function startAutoSlide(id, interval = 10000) {
-    setInterval(() => {
-        slideNext(id);
-    }, interval);
-}
+        function updateCarousel() {
+            wrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+        }
 
-document.addEventListener("DOMContentLoaded", () => {
-    updateSlide("maklumatWrapper");
-    updateSlide("standarWrapper");
+        prevBtn.addEventListener('click', movePrev);
+        nextBtn.addEventListener('click', moveNext);
 
-    startAutoSlide("maklumatWrapper");
-    startAutoSlide("standarWrapper");
+        window.addEventListener('resize', () => {
+            currentIndex = 0;
+            updateCarousel();
+            calculateDimensions();
+        });
 
-    window.addEventListener("resize", () => {
-        updateSlide("maklumatWrapper");
-        updateSlide("standarWrapper");
-    });
+        // --- PENAMBAHAN KODE AUTO-SLIDE ---
+        const { isScrollable } = calculateDimensions();
+        if (isScrollable) {
+            setInterval(() => {
+                moveNext();
+            }, 5000); // Interval 5000 ms = 5 detik
+        }
+    }
+
+    // Panggil fungsi inisialisasi untuk SETIAP carousel yang ada di halaman
+    initCarousel('standarLayananCarousel');
+    initCarousel('maklumatCarousel');
 });
-</script>
 
-<script>
 function showLoginAlert() {
     Swal.fire({
         icon: 'warning',
@@ -894,11 +1107,8 @@ function showLoginAlert() {
         }
     });
 }
-</script>
 
 
-
-    <script>
     function showKonsultanInfo(nama, posisi, keahlian, no_hp, email, gambarUrl) {
         const container = document.createElement("div");
         container.className = "fixed bottom-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 w-80 z-50 animate-fade-in-down";
@@ -958,41 +1168,39 @@ function showLoginAlert() {
   });
 
 
-    </script>
+//     {{-- <scrip>
+//     // Fungsi suara saat hover
+//     function speakOnHover(element) {
+//         const text = element.innerText.trim();
+//         if (text.length > 0) {
+//             const utterance = new SpeechSynthesisUtterance(text);
+//             utterance.lang = 'id-ID';
+//             window.speechSynthesis.cancel();
+//             window.speechSynthesis.speak(utterance);
+//         }
+//     }
 
-    {{-- <script>
-    // Fungsi suara saat hover
-    function speakOnHover(element) {
-        const text = element.innerText.trim();
-        if (text.length > 0) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'id-ID';
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(utterance);
-        }
-    }
+//     // Fungsi suara saat teks diblok (fix)
+//     document.addEventListener('mouseup', () => {
+//         const selection = window.getSelection();
+//         const selectedText = selection.toString().trim();
 
-    // Fungsi suara saat teks diblok (fix)
-    document.addEventListener('mouseup', () => {
-        const selection = window.getSelection();
-        const selectedText = selection.toString().trim();
+//         if (selectedText.length > 0) {
+//             const range = selection.getRangeAt(0);
+//             const node = range.commonAncestorContainer;
+//             const element = node.nodeType === 1 ? node : node.parentElement;
 
-        if (selectedText.length > 0) {
-            const range = selection.getRangeAt(0);
-            const node = range.commonAncestorContainer;
-            const element = node.nodeType === 1 ? node : node.parentElement;
+//             if (element.closest('.speak-target')) {
+//                 const utterance = new SpeechSynthesisUtterance(selectedText);
+//                 utterance.lang = 'id-ID';
+//                 window.speechSynthesis.cancel();
+//                 window.speechSynthesis.speak(utterance);
+//             }
+//         }
+//     });
+// </scrip
 
-            if (element.closest('.speak-target')) {
-                const utterance = new SpeechSynthesisUtterance(selectedText);
-                utterance.lang = 'id-ID';
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-    });
-</script> --}}
 
-<script>
     let baseFontSizes = new Map(); // Simpan ukuran awal setiap elemen
 
     function adjustFontSize(action) {
@@ -1020,32 +1228,31 @@ function showLoginAlert() {
             el.style.fontSize = `${currentSize}px`;
         });
     }
-</script>
 
-{{-- <script>
-  function setContrast(mode) {
-    const body = document.getElementById('body');
-    body.classList.remove('default-mode', 'light-mode', 'dark-mode');
-    if (mode === 'light') {
-      body.classList.add('light-mode');
-    } else if (mode === 'dark') {
-      body.classList.add('dark-mode');
-    } else {
-      body.classList.add('default-mode');
-    }
 
-    // Simpan agar tetap saat reload
-    localStorage.setItem('contrast-mode', mode);
-  }
+//  <scrip>
+//   function setContrast(mode) {
+//     const body = document.getElementById('body');
+//     body.classList.remove('default-mode', 'light-mode', 'dark-mode');
+//     if (mode === 'light') {
+//       body.classList.add('light-mode');
+//     } else if (mode === 'dark') {
+//       body.classList.add('dark-mode');
+//     } else {
+//       body.classList.add('default-mode');
+//     }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('contrast-mode');
-    if (saved) setContrast(saved);
-  });
-</script> --}}
+//     // Simpan agar tetap saat reload
+//     localStorage.setItem('contrast-mode', mode);
+//   }
+
+//   document.addEventListener('DOMContentLoaded', () => {
+//     const saved = localStorage.getItem('contrast-mode');
+//     if (saved) setContrast(saved);
+//   });
+// </scrip
 
 {{-- Untuk Cursor --}}
-<script>
 
   function setCursorSize(size) {
     // Selalu reset class sebelumnya
@@ -1066,6 +1273,10 @@ function showLoginAlert() {
   }
 </script>
 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 
 </body>
 </html>

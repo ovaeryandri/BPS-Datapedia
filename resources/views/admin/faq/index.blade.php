@@ -32,8 +32,10 @@
                             </td>
 
                             <td class="p-3 border border-gray-200">
-                                {{ $item->deskripsi }}
-                            </td>
+                            <div class="ellipsis-3-lines text-sm leading-snug">
+                                {!! $item->deskripsi !!}
+                            </div>
+                        </td>
 
                                 <td class="p-3 border border-gray-200">
                                     <div class="flex space-x-2">

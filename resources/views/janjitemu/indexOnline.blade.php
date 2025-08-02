@@ -220,45 +220,12 @@
                          <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
-
-                <!-- Tanggal -->
-                <div class="form-floating">
-                    <input
-                        type="date"
-                        id="tanggal"
-                        min="{{ old('tanggal', now()->format('Y-m-d')) }}"
-                        name="tanggal"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
-                        required
-                    />
-                    <label for="tanggal">Tanggal</label>
-                    @error('tanggal')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="form-floating">
-    <input
-        type="time"
-        id="jam"
-        name="jam"
-        value="{{ old('jam') }}"
-        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
-        required
-    />
-    <label for="jam">Jam</label>
-    @error('jam')
-        <p class="text-red-600 text-sm">{{ $message }}</p>
-    @enderror
-</div>
-
-
                 <!-- Jenis -->
                 <div class="space-y-3">
                     <label class="block text-sm font-medium text-gray-700 mb-3">Jenis Layanan</label>
                     <div class="grid grid-cols-1 gap-4">
                         <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 transition-colors group">
-                            <input
+                        <input
                                 type="radio"
                                 name="jenis"
                                 value="online"

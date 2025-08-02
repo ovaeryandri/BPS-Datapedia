@@ -186,11 +186,9 @@
           <label for="no_hp" class="block text-primary font-medium text-sm mb-2">Nomor Handphone</label>
           <div class="relative">
             <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-              </svg>
+              <span>+62</span>
             </div>
-            <input type="number" name="no_hp" id="no_hp" placeholder="6282178099027"
+            <input type="number" name="no_hp" id="no_hp" placeholder="82178099027"
                    class="w-full py-4 px-12 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white input-focus transition-all duration-300 text-gray-700"
                    value="{{ old('no_hp') }}">
           </div>

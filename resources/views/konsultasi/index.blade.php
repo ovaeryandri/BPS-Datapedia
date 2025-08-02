@@ -187,173 +187,76 @@
             </div>
 
             <form class="p-8 space-y-6" method="POST" action="{{ route('konsultasi.klik') }}" id="janjiTemuForm">
-                @csrf
+    @csrf
 
-                <!-- Alamat -->
-                <div class="form-floating">
-                    <input
-                        type="text"
-                        id="nama"
-                        name="nama"
-                        placeholder=""
-                        rows="3"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
-                        required
-                    ></input>
-                    <label for="nama">Nama Lengkap</label>
-                    @error('nama')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
+    <div>
+        <label for="instansi" class="text-sm font-medium text-gray-700">Instansi Asal</label>
+        <input
+            id="instansi"
+            name="instansi"
+            type="text"
+            placeholder="Contoh: Universitas Sriwijaya"
+            class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
+            required
+        />
+        @error('instansi')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-                <!-- Jenis -->
-                <div class="space-y-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Jenis Kelamin</label>
-                    <div class="grid grid-cols-2 gap-4">
+    <div>
+        <label for="data_diminta" class="text-sm font-medium text-gray-700">Pertanyaan Yang Ingin Ditanyakan</label>
+        <textarea
+            id="data_diminta"
+            name="data_diminta"
+            placeholder="Tuliskan pertanyaan atau data yang Anda butuhkan..."
+            rows="4"
+            class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
+            required
+        ></textarea>
+        @error('data_diminta')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-                        <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 transition-colors group">
-                            <input
-                                type="radio"
-                                name="jenis_kelamin"
-                                value="pria"
-                                class="radio-custom mr-3"
-                                required
-                            />
+    <div>
+        <label for="posisi" class="text-sm font-medium text-gray-700">Posisi Anda</label>
+        <select
+            id="posisi"
+            name="posisi"
+            class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
+            required
+        >
+            <option value="" disabled selected>-- Pilih Posisi --</option>
+            <option value="masyarakat">Masyarakat</option>
+            <option value="mahasiswa">Mahasiswa</option>
+            <option value="pegawai_pemerintah">Pegawai Pemerintah</option>
+        </select>
+        @error('posisi')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                </svg>
-                                <span class="font-medium text-gray-700 group-hover:text-primary transition-colors">Pria</span>
-                            </div>
-                        </label>
+    <div class="pt-4">
+        <button
+            onclick="this.disabled=true;this.form.submit();"
+            type="submit"
+            id="submitBtn"
+            class="w-full bg-gradient-to-r from-primary to-primary-light text-white font-semibold py-4 px-6 rounded-lg hover:from-primary-dark hover:to-primary transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+        >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Buat Konsultasi</span>
+        </button>
+    </div>
 
-                        <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 transition-colors group">
-                            <input
-                                type="radio"
-                                name="jenis_kelamin"
-                                value="wanita"
-                                class="radio-custom mr-3"
-                                required
-                            />
-
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                </svg>
-                                <span class="font-medium text-gray-700 group-hover:text-primary transition-colors">Wanita</span>
-                            </div>
-                        </label>
-
-
-                    </div>
-                    @error('jenis_kelamin')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="form-floating">
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder=""
-                        rows="3"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
-                        required
-                    ></input>
-                    <label for="email">Email</label>
-                    @error('email')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="form-floating">
-                    <input
-                        id="instansi"
-                        name="instansi"
-                        type="text"
-                        placeholder=""
-                        rows="3"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
-                        required
-                    ></input>
-                    <label for="instansi">Instansi Asal</label>
-                    @error('instansi')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="form-floating">
-                    <input
-                        id="keperluan"
-                        name="keperluan"
-                        type="text"
-                        placeholder=""
-                        rows="3"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
-                        required
-                    ></input>
-                    <label for="keperluan">Keperluan Anda</label>
-                    @error('keperluan')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="form-floating">
-                    <input
-                        id="data_diminta"
-                        name="data_diminta"
-                        type="text"
-                        placeholder=""
-                        rows="3"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
-                        required
-                    ></input>
-                    <label for="data_diminta">Data Yang Diminta</label>
-                    @error('data_diminta')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="form-floating">
-                    <input
-                        id="lainnya"
-                        name="lainnya"
-                        type="text"
-                        placeholder=""
-                        rows="3"
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
-
-                    ></input>
-                    <label for="lainnya">Keperluan Lainnya (Jika Ada)</label>
-                    @error('lainnya')
-                         <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Submit Button -->
-                <div class="pt-4">
-                    <button
-                        onclick="this.disabled=true;this.form.submit();"
-                        type="submit"
-                        id="submitBtn"
-                        class="w-full bg-gradient-to-r from-primary to-primary-light text-white font-semibold py-4 px-6 rounded-lg hover:from-primary-dark hover:to-primary transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
-                    >
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>Buat Konsultasi</span>
-                    </button>
-                </div>
-
-                <!-- Info -->
-                <div class="text-center pt-4 border-t border-gray-100">
-                    <p class="text-sm text-gray-500">
-                        Dengan menyimpan data, Anda menyetujui syarat dan ketentuan yang berlaku
-                    </p>
-                </div>
-            </form>
+    <div class="text-center pt-4 border-t border-gray-100">
+        <p class="text-sm text-gray-500">
+            Dengan menyimpan data, Anda menyetujui syarat dan ketentuan yang berlaku
+        </p>
+    </div>
+</form>
         </div>
     </div>
 

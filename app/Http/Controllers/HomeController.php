@@ -8,7 +8,7 @@ use App\Models\konsultasiKlik;
 use Carbon\Carbon;
 use App\Models\faq;
 use App\Models\layanan;
-use App\Models\akunuser;
+use App\Models\JamOperasional;
 use App\Models\janjitemu;
 use App\Models\konsultan;
 use App\Models\standar;
@@ -26,6 +26,7 @@ class HomeController extends Controller
     $standar = standar::all();
     $layanan = layanan::all();
     $konsultan = konsultan::all();
+    $jamOperasional = JamOperasional::all();
     $userId = Session::get('user_id');
     $janjiTemu = Janjitemu::where('users_id', $userId)
         ->whereIn('jenis', ['online', 'offline'])
@@ -38,7 +39,7 @@ class HomeController extends Controller
     $month = konsultasiKlik::whereMonth('clicked_at', Carbon::now()->month)->count();
     $total = konsultasiKlik::count();
 
-    return view('user.user', compact('faq', 'janjiTemu', 'maklumat', 'standar', 'layanan', 'petugas', 'konsultan', 'today', 'month', 'total'));
+    return view('user.user', compact('faq', 'janjiTemu', 'maklumat', 'standar', 'layanan', 'petugas', 'konsultan', 'today', 'month', 'total', 'jamOperasional'));
 }
 
 }

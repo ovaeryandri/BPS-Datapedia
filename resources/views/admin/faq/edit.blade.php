@@ -7,6 +7,17 @@
             <h2 class="text-xl font-bold text-blue-800">Ubah FAQ</h2>
         </div>
 
+         @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong>Terjadi kesalahan:</strong>
+        <ul class="list-disc pl-5 mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <form method="POST" action="{{ route('faq.update',$faq->id) }}" class="p-6">
             @method('PUT')
             @csrf
@@ -21,7 +32,10 @@
 
             <div class="mb-4">
                 <label for="deskripsi" class="block text-gray-700 font-medium mb-2">Deskripsi FAQ</label>
-                <input type="deskripsi" name="deskripsi" id="deskripsi" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ $faq->deskripsi }}">
+                <div id="editor" class="w-full px-4 py-2 border rounded-lg bg-white" contenteditable="true">
+                    {!! old('deskripsi') !!}
+                </div>
+                <input type="hidden" name="deskripsi" id="hiddenDeskripsi">
 
                     <p class="text-red-500 text-sm mt-1"></p>
 
@@ -34,4 +48,30 @@
         </form>
     </div>
 </div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/inline/ckeditor.js"></script>
+<script>
+    let editor;
+    InlineEditor
+        .create(document.querySelector('#editor'), {
+            toolbar: [
+                'bold', 'italic', '|',
+                'bulletedList', 'numberedList', '|',
+                'link', '|',
+                'undo', 'redo'
+            ]
+        })
+        .then(newEditor => {
+            editor = newEditor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    // Saat submit form, isi hidden input dengan HTML editor
+    document.querySelector('form').addEventListener('submit', function (e) {
+        document.querySelector('#hiddenDeskripsi').value = editor.getData();
+    });
+</script>
+
 @endsection

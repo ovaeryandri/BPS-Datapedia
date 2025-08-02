@@ -55,7 +55,7 @@ class konsultanController extends Controller
 
     public function update(Request $request, konsultan $konsultan){
         $request->validate([
-            'email' => 'unique:konsultans|string',
+            'email' => 'string',
             'nama' => 'string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'posisi' => 'string',

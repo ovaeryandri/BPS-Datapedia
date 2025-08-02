@@ -25,22 +25,18 @@ class janjitemuController extends Controller
 
     public function store(Request $request)
 {
+    // 1. Hapus validasi untuk tanggal dan jam
     $request->validate([
         'alamat' => 'required|min:3|string',
         'keperluan' => 'required|min:3|string',
-        'tanggal' => 'required|date|after_or_equal:today',
-        'jam' => 'required|date_format:H:i',
         'jenis' => 'required|in:online,offline',
     ], [
         'alamat.required' => 'Alamat Tidak Boleh Kosong',
         'keperluan.required' => 'Keperluan Tidak Boleh Kosong',
-        'tanggal.required' => 'Tanggal Tidak Boleh Kosong',
-        'tanggal.after_or_equal' => 'Tanggal Tidak Boleh Jika Sudah Kemarin',
-        'jam' => 'Jam Tidak Boleh Kosong',
         'jenis.required' => 'Jenis Tidak Boleh Kosong',
     ]);
 
-    $userId = Session::get('user_id'); // ✅ pastikan sudah terset saat login
+    $userId = Session::get('user_id');
 
     if (!$userId) {
         return redirect()->route('loginUser')->withErrors('Silakan login terlebih dahulu.');
@@ -50,12 +46,11 @@ class janjitemuController extends Controller
         'users_id' => $userId,
         'alamat' => $request->alamat,
         'keperluan' => $request->keperluan,
-        'tanggal' => $request->tanggal,
-        'jam' => $request->jam,
         'jenis' => $request->jenis,
+        // 2. Hapus 'tanggal' dan 'jam' dari sini. Status akan default 'menunggu'
     ]);
 
-    return redirect()->route('janjitemu.index')->with('success', 'Janji temu berhasil disimpan.');
+    return redirect()->route('janjitemu.index')->with('success', 'Permintaan janji temu berhasil dikirim. Harap tunggu konfirmasi dari admin.');
 }
 
 public function edit($id){

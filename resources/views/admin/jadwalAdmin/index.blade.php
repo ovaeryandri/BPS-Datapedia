@@ -1,169 +1,127 @@
 @extends('admin.layout')
 @section('content')
 
+{{-- 1. Wrapper utama dengan latar abu-abu untuk membingkai konten --}}
 <div class="w-full p-6 bg-gray-100">
+    {{-- 2. "Kartu" putih sebagai wadah utama konten --}}
     <div class="w-full bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- Judul -->
-        <div class="bg-blue-400 p-4">
-            <h2 class="text-xl font-bold text-blue-800">Data Janji Temu</h2>
+
+        <div class="bg-blue-500 p-4">
+            <h2 class="text-xl font-bold text-white">Data Janji Temu</h2>
         </div>
 
-        <!-- Tabel Janji Temu -->
-        <div class="mb-6 overflow-x-auto">
-            <table class="min-w-full border-collapse text-sm text-left">
+        {{-- 4. Wrapper untuk tabel agar ada padding dan bisa scroll di layar kecil --}}
+        <div class="p-4 overflow-x-auto">
+            <table class="min-w-full border-collapse text-sm text-left table-fixed">
                 <thead>
-                    <tr class="bg-blue-300 text-blue-900">
-                        <th class="p-3 border border-blue-400 text-center">No</th>
-                        <th class="p-3 border border-blue-400 text-center">Nama User</th>
-                        <th class="p-3 border border-blue-400 text-center">No HP</th>
-                        <th class="p-3 border border-blue-400 text-center">Alamat</th>
-                        <th class="p-3 border border-blue-400 text-center">Keperluan</th>
-                        <th class="p-3 border border-blue-400 text-center">Tanggal dan Jam</th>
-                        <th class="p-3 border border-blue-400 text-center">Jenis Janji Temu</th>
-                        <th class="p-3 border border-blue-400 text-center">Status</th>
-                        <th class="p-3 border border-blue-400 text-center">Konfirmasi</th>
-                        <th class="p-3 border border-blue-400 text-center">Kirim Link Zoom (Online)</th>
-                        <th class="p-3 border border-blue-400 text-center">Konsultan</th>
-                        <th class="p-3 border border-blue-400 text-center">Aksi</th>
-                        <th class="p-3 border border-blue-400 text-center">Alasan Batal Dari User</th>
+                    <tr class="bg-blue-200 text-blue-800">
+                        {{-- 5. Atur lebar setiap kolom agar proporsional --}}
+                        <th class="p-3 border border-blue-300 text-center w-[4%]">No</th>
+                        <th class="p-3 border border-blue-300 text-center w-[12%]">Nama User</th>
+                        <th class="p-3 border border-blue-300 text-center w-[15%]">Keperluan</th>
+                        <th class="p-3 border border-blue-300 text-center w-[13%]">Tanggal & Jam</th>
+                        <th class="p-3 border border-blue-300 text-center w-[8%]">Jenis</th>
+                        <th class="p-3 border border-blue-300 text-center w-[10%]">Status</th>
+                        <th class="p-3 border border-blue-300 text-center w-[28%]">Aksi & Penjadwalan</th>
+                        <th class="p-3 border border-blue-300 text-center w-[10%]">Link Zoom</th>
                     </tr>
                 </thead>
 
-                <tbody id="layanan-body">
+                <tbody>
                     @foreach ($janjiTemu as $index => $item)
                     <tr class="bg-white hover:bg-gray-50 text-center layanan-item-row">
-                    <td class="p-3 border">{{ $index + 1 }}</td>
-                    <td class="p-3 border">{{ $item->user->nama ?? '-' }}</td>
-                    <td class="p-3 border">{{ $item->user->no_hp }}</td>
-                    <td class="p-3 border">{{ $item->alamat }}</td>
-                    <td class="p-3 border">{{ $item->keperluan }}</td>
-                    <td class="p-3 border">{{ $item->tanggal }} pada pukul : {{ $item->jam }}</td>
-                    <td class="p-3 border">{{ $item->jenis }}</td>
-                    <td class="p-3 border">
-                        <span class="px-2 py-1 rounded text-white text-sm
-                            {{ $item->status == 'menunggu' ? 'bg-yellow-500' : ($item->status == 'diterima' ? 'bg-green-500' : 'bg-red-500') }}">
-                            {{ ucfirst($item->status) }}
-                        </span>
-                    </td>
-                    <td class="p-3 border">
-                        @if($item->status === 'menunggu')
-                            <form action="{{ route('jadwal.terima', $item->id) }}" method="POST" class="mb-1">
-                                @csrf
-                                <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-sm">Terima</button>
-                            </form>
-                            <form action="{{ route('jadwal.tolak', $item->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded text-sm">Tolak</button>
-                            </form>
-                        @else
-                            <span class="text-gray-500 text-sm italic">Sudah diproses</span>
-                        @endif
-                    </td>
-                    <td>
-
-                        @if($item->jenis === 'online' && $item->status === 'diterima')
-                            <a href="{{ route('jadwal.zoom', $item->id) }}"
-                            class="bg-indigo-600 text-white px-3 py-1 rounded text-sm block mt-2 hover:bg-indigo-700">
-                                Kirim Link Zoom
-                            </a>
-                        @endif
-                    </td>
-
-
-                    <td class="p-3 border text-center">
-                        @if($item->jadwal)
-                            @if($item->jadwal->konsultan)
-                                <div class="flex flex-col items-center space-y-1">
-                                    <span>{{ $item->jadwal->konsultan->nama }}</span>
-                                    {{-- <form method="POST" action="{{ route('jadwal.batal', $item->jadwal->id) }}" onsubmit="return confirm('Batalkan penjadwalan ini?')">
-                                        @csrf
-                                        <button type="submit" class="text-red-600 hover:underline text-sm">Batal</button>
-                                    </form> --}}
-                                </div>
+                        <td class="p-3 border">{{ $loop->iteration }}</td>
+                        <td class="p-3 border">{{ $item->user->nama ?? '-' }}</td>
+                        <td class="p-3 border text-left">{{ $item->keperluan }}</td>
+                        <td class="p-3 border">
+                            @if($item->tanggal && $item->jam)
+                                {{ \Carbon\Carbon::parse($item->tanggal)->isoFormat('D MMM Y') }}<br>
+                                <span class="text-xs">Pukul: {{ $item->jam }}</span>
                             @else
-                                <form method="POST" action="{{ route('jadwal.store') }}" class="flex items-center space-x-2">
-                                    @csrf
-                                    <input type="hidden" name="janjitemu_id" value="{{ $item->id }}">
-                                    <select name="konsultan_id" class="border rounded p-1 text-sm" required>
-                                        <option value="">Pilih Konsultan</option>
-                                        @foreach ($konsultans as $konsultan)
-                                            <option value="{{ $konsultan->id }}">{{ $konsultan->nama }}</option>
-                                        @endforeach
-                                    </select>
-                                    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Kirim</button>
-                                </form>
-                            @endif
-                        @else
-                            <form method="POST" action="{{ route('jadwal.store') }}" class="flex items-center space-x-2">
-                                @csrf
-                                <input type="hidden" name="janjitemu_id" value="{{ $item->id }}">
-                                <select name="konsultan_id" class="border rounded p-1 text-sm" required>
-                                        <option value="">Pilih Konsultan</option>
-                                            @foreach ($konsultans as $konsultan)
-                                        <option value="{{ $konsultan->id }}">{{ $konsultan->nama }}</option>
-                                            @endforeach
-                                        </select>
-                                    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Kirim</button>
-                                </form>
+                                <span class="italic text-gray-500">Belum diatur</span>
                             @endif
                         </td>
+                        <td class="p-3 border">{{ ucfirst($item->jenis) }}</td>
+                        <td class="p-3 border align-middle">
+                            <span class="px-2 py-1 rounded text-white text-xs font-semibold
+                                {{ $item->status == 'menunggu' ? 'bg-yellow-500' : ($item->status == 'diterima' ? 'bg-green-500' : 'bg-red-500') }}">
+                                {{ ucfirst($item->status) }}
+                            </span>
+                        </td>
 
-                        <td class="p-3 border">
-    <div class="flex flex-col space-y-1 items-center">
-
-        {{-- Jika ada jadwal, tampilkan tombol hapus jadwal --}}
-        @if ($item->jadwal)
-            <form action="{{ route('jadwal.batal', $item->jadwal->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jadwal ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="px-3 py-1 bg-yellow-300 hover:bg-yellow-400 text-yellow-800 rounded text-sm">Batalkan Jadwal</button>
-            </form>
-        @endif
-
-        {{-- Tombol hapus janji temu --}}
-        <form action="{{ route('jadwal.hapus', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus janji temu ini?')">
+                        {{-- KOLOM AKSI & PENJADWALAN --}}
+                        <td class="p-3 border align-top">
+    @if($item->status === 'menunggu')
+        {{-- FORM JIKA STATUS MASIH MENUNGGU --}}
+        <form action="{{ route('jadwal.schedule', $item->id) }}" method="POST" class="mb-2">
             @csrf
-            @method('DELETE')
-            <button type="submit" class="px-3 py-1 bg-red-300 hover:bg-red-400 text-red-800 rounded text-sm">Hapus Janji Temu</button>
+            <div class="flex flex-col space-y-2">
+                <select name="konsultan_id" class="border rounded p-1 text-sm w-full" required>
+                    <option value="">Pilih Konsultan</option>
+                    @foreach ($konsultans as $konsultan)
+                        <option value="{{ $konsultan->id }}">{{ $konsultan->nama }}</option>
+                    @endforeach
+                </select>
+                <input type="date" name="tanggal" class="border rounded p-1 text-sm w-full" value="{{ now()->format('Y-m-d') }}" required>
+                <input type="time" name="jam" class="border rounded p-1 text-sm w-full" value="{{ now()->format('H:i') }}" required>
+                <button type="submit" class="bg-blue-600 text-white px-3 py-1.5 rounded text-sm w-full hover:bg-blue-700">
+                    Jadwalkan & Terima
+                </button>
+            </div>
+        </form>
+        {{-- Tombol Tolak --}}
+        <form action="{{ route('jadwal.tolak', $item->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menolak janji temu ini?')">
+            @csrf
+            <button type="submit" class="w-full px-3 py-1.5 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm">
+                Tolak
+            </button>
         </form>
 
-        <td class="p-3 border text-center">
-                    @if($item->status == 'batal')
-                    {{ $item->alasan_batal }}
-                    @else
-                    -
-                    @endif
-                    </td>
+    @else
+        {{-- INFO & AKSI JIKA STATUS SUDAH DITERIMA/DITOLAK/BATAL --}}
+        <div class="flex flex-col items-center space-y-2 text-sm">
+            <div>
+                Konsultan: <br>
+                <strong class="font-semibold">{{ $item->jadwal->konsultan->nama ?? 'N/A' }}</strong>
+            </div>
 
-    </div>
+            {{-- Tombol Batalkan Jadwal (hanya muncul jika status diterima) --}}
+            @if($item->jadwal && $item->status == 'diterima')
+                <form action="{{ route('jadwal.batal', $item->jadwal->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin membatalkan jadwal ini? Status akan kembali ke Menunggu.')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 rounded text-xs font-semibold">
+                        Batalkan Jadwal
+                    </button>
+                </form>
+            @endif
+
+            {{-- Tombol Hapus Janji Temu (selalu muncul jika status bukan menunggu) --}}
+            <form action="{{ route('jadwal.destroy', $item->id) }}" method="POST" onsubmit="return confirm('PERHATIAN: Anda akan MENGHAPUS janji temu ini selamanya. Lanjutkan?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="w-full px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-semibold">
+                    Hapus Janji Temu
+                </button>
+            </form>
+        </div>
+    @endif
 </td>
 
-
-
-
+                        <td class="p-3 border align-middle">
+                            @if($item->jenis === 'online' && $item->status === 'diterima')
+                                <a href="{{ route('jadwal.zoom', $item->id) }}" class="bg-indigo-600 text-white px-3 py-1.5 rounded text-xs block hover:bg-indigo-700">
+                                    Kirim Link
+                                </a>
+                            @else
+                                -
+                            @endif
+                        </td>
                     </tr>
-            @endforeach
-        </tbody>
-
-
+                    @endforeach
+                </tbody>
             </table>
-
-            <!-- Pagination controls -->
-            <div id="pagination-controls" class="flex justify-center mt-6 space-x-2"></div>
         </div>
-
-        <!-- Daftar Konsultan & Status -->
-        {{-- <div class="p-4">
-            <h2 class="text-lg font-bold mb-3">Daftar Konsultan & Status</h2>
-            @foreach($konsultans as $k)
-                <div class="border p-3 mb-2 rounded bg-gray-100">
-                    <p><strong>{{ $k->nama }}</strong> - Status: {{ ucfirst($k->status) }}</p>
-                    @if($k->status === 'tidak tersedia' && $k->alasan)
-                        <p><strong>Alasan:</strong> {{ $k->alasan }}</p>
-                    @endif
-                </div>
-            @endforeach
-        </div> --}}
 
     </div>
 </div>

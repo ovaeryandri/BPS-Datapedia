@@ -28,7 +28,7 @@ class KonsultanLogin extends Controller
         Session::put('loginStatus', true);
         Session::put('konsultanLogin', $konsultan);
         session(['konsultan_id' => $konsultan->id]);
-        return redirect()->route('status.index');
+        return redirect()->route('konsultan.jadwal.index');
     }
 
 }

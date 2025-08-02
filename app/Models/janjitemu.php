@@ -16,6 +16,7 @@ class janjitemu extends Model
         'jam',
         'jenis',
         'status',
+        'alasan_batal',
     ];
 
     public function user()

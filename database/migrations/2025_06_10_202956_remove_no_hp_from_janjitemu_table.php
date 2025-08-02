@@ -6,17 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-   public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::table('janjitemu', function (Blueprint $table) {
-            $table->dropColumn('no_hp');
+            // Cek dulu apakah kolom 'no_hp' ada
+            if (Schema::hasColumn('janjitemu', 'no_hp')) {
+                $table->dropColumn('no_hp');
+            }
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('janjitemu', function (Blueprint $table) {
-            $table->string('no_hp')->nullable(); // atau sesuaikan dengan struktur aslinya
+            // Opsional: tambahkan kembali kolomnya jika di-rollback
+            $table->string('no_hp')->nullable();
         });
     }
 };

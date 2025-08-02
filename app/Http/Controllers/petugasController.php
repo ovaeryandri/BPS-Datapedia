@@ -59,8 +59,7 @@ class petugasController extends Controller
     public function edit($id)
 {
     $petugas = Petugas::findOrFail($id);
-    $konsultan = Konsultan::all();
-
+    $konsultan = Konsultan::where('status', 'tersedia')->get();
     return view('admin.petugas.edit', compact('petugas', 'konsultan'));
 }
 

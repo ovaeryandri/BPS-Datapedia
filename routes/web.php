@@ -8,6 +8,7 @@ use App\Http\Controllers\faqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\janjitemuController;
 use App\Http\Controllers\jadwalController;
+use App\Http\Controllers\JamOperasionalController;
 use App\Http\Controllers\konsultanController;
 use App\Http\Controllers\konsultanJadwalController;
 use App\Http\Controllers\konsultanStatusController;
@@ -29,7 +30,7 @@ use App\Models\janjitemu;
 
 Route::middleware(LoggedInKonsultan::class)->group(function () {
 Route::get('/logoutKonsultan', [KonsultanLogin::class, 'logoutKonsultan'])->name('logoutKonsultan');
-Route::resource('status', konsultanStatusController::class);
+Route::resource('status', konsultanStatusController::class)->except(['show']);
 Route::get('/konsultan/jadwal', [konsultanJadwalController::class, 'index'])->name('konsultan.jadwal.index');
 });
 
@@ -46,23 +47,24 @@ Route::middleware(LoggedInUser::class)->group(function () {
 });
 
 Route::middleware(LoggedInAdmin::class)->group(function () {
-Route::post('/jadwal/batal/{id}', [jadwalController::class, 'batal'])->name('jadwal.batal');
-Route::get('/user', [UserLogin::class, 'dataUser'])->name('dataUser');
-Route::resource('jadwal', jadwalController::class);
-Route::get('/jadwal/{id}/zoom', [JadwalController::class, 'formZoom'])->name('jadwal.zoom');
-Route::post('/jadwal/{id}/zoom', [JadwalController::class, 'kirimZoom'])->name('jadwal.kirimZoom');
-Route::post('/jadwal/{id}/terima', [jadwalController::class, 'terima'])->name('jadwal.terima');
-Route::post('/jadwal/{id}/tolak', [jadwalController::class, 'tolak'])->name('jadwal.tolak');
-Route::resource('faq', faqController::class)->except(['show']);
-Route::get('/faq/pesan', [faqController::class, 'pesan'])->name('faq.pesan');
-Route::resource('konsultan', konsultanController::class);
-Route::resource('admin', AdminController::class);
-Route::resource('maklumat', maklumatController::class);
-Route::resource('layanan', layananController::class);
-Route::resource('petugas', petugasController::class);
-Route::resource('standar', standarController::class);
-Route::delete('/jadwal/hapus/{id}', [jadwalController::class, 'hapus'])->name('jadwal.hapus');
-Route::get('/logoutAdmin', [AdminLogin::class, 'logoutAdmin'])->name('logoutAdmin');
+    Route::get('/user', [UserLogin::class, 'dataUser'])->name('dataUser');
+    Route::resource('jam-operasional', JamOperasionalController::class);
+    Route::resource('jadwal', jadwalController::class)->except(['show']);
+    Route::post('/jadwal/{id}/tolak', [JadwalController::class, 'tolak'])->name('jadwal.tolak');
+    Route::delete('/jadwal/{jadwal_id}/batal', [JadwalController::class, 'batalJadwal'])->name('jadwal.batal');
+    Route::get('/jadwal/{id}/zoom', [JadwalController::class, 'formZoom'])->name('jadwal.zoom');
+    Route::post('/jadwal/{id}/zoom', [JadwalController::class, 'kirimZoom'])->name('jadwal.kirimZoom');
+    Route::post('/jadwal/{id}/schedule', [JadwalController::class, 'scheduleAndApprove'])->name('jadwal.schedule');
+    Route::resource('faq', faqController::class)->except(['show']);
+    Route::get('/faq/pesan', [faqController::class, 'pesan'])->name('faq.pesan');
+    Route::resource('konsultan', konsultanController::class)->except(['show']);
+    Route::resource('admin', AdminController::class)->except(['show']);
+    Route::resource('maklumat', maklumatController::class)->except(['show']);
+    Route::resource('layanan', layananController::class)->except(['show']);
+    Route::resource('petugas', petugasController::class)->except(['show']);
+    Route::resource('standar', standarController::class)->except(['show']);
+    Route::delete('/jadwal/hapus/{id}', [jadwalController::class, 'hapus'])->name('jadwal.hapus');
+    Route::get('/logoutAdmin', [AdminLogin::class, 'logoutAdmin'])->name('logoutAdmin');
 
 });
 
@@ -82,9 +84,7 @@ Route::middleware(LoginCheckKonsultan::class)->group(function () {
     Route::get('/registerUser', [UserLogin::class, 'registerUser'])->name('registerUser');
     Route::post('/prosesregisterUser', [UserLogin::class, 'daftar'])->name('prosesregisterUser');
 
-Route::middleware([SessionTimeout::class])->group(function (){
-    Route::resource('/', HomeController::class);
-});
+Route::resource('/', HomeController::class)->except(['show']);
 
 
 

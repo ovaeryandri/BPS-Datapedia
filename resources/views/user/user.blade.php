@@ -1,224 +1,323 @@
 @extends('user.layout')
 @section('content')
 
-<main class="pt-16 md:pt-20 lg:pt-24">
-    {{-- Hero Section - Kepala BPS dan Sambutan --}}
-    <section class=" px-4 py-12 lg:py-20 theme-section theme-light">
-        <div class="flex flex-col container mx-auto lg:flex-row items-start gap-8 lg:gap-12">
-            {{-- Foto Kepala --}}
-            <div class="w-full lg:w-1/3">
-                <div class="relative bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-[#002B6A] rounded-2xl h-80 lg:h-96 overflow-hidden shadow-lg">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="text-center p-6">
-                            <div class="w-20 h-20 bg-[#002B6A] rounded-full mx-auto mb-4 flex items-center justify-center">
-                                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                            <p class="font-semibold text-[#002B6A] text-lg speak-target" onmouseenter="speakOnHover(this)">Foto Kepala</p>
-                            <p class="font-medium text-gray-600 speak-target" onmouseenter="speakOnHover(this)">BPS Provinsi</p>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Sambutan dan Statistik --}}
-            <div class="w-full lg:w-2/3">
-                <div class="mb-8">
-                    <h1 class="text-2xl lg:text-3xl font-bold mb-4 text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">
-                        Sambutan Kepala BPS Provinsi
-                    </h1>
-                    <p class="text-gray-700 leading-relaxed text-base lg:text-lg speak-target" onmouseenter="speakOnHover(this)">
-                        Selamat datang di portal layanan BPS Provinsi. Kami berkomitmen memberikan pelayanan statistik terbaik untuk mendukung pembangunan daerah. Melalui platform ini, masyarakat dapat mengakses berbagai layanan konsultasi dan informasi statistik dengan mudah dan efisien.
-                    </p>
-                </div>
-
-                {{-- Statistik Cards --}}
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 text-center hover:shadow-lg transition-shadow">
-                        <div class="text-3xl lg:text-4xl font-bold text-[#002B6A] mb-2 speak-target" onmouseenter="speakOnHover(this)">{{ $today }} <span class="text-primary font-bold">+</span> </div>
-                        <p class="text-sm text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Konsultasi Hari Ini</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 text-center hover:shadow-lg transition-shadow">
-                        <div class="text-3xl lg:text-4xl font-bold text-[#002B6A] mb-2 speak-target" onmouseenter="speakOnHover(this)">{{ $month }}</div>
-                        <p class="text-sm text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Konsultasi Bulan Ini</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 text-center hover:shadow-lg transition-shadow">
-                        <div class="text-3xl lg:text-4xl font-bold text-[#002B6A] mb-2 speak-target" onmouseenter="speakOnHover(this)">{{ $total }}</div>
-                        <p class="text-sm text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Total Konsultasi</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-{{-- Petugas --}}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-    {{-- 🔹 PETUGAS HARI INI --}}
-    @if($petugas && $petugas->konsultan)
-    <div class="mb-10">
-        <h2 class="text-2xl font-bold text-blue-900 mb-4">👨‍💼 Petugas Hari Ini</h2>
-        <div class="bg-blue-100 border border-blue-300 rounded-2xl shadow-md p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-            <img src="{{ Storage::url($petugas->konsultan->gambar) }}" class="h-32 w-32 object-cover rounded-xl border">
-            <div class="text-center sm:text-left">
-                <h3 class="text-xl font-bold text-black">{{ $petugas->konsultan->nama }}</h3>
-                <p class="text-sm text-black">Jabatan : {{ $petugas->konsultan->posisi }}</p>
-                <p class="text-sm text-black">Bidang Keahlian : {{ $petugas->konsultan->keahlian }}</p>
-                <p class="text-xs text-black mt-1">📞 {{ $petugas->konsultan->no_hp }} | ✉️ {{ $petugas->konsultan->email }}</p>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    {{-- 🔹 SEMUA PETUGAS --}}
-    <h2 class="text-2xl font-bold text-blue-900 mb-4">👨‍💼 Semua Petugas</h2>
-
-    @php
-        $itemsPerPage = 6;
-        $totalPages = ceil(count($konsultan) / $itemsPerPage);
-    @endphp
-
-    {{-- Desktop (Grid + Pagination) --}}
-    <div id="gridPetugas" class="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach ($konsultan as $index => $item)
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden petugas-card" data-index="{{ $index }}">
-            <div class="p-6">
-                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-6">
-                    <div class="rounded-2xl overflow-hidden flex-shrink-0">
-                        <img src="{{ Storage::url($item->gambar) }}" class="h-40 w-40 object-cover rounded-xl">
-                    </div>
-                    <div class="flex-1 min-w-0 text-center sm:text-left">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $item->nama }}</h3>
-                        <p class="text-sm text-primary font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
-                        <p class="text-xs text-gray-500">Jabatan : {{ $item->posisi }}</p>
-                        <p class="text-xs text-gray-500">{{ $item->email }}</p>
-                    </div>
-                </div>
-                <div class="space-y-3 mb-6">
-                    <div class="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium text-center">
-                        Bidang Keahlian : {{ $item->keahlian }}
-                    </div>
-                </div>
-                {{-- <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
-                    Info Lebih Lanjut
-                </button> --}}
-            </div>
-        </div>
-        @endforeach
-    </div>
-
-    {{-- Pagination control --}}
-    <div id="paginationControls" class="hidden lg:flex justify-center flex-wrap gap-2 mt-8">
-        @for ($i = 1; $i <= $totalPages; $i++)
-        <button onclick="paginatePetugas({{ $i }})" class="pagination-btn px-4 py-2 rounded border text-sm font-medium text-blue-800 border-blue-400 hover:bg-blue-100">
-            {{ $i }}
-        </button>
-        @endfor
-    </div>
-
-    {{-- Mobile (Carousel) --}}
-    <div class="lg:hidden relative overflow-hidden mt-10">
-        <button onclick="slidePrev('mobilePetugasWrapper')" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">❮</button>
-
-        <div id="mobilePetugasWrapper" class="flex transition-transform duration-700 ease-in-out gap-4">
-            @foreach ($konsultan as $item)
-            <div class="flex-shrink-0 w-full px-4">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-6">
-                        <div class="flex flex-col items-center gap-4 mb-6">
-                            <div class="rounded-2xl overflow-hidden">
-                                <img src="{{ Storage::url($item->gambar) }}" class="h-40 w-40 object-cover rounded-xl">
-                            </div>
-                            <div class="text-center">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $item->nama }}</h3>
-                                <p class="text-sm text-primary font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
-                                <p class="text-xs text-gray-500">Jabatan : {{ $item->posisi }}</p>
-                                <p class="text-xs text-gray-500">{{ $item->email }}</p>
-                            </div>
-                        </div>
-                        <div class="space-y-3 mb-6">
-                            <div class="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium text-center">
-                                Bidang Keahlian : {{ $item->keahlian }}
-                            </div>
-                        </div>
-                        <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
-                            Info Lebih Lanjut
-                        </button>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <button onclick="slideNext('mobilePetugasWrapper')" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">❯</button>
-    </div>
-
-</div>
+<main class="">
     {{-- Layanan Kami Section --}}
-    <section id="konsultasi" class="bg-[#002B6A] py-16 lg:py-20 theme-section theme-dark">
-    <div class="container mx-auto px-4">
-        <h2 class="text-center text-3xl lg:text-4xl font-bold mb-12 text-white speak-target" onmouseenter="speakOnHover(this)">
+    <section id="konsultasi" class="bg-white py-16 lg:py-20 theme-section theme-dark">
+        <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl lg:text-4xl font-bold mb-12 text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">
             Layanan Konsultasi
         </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
             {{-- Kartu 1 - Hubungi Layanan --}}
-            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
+            <div class="bg-[#002B6A] rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
                 <div class="mb-6">
                     <img src="{{ asset('image/konsultasii.png') }}" alt="Hubungi Layanan" class="h-48 w-auto mx-auto object-contain">
                 </div>
                 <div class="w-full">
-                    <a href="{{ route('konsultasi.index') }}" class="block w-full">
-                        <button class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
-                            <span>Konsultasi</span>
+                    @if(session('loginStatus') && session('user'))
+                        <a href="{{ route('konsultasi.index') }}" class="block w-full">
+                            <button class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
+                                <span>Konsultasi Whatsapp</span>
+                                <img src="{{ asset('image/wa.png') }}" width="24" height="24" alt="WhatsApp" class="flex-shrink-0">
+                            </button>
+                        </a>
+                    @else
+                        <button type="button" onclick="showLoginAlert()" class="nav-link w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
+                            <span>Konsultasi Whatsapp</span>
                             <img src="{{ asset('image/wa.png') }}" width="24" height="24" alt="WhatsApp" class="flex-shrink-0">
                         </button>
-                    </a>
+                    @endif
                 </div>
             </div>
 
             {{-- Kartu 2 - Buat Janji Temu --}}
-            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
+            <div class="bg-[#002B6A] rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
                 <div class="mb-6">
                     <img src="{{ asset('image/meet.png') }}" alt="Buat Janji Temu" class="h-48 w-auto mx-auto object-contain">
                 </div>
                 <div class="w-full">
-                    <a href="{{ route('janjitemu.index') }}" class="block w-full">
-                        <button class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
-                            <span>Janji Temu Offline</span>
-                            <img src="{{ asset('image/form.png') }}" width="24" height="24" alt="Form" class="flex-shrink-0">
+                    @if(session('loginStatus') && session('user'))
+                        <a href="{{ route('janjitemu.online') }}" class="block w-full">
+                            <button class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
+                                <span>Konsultasi Online</span>
+                                <img src="{{ asset('image/form.png') }}" width="32" height="32" alt="Form" class="flex-shrink-0">
+                            </button>
+                        </a>
+                    @else
+                        <button type="button" onclick="showLoginAlert()" class="nav-link w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
+                            <span>Konsultasi Online</span>
+                            <img src="{{ asset('image/form.png') }}" width="32" height="32" alt="Form" class="flex-shrink-0">
                         </button>
-                    </a>
+                    @endif
                 </div>
             </div>
 
             {{-- Kartu 3 - Antrian Online --}}
-            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
+            <div class="bg-[#002B6A] rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
                 <div class="mb-6">
                     <img src="{{ asset('image/antrianonline.png') }}" alt="Ambil Antrian Online" class="h-48 w-auto mx-auto object-contain">
                 </div>
                 <div class="w-full">
-                    <a href="{{ route('janjitemu.online') }}" class="block w-full">
-                        <button class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
-                            <span>Janji Temu Online</span>
+                    @if(session('loginStatus') && session('user'))
+                        <a href="https://webapps.bps.go.id/babel/antrianbabel/frontend/web/index.php?r=site/index#services" class="block w-full">
+                            <button class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target nav-link" onmouseenter="speakOnHover(this)">
+                                <span>Ambil Antrian Online</span>
+                                <img src="{{ asset('image/tiket.png') }}" width="24" height="24" alt="Tiket" class="flex-shrink-0">
+                            </button>
+                        </a>
+                    @else
+                        <button type="button" onclick="showLoginAlert()" class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
+                            <span>Ambil Antrian Online</span>
                             <img src="{{ asset('image/tiket.png') }}" width="24" height="24" alt="Tiket" class="flex-shrink-0">
                         </button>
-                    </a>
+                    @endif
                 </div>
             </div>
         </div>
 
         @if ($janjiTemu && in_array($janjiTemu->jenis, ['online', 'offline']))
-        <div class="mt-10 text-center">
-            <a href="{{ route('janjitemu.jadwal') }}" class="inline-block bg-white hover:bg-gray-400 text-primary font-semibold py-3 px-6 rounded-xl transition duration-300">
-                Lihat Jadwal Janji Temu
-            </a>
+            <div class="mt-10 text-center">
+                <a href="{{ route('janjitemu.jadwal') }}" class="inline-block bg-[#002B6A] hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition duration-300">
+                    Lihat Jadwal Janji Temu
+                </a>
+            </div>
+        @endif
+
+        <div class="mt-10" data-aos="fade-left" data-aos-duration="2000">
+            {{-- PERBAIKAN: Kontainer pembatas lebar (lg:w-2/3) dihapus agar lebar kartu sama. --}}
+            {{-- Class grid juga disamakan menjadi 'md:grid-cols-2 lg:grid-cols-3' --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                {{-- Statistik Card 1 --}}
+                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between text-center hover:shadow-lg transition-shadow">
+                    <div class="min-h-[4rem] flex flex-col items-center justify-center">
+                        <div class="text-5xl lg:text-6xl font-bold text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">{{ $today }} <span class="text-primary font-bold">+</span></div>
+                    </div>
+                    <div>
+                        <p class="text-lg text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Konsultasi Hari Ini</p>
+                    </div>
+                </div>
+
+                {{-- Statistik Card 2 --}}
+                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between text-center hover:shadow-lg transition-shadow">
+                    <div class="min-h-[4rem] flex flex-col items-center justify-center">
+                        <div class="text-5xl lg:text-6xl font-bold text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">{{ $month }} <span class="text-primary font-bold">+</span> </div>
+                    </div>
+                    <div>
+                        <p class="text-lg text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Konsultasi Bulan Ini</p>
+                    </div>
+                </div>
+
+                {{-- Statistik Card 3 --}}
+                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between text-center hover:shadow-lg transition-shadow">
+                    <div class="min-h-[4rem] flex flex-col items-center justify-center">
+                        <div class="text-5xl lg:text-6xl font-bold text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">{{ $total }}<span class="text-primary font-bold">+</span></div>
+                    </div>
+                    <div>
+                            <p class="text-lg text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Total Konsultasi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </section>
+
+{{-- Petugas --}}
+<div class="min-h-screen bg-[#002B6A]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" data-aos="zoom-in" data-aos-duration="2000">
+
+        {{-- 🔹 PETUGAS HARI INI - ENLARGED --}}
+        @if($petugas && $petugas->konsultan)
+        <div class="mb-16">
+            <h2 class="text-4xl font-bold text-white mb-8 text-center">👨‍💼 Petugas Konsultasi Hari Ini</h2>
+            <div class="glass-effect rounded-3xl shadow-2xl p-8 card-hover max-w-4xl mx-auto">
+                <div class="flex flex-col lg:flex-row items-center gap-8">
+                    <div class="relative">
+                        <img src="{{ Storage::url($petugas->konsultan->gambar) }}"
+                             class="h-48 w-48 object-cover rounded-2xl border-4 border-white shadow-lg">
+                        <div class="absolute -top-2 -right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white"></div>
+                    </div>
+                    <div class="text-center lg:text-left text-white flex-1">
+                        <h3 class="text-3xl font-bold mb-3">{{ $petugas->konsultan->nama }}</h3>
+                        <p class="text-xl mb-2 opacity-90">Jabatan: {{ $petugas->konsultan->posisi }}</p>
+                        <p class="text-lg mb-4 opacity-90">BPS Provinsi Kepulauan Bangka Belitung</p>
+                        <div class="flex flex-wrap gap-3 justify-center lg:justify-start mb-6">
+                            <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm font-medium">{{ $petugas->konsultan->keahlian }}</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
         @endif
+
+        {{-- 🔹 SEMUA PETUGAS - CAROUSEL --}}
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-white mb-8 text-center">👥 Semua Petugas Konsultasi</h2>
+
+            {{-- Navigation Buttons --}}
+            <div class="flex justify-between items-center mb-6">
+                <button id="prevBtn" class="glass-effect text-white p-3 rounded-full hover:bg-white hover:bg-opacity-20 transition-all duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <button id="nextBtn" class="glass-effect text-white p-3 rounded-full hover:bg-white hover:bg-opacity-20 transition-all duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            {{-- Carousel Container - 2 Rows Layout --}}
+            <div class="carousel-container overflow-hidden">
+                <div id="carouselWrapper" class="flex transition-transform duration-500 ease-in-out">
+                    @php
+                        $chunkedKonsultan = $konsultan->chunk(6); // Group by 6 items per slide
+                    @endphp
+
+                    @foreach ($chunkedKonsultan as $slideIndex => $slideItems)
+                    <div class="carousel-slide flex-shrink-0 w-full px-2">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {{-- First Row (Top 3) --}}
+                            @foreach ($slideItems->take(3) as $item)
+                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover">
+                                <div class="p-4">
+                                    <div class="flex flex-col items-center gap-3 mb-4">
+                                        <div class="relative">
+                                            <img src="{{ Storage::url($item->gambar) }}"
+                                                 class="h-40 w-40 object-cover rounded-xl border-2 border-gray-200">
+                                            <div class="absolute -top-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
+                                        </div>
+                                        <div class="text-center">
+                                            <h3 class="text-base font-bold text-gray-900 mb-1">{{ $item->nama }}</h3>
+                                            <p class="text-xs text-blue-600 font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
+                                            <p class="text-xs text-gray-500 mb-1">{{ $item->posisi }}</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="bg-[#002B6A] text-white px-3 py-3 rounded-lg text-xs font-medium text-center">
+                                           Bidang Keahlian : {{ $item->keahlian }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @endforeach
+
+                            {{-- Second Row (Bottom 3) --}}
+                            @foreach ($slideItems->slice(3, 3) as $item)
+                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover">
+                                <div class="p-4">
+                                    <div class="flex flex-col items-center gap-3 mb-4">
+                                        <div class="relative">
+                                            <img src="{{ Storage::url($item->gambar) }}"
+                                                 class="h-40 w-40 object-cover rounded-xl border-2 border-gray-200">
+                                            <div class="absolute -top-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
+                                        </div>
+                                        <div class="text-center">
+                                            <h3 class="text-base font-bold text-gray-900 mb-1">{{ $item->nama }}</h3>
+                                            <p class="text-xs text-blue-600 font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
+                                            <p class="text-xs text-gray-500 mb-1">{{ $item->posisi }}</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="bg-[#002B6A] text-white px-3 py-3 rounded-lg text-xs font-medium text-center">
+                                           Bidang keahlian : {{ $item->keahlian }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+
+                    {{-- Duplicate first slide for seamless loop --}}
+                    @if($chunkedKonsultan->count() > 0)
+                    @php $firstSlide = $chunkedKonsultan->first(); @endphp
+                    <div class="carousel-slide flex-shrink-0 w-full px-2 duplicate-slide">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {{-- First Row (Top 3) --}}
+                            @foreach ($firstSlide->take(3) as $item)
+                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover">
+                                <div class="p-4">
+                                    <div class="flex flex-col items-center gap-3 mb-4">
+                                        <div class="relative">
+                                            <img src="{{ Storage::url($item->gambar) }}"
+                                                 class="h-20 w-20 object-cover rounded-xl border-2 border-gray-200">
+                                            <div class="absolute -top-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
+                                        </div>
+                                        <div class="text-center">
+                                            <h3 class="text-base font-bold text-gray-900 mb-1">{{ $item->nama }}</h3>
+                                            <p class="text-xs text-blue-600 font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
+                                            <p class="text-xs text-gray-500 mb-1">{{ $item->posisi }}</p>
+                                            <p class="text-xs text-gray-500">{{ $item->email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="bg-gray-100 text-gray-700 px-2 py-1 rounded-lg text-xs font-medium text-center">
+                                            {{ $item->keahlian }}
+                                        </div>
+                                    </div>
+                                    <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')"
+                                            class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors text-xs">
+                                        Buat Reservasi
+                                    </button>
+                                </div>
+                            </div>
+                            @endforeach
+
+                            {{-- Second Row (Bottom 3) --}}
+                            @foreach ($firstSlide->slice(3, 3) as $item)
+                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover">
+                                <div class="p-4">
+                                    <div class="flex flex-col items-center gap-3 mb-4">
+                                        <div class="relative">
+                                            <img src="{{ Storage::url($item->gambar) }}"
+                                                 class="h-20 w-20 object-cover rounded-xl border-2 border-gray-200">
+                                            <div class="absolute -top-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
+                                        </div>
+                                        <div class="text-center">
+                                            <h3 class="text-base font-bold text-gray-900 mb-1">{{ $item->nama }}</h3>
+                                            <p class="text-xs text-blue-600 font-medium mb-1">BPS Provinsi Kepulauan Bangka Belitung</p>
+                                            <p class="text-xs text-gray-500 mb-1">{{ $item->posisi }}</p>
+                                            <p class="text-xs text-gray-500">{{ $item->email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="bg-gray-100 text-gray-700 px-2 py-1 rounded-lg text-xs font-medium text-center">
+                                            {{ $item->keahlian }}
+                                        </div>
+                                    </div>
+                                    <button onclick="showKonsultanInfo('{{ addslashes($item->nama) }}','{{ $item->email }}')"
+                                            class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors text-xs">
+                                        Buat Reservasi
+                                    </button>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+
+            {{-- Navigation Dots --}}
+            <div id="dotsContainer" class="flex justify-center gap-3 mt-8">
+                {{-- Dots will be generated by JavaScript --}}
+            </div>
+        </div>
+
     </div>
-</section>
+</div>
 
 
     {{-- Layanan 24 Jam Section --}}
@@ -256,38 +355,36 @@
     </div>
 </section>
 
-
-
 {{-- === MAKLUMAT DAN JENIS LAYANAN === --}}
 <div class="bg-[#002B6A] py-16 overflow-hidden relative">
     <h1 class="text-center text-3xl font-bold mb-10 text-white">
         Maklumat dan Jenis Layanan
     </h1>
 
-    <div class="container mx-auto px-4 md:px-6 lg:px-8 relative overflow-hidden">
-        {{-- PANAH KIRI --}}
-        <button onclick="slidePrev('maklumatWrapper')" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">
+    <div id="maklumatCarousel" class="container mx-auto px-4 md:px-6 lg:px-8 relative">
+        <button id="maklumat-prev" data-action="prev" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">
             ❮
         </button>
 
-        {{-- WRAPPER KONTEN --}}
-        <div id="maklumatWrapper" class="flex transition-transform duration-700 ease-in-out gap-4">
-            @foreach ($maklumat as $item)
-            <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="{{ Storage::url($item->file) }}#view=FitH"
-                            class="w-full h-[600px] border-none"></img>
-                </div>
+        <div class="overflow-hidden">
+            <div id="maklumatWrapper" class="carousel-wrapper flex transition-transform duration-700 ease-in-out gap-4">
+                @foreach ($maklumat as $item)
+                    <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <img src="{{ Storage::url($item->file) }}#view=FitH"
+                                 class="w-full h-auto object-cover border-none" />
+                        </div>
+                    </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
 
-        {{-- PANAH KANAN --}}
-        <button onclick="slideNext('maklumatWrapper')" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">
+        <button id="maklumat-next" data-action="next" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200">
             ❯
         </button>
     </div>
 </div>
+
 
 {{-- === STANDAR LAYANAN === --}}
 <div class="bg-white py-16 overflow-hidden relative">
@@ -295,34 +392,37 @@
         Standar Layanan
     </h1>
 
-    <div class="container mx-auto px-4 md:px-6 lg:px-8 relative overflow-hidden">
-        {{-- PANAH KIRI --}}
-        <button onclick="slidePrev('standarWrapper')" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-[#002B6A] text-white p-2 rounded-full shadow-md hover:bg-blue-800">
+    <div id="standarLayananCarousel" class="container mx-auto px-4 md:px-6 lg:px-8 relative">
+        <button data-action="prev" class="absolute z-10 left-2 top-1/2 -translate-y-1/2 bg-[#002B6A] text-white p-2 rounded-full shadow-md hover:bg-blue-800">
             ❮
         </button>
 
-        {{-- WRAPPER KONTEN --}}
-        <div id="standarWrapper" class="flex transition-transform duration-700 ease-in-out gap-4">
-            @foreach ($standar as $item)
-            <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="{{ Storage::url($item->gambar) }}"
-                         class="w-full h-[600px] object-cover rounded-xl">
-                </div>
+        <div class="overflow-hidden">
+            <div class="carousel-wrapper flex transition-transform duration-700 ease-in-out gap-4">
+                @if(isset($standar) && count($standar) > 0)
+                    @foreach ($standar as $item)
+                        <div class="carousel-item flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
+                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                                <img src="{{ Storage::url($item->gambar) }}" class="w-full h-auto object-cover" />
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-center w-full">Tidak ada data standar layanan.</p>
+                @endif
             </div>
-            @endforeach
         </div>
 
-        {{-- PANAH KANAN --}}
-        <button onclick="slideNext('standarWrapper')" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-[#002B6A] text-white p-2 rounded-full shadow-md hover:bg-blue-800">
+        <button data-action="next" class="absolute z-10 right-2 top-1/2 -translate-y-1/2 bg-[#002B6A] text-white p-2 rounded-full shadow-md hover:bg-blue-800">
             ❯
         </button>
     </div>
 </div>
 
 
+
     {{-- FAQ Section --}}
-<section class="bg-primary py-16 lg:py-20">
+<section class="bg-[#002B6A] py-16 lg:py-20">
     <div class="container mx-auto px-4">
         <h2 class="text-center text-3xl lg:text-4xl font-bold mb-12 text-white speak-target" onmouseenter="speakOnHover(this)">
             Pertanyaan Yang Sering Ditanyakan
@@ -333,15 +433,15 @@
                 <div x-data="{ open: false }" class="faq-item bg-white rounded-xl shadow-lg overflow-hidden">
                     <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition-colors duration-200">
                         <span class="font-semibold text-lg text-gray-800 pr-4 speak-target" onmouseenter="speakOnHover(this)">
-                            {{ $item->judul }}
+                            <h1>{!! $item->judul !!}</h1>
                         </span>
                         <svg :class="{ 'rotate-180': open }" class="w-6 h-6 text-gray-500 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
                     <div x-show="open" x-transition class="px-6 pb-6">
-                        <div class="text-gray-700 leading-relaxed speak-target" onmouseenter="speakOnHover(this)">
-                            {{ $item->deskripsi }}
+                        <div class="text-gray-700 lprose max-w-none" onmouseenter="speakOnHover(this)">
+                           <p>{!! $item->deskripsi !!}</p>
                         </div>
                     </div>
                 </div>
@@ -358,15 +458,23 @@
 
     <!-- Widget Aksesibilitas -->
 <div x-data="{ open: false }" class="fixed bottom-6 right-6 z-50 flex gap-4 items-end flex-col md:flex-row">
-    <!-- Tombol Chatbot -->
     <div>
         <button
             id="chatbot-toggle"
             class="bg-gradient-to-br from-[#ffda6a] to-[#ffc107] rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
             style="box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-12 md:h-12 text-white group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M4 4h16v12H5.17L4 17.17V4zm16-2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-12 md:h-12 text-white group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 64 64" fill="currentColor">
+                <g>
+                    <rect x="20" y="16" width="24" height="32" rx="4" ry="4" fill="currentColor"/>
+                    <circle cx="26" cy="28" r="4" fill="#ffffff"/>
+                    <circle cx="38" cy="28" r="4" fill="#ffffff"/>
+                    <rect x="28" y="36" width="8" height="4" rx="2" fill="#ffffff"/>
+                    <rect x="30" y="8" width="4" height="8" rx="1" fill="currentColor"/>
+                    <circle cx="32" cy="6" r="2" fill="currentColor"/>
+                    <rect x="14" y="20" width="6" height="20" rx="2" fill="currentColor"/>
+                    <rect x="44" y="20" width="6" height="20" rx="2" fill="currentColor"/>
+                </g>
             </svg>
             <div class="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-xs md:text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
                 Buka Chatbot
@@ -375,7 +483,6 @@
         </button>
     </div>
 
-    <!-- Tombol Aksesibilitas Utama -->
     <button
         @click="open = !open"
         class="bg-gradient-to-br from-[#a3c2f5] to-[#004B9A] rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
@@ -390,7 +497,6 @@
         </div>
     </button>
 
-    <!-- Tombol Tambahan -->
     <div
         x-show="open"
         x-transition:enter="transition ease-out duration-300"
@@ -401,27 +507,20 @@
         x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
         class="flex flex-col items-end space-y-3 mb-4"
     >
-        <!-- Tombol-tombol aksesibilitas (tetap pakai yang kamu punya sebelumnya) -->
-        <!-- Perbesar Text, Perkecil Text, Reset Ukuran Text, dsb -->
-        <!-- ⬇️ PASTE tombol-tombol aksesibilitas kamu di sini ⬇️ -->
-        <!-- Misal: -->
         <button onclick="adjustFontSize('increase')" class="px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Perbesar Teks</button>
         <button onclick="adjustFontSize('decrease')" class="px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Perkecil Teks</button>
         <button onclick="adjustFontSize('reset')" class="px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Reset Teks</button>
-        <button onclick="adjustFontSize('cursor-medium')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Sedang</button>
-        <button onclick="adjustFontSize('cursor-large')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Besar</button>
-        <button onclick="adjustFontSize('cursorSize')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Reset Cursor</button>
-        <!-- ...dan lainnya -->
+        <button onclick="setCursorSize('medium')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Sedang</button>
+        <button onclick="setCursorSize('large')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Besar</button>
+        <button onclick="resetCursor('cursorSize')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Reset Cursor</button>
     </div>
 
-    <!-- Iframe Chatbot -->
     <div id="chatbot-container"
         class="rounded-xl overflow-hidden shadow-xl border"
         style="display: none; position: fixed; bottom: 120px; right: 20px; width: 90vw; max-width: 400px; height: 70vh; z-index: 9999;">
         <iframe src="http://localhost:8501" frameborder="0" style="width: 100%; height: 100%;"></iframe>
     </div>
 </div>
-
 
     {{-- Survey Section --}}
     <section class="bg-gray-50 py-16 lg:py-20 theme-section theme-light">

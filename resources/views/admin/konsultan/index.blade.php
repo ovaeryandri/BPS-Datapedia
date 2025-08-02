@@ -1,31 +1,31 @@
 @extends('admin.layout')
 @section('content')
 <div class="w-full p-6 bg-gray-100 ">
-    <div class="w-full bg-white rounded-lg shadow-md overflow-hidden">
-        @php
-    use App\Models\Konsultan;
-    use Illuminate\Support\Carbon;
+                <div class="w-full bg-white rounded-lg shadow-md overflow-hidden">
+                    @php
+                use App\Models\Konsultan;
+                use Illuminate\Support\Carbon;
 
-    $notifikasiKonsultan = Konsultan::where('status', 'tidak tersedia')
-        ->whereNotNull('status_updated_at')
-        ->where('status_updated_at', '>=', Carbon::now()->subDays(30))
-        ->get();
-@endphp
+                $notifikasiKonsultan = Konsultan::where('status', 'tidak tersedia')
+                    ->whereNotNull('status_updated_at')
+                    ->where('status_updated_at', '>=', Carbon::now()->subDays(30))
+                    ->get();
+            @endphp
 
-@if ($notifikasiKonsultan->count())
-    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-lg">
-        <strong>Notifikasi:</strong> Ada <strong>{{ $notifikasiKonsultan->count() }}</strong> konsultan yang mengubah status menjadi
-        <span class="font-semibold text-red-600">tidak tersedia</span> dalam 30 hari terakhir:
-        <ul class="list-disc ml-6 mt-2 text-sm">
-            @foreach ($notifikasiKonsultan as $k)
-                <li>
-                    {{ $k->nama }} –
-                    {{ $k->status_updated_at ? \Carbon\Carbon::parse($k->status_updated_at)->translatedFormat('d F Y H:i') : 'tidak diketahui' }}
-                </li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+            @if ($notifikasiKonsultan->count())
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-lg">
+                    <strong>Notifikasi:</strong> Ada <strong>{{ $notifikasiKonsultan->count() }}</strong> konsultan yang mengubah status menjadi
+                    <span class="font-semibold text-red-600">tidak tersedia</span> dalam 30 hari terakhir:
+                    <ul class="list-disc ml-6 mt-2 text-sm">
+                        @foreach ($notifikasiKonsultan as $k)
+                            <li>
+                                {{ $k->nama }} –
+                                {{ $k->status_updated_at ? \Carbon\Carbon::parse($k->status_updated_at)->translatedFormat('d F Y H:i') : 'tidak diketahui' }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
         {{-- Akhir notifikasi --}}
 
@@ -95,21 +95,19 @@
         <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-sm font-medium rounded">
             ✅ Tersedia
         </span>
-    @elseif ($item->status == 'tidak tersedia')
-        <div class="space-y-1">
-            <span class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-sm font-medium rounded">
-                ❌ Tidak Tersedia
-            </span>
-            <p class="text-sm text-gray-700"><strong>Alasan:</strong> {{ $item->alasan }}</p>
-            <p class="text-sm text-gray-700"><strong>Dari:</strong> {{ \Carbon\Carbon::parse($item->tanggal_mulai_tidak_tersedia)->translatedFormat('d F Y') }}</p>
-            <p class="text-sm text-gray-700"><strong>Sampai:</strong> {{ \Carbon\Carbon::parse($item->tanggal_selesai_tidak_tersedia)->translatedFormat('d F Y') }}</p>
-        </div>
-    @else
-        <span class="text-gray-500 italic text-sm">Belum diatur</span>
-    @endif
-</td>
-
-
+                @elseif ($item->status == 'tidak tersedia')
+                    <div class="space-y-1">
+                        <span class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-sm font-medium rounded">
+                            ❌ Tidak Tersedia
+                        </span>
+                        <p class="text-sm text-gray-700"><strong>Alasan:</strong> {{ $item->alasan }}</p>
+                        <p class="text-sm text-gray-700"><strong>Dari:</strong> {{ \Carbon\Carbon::parse($item->tanggal_mulai_tidak_tersedia)->translatedFormat('d F Y') }}</p>
+                        <p class="text-sm text-gray-700"><strong>Sampai:</strong> {{ \Carbon\Carbon::parse($item->tanggal_selesai_tidak_tersedia)->translatedFormat('d F Y') }}</p>
+                    </div>
+                @else
+                    <span class="text-gray-500 italic text-sm">Belum diatur</span>
+                @endif
+            </td>
 
 
                                 <td class="p-3 border border-gray-200">

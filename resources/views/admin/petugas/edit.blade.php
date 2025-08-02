@@ -7,10 +7,27 @@
             <h2 class="text-xl font-bold text-blue-800">Edit Data Petugas</h2>
         </div>
 
+         @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong>Terjadi kesalahan:</strong>
+        <ul class="list-disc pl-5 mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <div class="p-6">
             <form action="{{ route('petugas.update', $petugas->id) }}" method="POST">
                 @csrf
                 @method('PUT')
+
+                @if($konsultan->isEmpty())
+                <div class="text-red-600 font-medium mb-4">
+                    Tidak ada konsultan yang tersedia saat ini.
+                </div>
+                @else
 
                 <div class="mb-4">
                     <label for="konsultan_id" class="block text-sm font-medium text-gray-700">Nama Petugas</label>
@@ -36,6 +53,7 @@
                     <a href="{{ route('petugas.index') }}" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded">Kembali</a>
                     <button type="submit" class="px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 rounded">Simpan</button>
                 </div>
+                @endif
             </form>
         </div>
     </div>
