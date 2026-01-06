@@ -31,16 +31,6 @@
 
             </div>
 
-            <div class="mb-6">
-                <label class="flex items-center">
-                    <input type="checkbox" name="terms" class="form-checkbox h-5 w-5 text-blue-300" required>
-                    <span class="ml-2 text-gray-700">Saya Sebagai Admin</span>
-                </label>
-
-                    <p class="text-red-500 text-sm mt-1"></p>
-
-            </div>
-
             <div class="flex items-center justify-between">
                 <button type="submit" class="px-6 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 font-medium rounded-lg">Daftar</button>
 

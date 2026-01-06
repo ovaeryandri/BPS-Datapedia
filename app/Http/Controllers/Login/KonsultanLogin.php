@@ -19,24 +19,32 @@ class KonsultanLogin extends Controller
 
     public function prosesloginKonsultan(Request $request)
 {
-    $email = $request->input('email');
-    $password = $request->input('password');
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-    $konsultan = konsultan::where('email', $email)->first();
+        $konsultan = konsultan::where('email', $email)->first();
 
-    if ($konsultan && Hash::check($password, $konsultan->password)) {
-        Session::put('loginStatus', true);
-        Session::put('konsultanLogin', $konsultan);
-        session(['konsultan_id' => $konsultan->id]);
-        return redirect()->route('konsultan.jadwal.index');
-    }
+        // Validasi login
+        if ($konsultan && Hash::check($password, $konsultan->password)) {
+            Session::put('login_konsultan', true);
+            Session::put('konsultan_id', $konsultan->id);
+
+            session(['konsultan_id' => $konsultan->id]);
+            return redirect()->route('konsultan.jadwal.index');
+        }
+
+        // Jika login gagal, tambahkan pesan error dan kembali ke halaman sebelumnya
+        return redirect()->back()->withErrors(['email' => 'Email atau kata sandi salah.']);
 
 }
 
 
     public function logoutKonsultan()
     {
-        Session::flush();
+        Session::forget('login_konsultan');
+        Session::forget('konsultan_id');
+
         return redirect()->route('loginKonsultan');
+
     }
 }

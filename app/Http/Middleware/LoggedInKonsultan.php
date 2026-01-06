@@ -17,10 +17,11 @@ class LoggedInKonsultan
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (!Session::get('loginStatus')) {
-        return redirect()->route('loginKonsultan');
+        if (!Session::has('login_konsultan')) {
+        return redirect()->route('loginKonsultan')
+            ->with('error', 'Silakan login sebagai konsultan');
     }
 
     return $next($request);
-    }
+}
 }

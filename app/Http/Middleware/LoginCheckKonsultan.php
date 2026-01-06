@@ -16,10 +16,10 @@ class LoginCheckKonsultan
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $loginStatus = Session::get('loginStatus');
-        if ($loginStatus) {
-            return redirect()->route('status.index');
-        }
-        return $next($request);
+        if (Session::has('login_konsultan')) {
+        return redirect()->route('konsultan.jadwal.index');
+    }
+
+    return $next($request);
     }
 }

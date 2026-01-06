@@ -187,76 +187,76 @@
             </div>
 
             <form class="p-8 space-y-6" method="POST" action="{{ route('konsultasi.klik') }}" id="janjiTemuForm">
-    @csrf
+                @csrf
 
-    <div>
-        <label for="instansi" class="text-sm font-medium text-gray-700">Instansi Asal</label>
-        <input
-            id="instansi"
-            name="instansi"
-            type="text"
-            placeholder="Contoh: Universitas Sriwijaya"
-            class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
-            required
-        />
-        @error('instansi')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
-    </div>
+                <div>
+                    <label for="instansi" class="text-sm font-medium text-gray-700">Instansi Asal</label>
+                    <input
+                        id="instansi"
+                        name="instansi"
+                        type="text"
+                        placeholder="Contoh: Universitas Sriwijaya"
+                        class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
+                        required
+                    />
+                    @error('instansi')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-    <div>
-        <label for="data_diminta" class="text-sm font-medium text-gray-700">Pertanyaan Yang Ingin Ditanyakan</label>
-        <textarea
-            id="data_diminta"
-            name="data_diminta"
-            placeholder="Tuliskan pertanyaan atau data yang Anda butuhkan..."
-            rows="4"
-            class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
-            required
-        ></textarea>
-        @error('data_diminta')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
-    </div>
+                <div>
+                    <label for="data_diminta" class="text-sm font-medium text-gray-700">Pertanyaan Yang Ingin Ditanyakan</label>
+                    <textarea
+                        id="data_diminta"
+                        name="data_diminta"
+                        placeholder="Tuliskan pertanyaan atau data yang Anda butuhkan..."
+                        rows="4"
+                        class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors resize-none"
+                        required
+                    ></textarea>
+                    @error('data_diminta')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-    <div>
-        <label for="posisi" class="text-sm font-medium text-gray-700">Posisi Anda</label>
-        <select
-            id="posisi"
-            name="posisi"
-            class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
-            required
-        >
-            <option value="" disabled selected>-- Pilih Posisi --</option>
-            <option value="masyarakat">Masyarakat</option>
-            <option value="mahasiswa">Mahasiswa</option>
-            <option value="pegawai_pemerintah">Pegawai Pemerintah</option>
-        </select>
-        @error('posisi')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
-    </div>
+                <div>
+                    <label for="posisi" class="text-sm font-medium text-gray-700">Posisi Anda</label>
+                    <select
+                        id="posisi"
+                        name="posisi"
+                        class="w-full px-3 py-3 mt-1 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-0 focus:outline-none transition-colors"
+                        required
+                    >
+                        <option value="" disabled selected>-- Pilih Posisi --</option>
+                        <option value="masyarakat">Masyarakat</option>
+                        <option value="mahasiswa">Mahasiswa</option>
+                        <option value="pegawai_pemerintah">Pegawai Pemerintah</option>
+                    </select>
+                    @error('posisi')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-    <div class="pt-4">
-        <button
-            onclick="this.disabled=true;this.form.submit();"
-            type="submit"
-            id="submitBtn"
-            class="w-full bg-gradient-to-r from-primary to-primary-light text-white font-semibold py-4 px-6 rounded-lg hover:from-primary-dark hover:to-primary transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
-        >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>Buat Konsultasi</span>
-        </button>
-    </div>
+                <div class="pt-4">
+                    <button
+                        onclick="this.disabled=true;this.form.submit();"
+                        type="submit"
+                        id="submitBtn"
+                        class="w-full bg-gradient-to-r from-primary to-primary-light text-white font-semibold py-4 px-6 rounded-lg hover:from-primary-dark hover:to-primary transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Buat Konsultasi</span>
+                    </button>
+                </div>
 
-    <div class="text-center pt-4 border-t border-gray-100">
-        <p class="text-sm text-gray-500">
-            Dengan menyimpan data, Anda menyetujui syarat dan ketentuan yang berlaku
-        </p>
-    </div>
-</form>
+                <div class="text-center pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-500">
+                        Dengan menyimpan data, Anda menyetujui syarat dan ketentuan yang berlaku
+                    </p>
+                </div>
+            </form>
         </div>
     </div>
 

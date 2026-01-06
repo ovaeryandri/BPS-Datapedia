@@ -47,13 +47,13 @@
         <div class="dropdown relative md:static">
           <button class="menu-btn focus:outline-none focus:shadow-outline flex flex-wrap items-center">
             <div class="w-8 h-8 overflow-hidden rounded-full">
-              <img class="w-full h-full object-cover" src="img/user.svg" />
+              {{-- <img class="w-full h-full object-cover" src="img/user.svg" /> --}}
             </div>
 
             <div class="ml-2 capitalize flex">
-               @php
-    $konsultan = Session::get('konsultanLogin');
-@endphp
+            @php
+            $konsultan = Session::get('konsultanLogin');
+            @endphp
 
 @if($konsultan)
     <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">
@@ -70,7 +70,7 @@
             <!-- item -->
             <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
               href="#">
-              <i class="fad fa-user-edit text-xs mr-1"></i>
+              {{-- <i class="fad fa-user-edit text-xs mr-1"></i> --}}
               edit my profile
             </a>
             <!-- end item -->
@@ -78,7 +78,7 @@
             <!-- item -->
             <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
               href="#">
-              <i class="fad fa-inbox-in text-xs mr-1"></i>
+              {{-- <i class="fad fa-inbox-in text-xs mr-1"></i> --}}
               my inbox
             </a>
             <!-- end item -->
@@ -86,7 +86,7 @@
             <!-- item -->
             <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
               href="#">
-              <i class="fad fa-badge-check text-xs mr-1"></i>
+              {{-- <i class="fad fa-badge-check text-xs mr-1"></i> --}}
               tasks
             </a>
             <!-- end item -->
@@ -94,7 +94,7 @@
             <!-- item -->
             <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
               href="#">
-              <i class="fad fa-comment-alt-dots text-xs mr-1"></i>
+              {{-- <i class="fad fa-comment-alt-dots text-xs mr-1"></i> --}}
               chats
             </a>
             <!-- end item -->
@@ -116,7 +116,7 @@
         <div class="dropdown relative mr-5 md:static">
           <button
             class="text-gray-500 menu-btn p-0 m-0 hover:text-gray-900 focus:text-gray-900 focus:outline-none transition-all ease-in-out duration-300">
-            <i class="fad fa-bells"></i>
+            {{-- <i class="fad fa-bells"></i> --}}
           </button>
 
           <button class="hidden fixed top-0 left-0 z-10 w-full h-full menu-overflow"></button>
@@ -232,7 +232,7 @@
         <div class="dropdown relative mr-5 md:static">
           <button
             class="text-gray-500 menu-btn p-0 m-0 hover:text-gray-900 focus:text-gray-900 focus:outline-none transition-all ease-in-out duration-300">
-            <i class="fad fa-comments"></i>
+            {{-- <i class="fad fa-comments"></i> --}}
           </button>
 
           <button class="hidden fixed top-0 left-0 z-10 w-full h-full menu-overflow"></button>
@@ -345,22 +345,26 @@
         </div>
         <!-- end sidebar toggle -->
 
-        <p class="uppercase text-xs text-blue-600 mb-4 tracking-wider">Jadwal Janji Temu</p>
+        <p class="uppercase text-xs text-blue-600 mb-4 tracking-wider">Fitur Utama</p>
         <a href="{{ route('konsultan.jadwal.index') }}"
                     class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
                     <i class="fad fa-text text-xs mr-2"></i>
                     Jadwal Janji Temu
                 </a>
 
-        <p class="uppercase text-xs text-blue-600 mb-4 tracking-wider">Status Konsultan</p>
         <a href="{{ route('status.index') }}"
                     class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
                     <i class="fad fa-text text-xs mr-2"></i>
                     Status Konsultan
                 </a>
 
-        <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Logout</p>
-                <a href="{{ route('logoutKonsultan') }}"
+        <a href="{{ route('mingguan.index') }}"
+                    class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
+                    <i class="fad fa-text text-xs mr-2"></i>
+                    Petugas Mingguan
+                </a>
+
+        <a href="{{ route('logoutKonsultan') }}"
                     class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
                     <i class="fad fa-text text-xs mr-2"></i>
                     Log Out

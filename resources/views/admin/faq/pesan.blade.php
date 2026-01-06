@@ -12,11 +12,9 @@
 
                         <tr class="bg-blue-300">
                             <th class="p-3 text-left text-blue-800 border border-blue-400">No</th>
-                            <th class="p-3 text-left text-blue-800 border border-blue-400">Nama</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Instansi</th>
-                            <th class="p-3 text-left text-blue-800 border border-blue-400">Keperluan</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Data Yang Diminta</th>
-                            <th class="p-3 text-left text-blue-800 border border-blue-400">Lainnya</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Posisi Sebagai</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Aksi</th>
                         </tr>
                     </thead>
@@ -29,15 +27,7 @@
                             </td>
 
                             <td class="p-3 border border-gray-200">
-                                {{ $item->nama }}
-                            </td>
-
-                            <td class="p-3 border border-gray-200">
                                 {{ $item->instansi }}
-                            </td>
-
-                            <td class="p-3 border border-gray-200">
-                                {{ $item->keperluan }}
                             </td>
 
                             <td class="p-3 border border-gray-200">
@@ -45,13 +35,13 @@
                             </td>
 
                             <td class="p-3 border border-gray-200">
-                                {{ $item->lainnya }}
+                                {{ $item->posisi }}
                             </td>
 
                             <td class="p-3 border border-gray-200">
                                     <div class="flex space-x-2">
 
-                           <form action="{{ route('faq.destroy', $item->id) }}" method="POST">
+                           <form action="{{ route('faq.hapusPesan', $item->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                         <button type="submit" class="px-3 py-1 bg-red-300 hover:bg-red-400 text-red-800 rounded">Hapus</button>

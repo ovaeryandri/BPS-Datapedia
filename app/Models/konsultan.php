@@ -13,6 +13,7 @@ class konsultan extends Model
     protected $fillable = [
     "email",
     "nama",
+    "image",
     "gambar",
     "posisi",
     "keahlian",
@@ -30,4 +31,9 @@ class konsultan extends Model
 {
     return $this->hasMany(jadwal::class);
 }
+
+    public function petugas(){
+        return $this->hasMany(Petugas::class, 'konsultan_id');
+    }
+
 }

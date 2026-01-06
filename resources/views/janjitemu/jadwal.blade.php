@@ -22,7 +22,7 @@
                 <tr class="bg-white hover:bg-gray-50 text-center">
                     <td class="p-3 border">{{ $item->alamat }}</td>
                     <td class="p-3 border">{{ $item->keperluan }}</td>
-                    <td class="p-3 border">{{ $item->tanggal }}</td>
+                    <td class="p-3 border">{{ \Carbon\Carbon::parse($item->tanggal)->locale('id')->isoFormat('D MMMM Y') }}</td>
                     <td class="p-3 border">{{ $item->jam }}</td>
                     <td class="p-3 border">{{ ucfirst($item->jenis) }}</td>
                     <td class="p-3 border">

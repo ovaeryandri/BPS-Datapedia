@@ -16,7 +16,7 @@ class LoggedInUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Session::get('loginStatus')) {
+        if (!Session::get('login_user')) {
         return redirect()->route('loginUser');
     }
         return $next($request);

@@ -23,11 +23,11 @@ class konsultanController extends Controller
     $request->validate([
         'email' => 'required|unique:konsultans|string',
         'nama' => 'required|string',
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         'posisi' => 'required|string',
         'keahlian' => 'required|string',
         'password' => 'required|min:5|string',
-        'no_hp' => 'required|string',
     ]);
 
     // ✅ Upload file
@@ -37,11 +37,11 @@ class konsultanController extends Controller
     konsultan::create([
         "email" => $request->email,
         "nama" => $request->nama,
+        "image" => $filePath,
         "gambar" => $filePath,
         "posisi" => $request->posisi,
         "keahlian" => $request->keahlian,
         "password" => Hash::make($request->password),
-        "no_hp" => $request->no_hp,
     ]);
 
     return redirect()->route('konsultan.index')->with('success', 'Konsultan berhasil ditambahkan.');
@@ -57,18 +57,17 @@ class konsultanController extends Controller
         $request->validate([
             'email' => 'string',
             'nama' => 'string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'posisi' => 'string',
             'keahlian' => 'string',
             'password' => 'nullable|min:5|string',
-            'no_hp' => 'string',
         ]);
 
         $konsultan->email = $request->email;
         $konsultan->nama = $request->nama;
         $konsultan->posisi = $request->posisi;
         $konsultan->keahlian = $request->keahlian;
-        $konsultan->no_hp = $request->no_hp;
 
         if ($request->hasFile('gambar')) {
 
@@ -79,7 +78,15 @@ class konsultanController extends Controller
         $filePath = $request->file('gambar')->store('files', 'public');
         $konsultan['gambar'] = $filePath;
     }
+        if ($request->hasFile('image')) {
 
+        if ($konsultan->image) {
+            Storage::disk('public')->delete($konsultan->image);
+        }
+
+        $filePath = $request->file('image')->store('files', 'public');
+        $konsultan['image'] = $filePath;
+    }
         if ($request->filled('password')) {
             $konsultan->password = Hash::make($request->password);
         }
@@ -94,6 +101,9 @@ class konsultanController extends Controller
 
         if ($konsultan->gambar) {
         Storage::disk('public')->delete($konsultan->gambar);
+    }
+        if ($konsultan->image) {
+        Storage::disk('public')->delete($konsultan->image);
     }
 
         $konsultan->delete();

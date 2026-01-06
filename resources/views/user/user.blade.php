@@ -3,7 +3,7 @@
 
 <main class="">
     {{-- Layanan Kami Section --}}
-    <section id="konsultasi" class="bg-white py-16 lg:py-20 theme-section theme-dark">
+    <section id="konsultasi" class="bg-white py-16 lg:py-20 theme-section theme-dark" >
         <div class="container mx-auto px-4">
         <h2 class="text-center text-3xl lg:text-4xl font-bold mb-12 text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">
             Layanan Konsultasi
@@ -25,7 +25,7 @@
                             </button>
                         </a>
                     @else
-                        <button type="button" onclick="showLoginAlert()" class="nav-link w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
+                        <button type="button" onclick="showLoginAlert()" class="nav-link w-full  bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
                             <span>Konsultasi Whatsapp</span>
                             <img src="{{ asset('image/wa.png') }}" width="24" height="24" alt="WhatsApp" class="flex-shrink-0">
                         </button>
@@ -47,7 +47,7 @@
                             </button>
                         </a>
                     @else
-                        <button type="button" onclick="showLoginAlert()" class="nav-link w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
+                        <button type="button" onclick="showLoginAlert()" class="nav-link w-full  bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
                             <span>Konsultasi Online</span>
                             <img src="{{ asset('image/form.png') }}" width="32" height="32" alt="Form" class="flex-shrink-0">
                         </button>
@@ -69,7 +69,7 @@
                             </button>
                         </a>
                     @else
-                        <button type="button" onclick="showLoginAlert()" class="w-full bg-[#002B6A] hover:bg-[#003875] text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
+                        <button type="button" onclick="showLoginAlert()" class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
                             <span>Ambil Antrian Online</span>
                             <img src="{{ asset('image/tiket.png') }}" width="24" height="24" alt="Tiket" class="flex-shrink-0">
                         </button>
@@ -86,42 +86,61 @@
             </div>
         @endif
 
-        <div class="mt-10" data-aos="fade-left" data-aos-duration="2000">
-            {{-- PERBAIKAN: Kontainer pembatas lebar (lg:w-2/3) dihapus agar lebar kartu sama. --}}
-            {{-- Class grid juga disamakan menjadi 'md:grid-cols-2 lg:grid-cols-3' --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                {{-- Statistik Card 1 --}}
-                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between text-center hover:shadow-lg transition-shadow">
-                    <div class="min-h-[4rem] flex flex-col items-center justify-center">
-                        <div class="text-5xl lg:text-6xl font-bold text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">{{ $today }} <span class="text-primary font-bold">+</span></div>
-                    </div>
-                    <div>
-                        <p class="text-lg text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Konsultasi Hari Ini</p>
-                    </div>
+<div class="mt-10" data-aos="fade-up" data-aos-duration="1500">
+    <div class="chart-card">
+        {{-- Header dengan Judul dan Filter --}}
+        <div class="chart-header">
+            <div class="chart-title">
+                <div class="title-icon">
+                    <i class="fas fa-chart-pie"></i>
                 </div>
+                <span>Jumlah Konsultasi Bulanan</span>
+            </div>
 
-                {{-- Statistik Card 2 --}}
-                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between text-center hover:shadow-lg transition-shadow">
-                    <div class="min-h-[4rem] flex flex-col items-center justify-center">
-                        <div class="text-5xl lg:text-6xl font-bold text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">{{ $month }} <span class="text-primary font-bold">+</span> </div>
-                    </div>
-                    <div>
-                        <p class="text-lg text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Konsultasi Bulan Ini</p>
-                    </div>
-                </div>
-
-                {{-- Statistik Card 3 --}}
-                <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between text-center hover:shadow-lg transition-shadow">
-                    <div class="min-h-[4rem] flex flex-col items-center justify-center">
-                        <div class="text-5xl lg:text-6xl font-bold text-[#002B6A] speak-target" onmouseenter="speakOnHover(this)">{{ $total }}<span class="text-primary font-bold">+</span></div>
-                    </div>
-                    <div>
-                            <p class="text-lg text-gray-600 font-medium speak-target" onmouseenter="speakOnHover(this)">Total Konsultasi</p>
-                    </div>
-                </div>
+            {{-- Form Filter Tahun --}}
+            <div class="year-filter">
+                <label for="tahun" class="filter-label">Filter Tahun</label>
+                <form action="" method="GET" style="position: relative;">
+                    <select name="tahun" id="tahun" class="year-select" onchange="showLoadingAndSubmit(this.form)">
+                        @forelse ($availableYears as $year)
+                            <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                        @empty
+                            <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                        @endforelse
+                    </select>
+                    <i class="fas fa-chevron-down select-arrow"></i>
+                </form>
             </div>
         </div>
+
+        {{-- Area Chart --}}
+        <div class="chart-container">
+            <div class="chart-wrapper">
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <span style="color: #718096;">Memuat data...</span>
+                </div>
+                <canvas id="grafikPieKonsultasi"></canvas>
+            </div>
+        </div>
+
+        {{-- Statistics Summary --}}
+        <div class="stats-summary" id="statsSummary">
+            <div class="stat-card">
+                <div class="stat-value" id="totalKonsultasi">--</div>
+                <div class="stat-label">Total Konsultasi</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-value" id="bulanTertinggi">--</div>
+                <div class="stat-label">Bulan Tertinggi</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
         </div>
     </section>
@@ -131,29 +150,37 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" data-aos="zoom-in" data-aos-duration="2000">
 
         {{-- 🔹 PETUGAS HARI INI - ENLARGED --}}
-        @if($petugas && $petugas->konsultan)
-        <div class="mb-16">
-            <h2 class="text-4xl font-bold text-white mb-8 text-center">👨‍💼 Petugas Konsultasi Hari Ini</h2>
-            <div class="glass-effect rounded-3xl shadow-2xl p-8 card-hover max-w-4xl mx-auto">
-                <div class="flex flex-col lg:flex-row items-center gap-8">
-                    <div class="relative">
-                        <img src="{{ Storage::url($petugas->konsultan->gambar) }}"
-                             class="h-48 w-48 object-cover rounded-2xl border-4 border-white shadow-lg">
-                        <div class="absolute -top-2 -right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white"></div>
-                    </div>
-                    <div class="text-center lg:text-left text-white flex-1">
-                        <h3 class="text-3xl font-bold mb-3">{{ $petugas->konsultan->nama }}</h3>
-                        <p class="text-xl mb-2 opacity-90">Jabatan: {{ $petugas->konsultan->posisi }}</p>
-                        <p class="text-lg mb-4 opacity-90">BPS Provinsi Kepulauan Bangka Belitung</p>
-                        <div class="flex flex-wrap gap-3 justify-center lg:justify-start mb-6">
-                            <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm font-medium">{{ $petugas->konsultan->keahlian }}</span>
-                        </div>
+        @if($petugas && $petugas->isNotEmpty())
+    <div class="mb-16">
+        <h2 class="text-4xl font-bold text-white mb-8 text-center">👨‍💼 Petugas Konsultasi Hari Ini</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            @foreach($petugas as $item)
+                @if($item->konsultan)
+                    <div class="glass-effect rounded-3xl shadow-2xl p-8 card-hover">
+                        <div class="flex flex-col lg:flex-row items-center gap-8">
+                            <div class="relative">
+                                <img src="{{ Storage::url($item->konsultan->image) }}"
+                                        alt="Petugas Hari Ini"
+                                        class="w-full h-full object-contain">
 
+
+                                <div class="absolute -top-2 -right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white"></div>
+                            </div>
+                            {{-- <div class="text-center lg:text-left text-white flex-1">
+                                <h3 class="text-3xl font-bold mb-3">{{ $item->konsultan->nama }}</h3>
+                                <p class="text-xl mb-2 opacity-90">Jabatan: {{ $item->konsultan->posisi }}</p>
+                                <p class="text-lg mb-4 opacity-90">BPS Provinsi Kepulauan Bangka Belitung</p>
+                                <div class="flex flex-wrap gap-3 justify-center lg:justify-start mb-6">
+                                    <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm font-medium">{{ $item->konsultan->keahlian }}</span>
+                                </div>
+                            </div> --}}
+                        </div>
                     </div>
-                </div>
-            </div>
+                @endif
+            @endforeach
         </div>
-        @endif
+    </div>
+@endif
 
         {{-- 🔹 SEMUA PETUGAS - CAROUSEL --}}
         <div class="mb-8">
@@ -419,8 +446,6 @@
     </div>
 </div>
 
-
-
     {{-- FAQ Section --}}
 <section class="bg-[#002B6A] py-16 lg:py-20">
     <div class="container mx-auto px-4">
@@ -433,15 +458,17 @@
                 <div x-data="{ open: false }" class="faq-item bg-white rounded-xl shadow-lg overflow-hidden">
                     <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition-colors duration-200">
                         <span class="font-semibold text-lg text-gray-800 pr-4 speak-target" onmouseenter="speakOnHover(this)">
-                            <h1>{!! $item->judul !!}</h1>
+                            {!! $item->judul !!}
                         </span>
                         <svg :class="{ 'rotate-180': open }" class="w-6 h-6 text-gray-500 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
                     <div x-show="open" x-transition class="px-6 pb-6">
-                        <div class="text-gray-700 lprose max-w-none" onmouseenter="speakOnHover(this)">
-                           <p>{!! $item->deskripsi !!}</p>
+                        <div class="prose prose-gray max-w-none prose-ol:list-decimal
+                            prose-ul:list-disc
+                            prose-li:ml-6">
+                            {!! $item->deskripsi !!}
                         </div>
                     </div>
                 </div>
@@ -483,7 +510,7 @@
         </button>
     </div>
 
-    <button
+    {{-- <button
         @click="open = !open"
         class="bg-gradient-to-br from-[#a3c2f5] to-[#004B9A] rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 relative group"
         style="box-shadow: 0 8px 32px rgba(0, 43, 106, 0.4);"
@@ -495,9 +522,9 @@
             Aksesibilitas
             <div class="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
         </div>
-    </button>
+    </button> --}}
 
-    <div
+    {{-- <div
         x-show="open"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
@@ -513,7 +540,7 @@
         <button onclick="setCursorSize('medium')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Sedang</button>
         <button onclick="setCursorSize('large')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Cursor Besar</button>
         <button onclick="resetCursor('cursorSize')" class="hidden lg:flex px-4 py-3 rounded-xl text-sm bg-[#002B6A] text-white shadow hover:scale-105 transition">Reset Cursor</button>
-    </div>
+    </div> --}}
 
     <div id="chatbot-container"
         class="rounded-xl overflow-hidden shadow-xl border"
@@ -708,5 +735,10 @@ document.addEventListener('DOMContentLoaded', function() {
             chatbotBox.style.display = chatbotBox.style.display === 'none' ? 'block' : 'none';
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js" defer></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
 
 @endsection

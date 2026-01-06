@@ -44,10 +44,10 @@
                             <th class="p-3 text-left text-blue-800 border border-blue-400">No</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Email</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Nama</th>
-                            <th class="p-3 text-left text-blue-800 border border-blue-400">Foto</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Foto Mingguan</th>
+                            <th class="p-3 text-left text-blue-800 border border-blue-400">Foto Petugas</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Posisi</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Keahlian</th>
-                            <th class="p-3 text-left text-blue-800 border border-blue-400">Nomor HP</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Status</th>
                             <th class="p-3 text-left text-blue-800 border border-blue-400">Aksi</th>
                         </tr>
@@ -73,8 +73,16 @@
                             </td>
 
                             <td class="p-3 border border-gray-200">
+                                <a href="{{ Storage::url($item->image) }}" target="_blank" class="px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 font-medium rounded-lg">
+                                    Lihat
+                                </a>
+
+
+                            </td>
+
+                            <td class="p-3 border border-gray-200">
                                 <a href="{{ Storage::url($item->gambar) }}" target="_blank" class="px-6 py-2 bg-blue-300 hover:bg-blue-400 text-blue-800 font-medium rounded-lg">
-                                    Lihat File
+                                    Lihat
                                 </a>
                             </td>
 
@@ -84,10 +92,6 @@
 
                             <td class="p-3 border border-gray-200">
                                 {{ $item->keahlian }}
-                            </td>
-
-                            <td class="p-3 border border-gray-200">
-                                {{ $item->no_hp }}
                             </td>
 
                             <td class="p-3 border border-gray-200 align-top">

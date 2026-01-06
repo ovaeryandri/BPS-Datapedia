@@ -18,7 +18,7 @@ class LoginCheckAdmin
     {
         $loginStatus = Session::get('loginStatus');
         if ($loginStatus) {
-            return redirect()->route('admin.index');
+            return redirect()->route('dashboard.index');
         }
         return $next($request);
     }

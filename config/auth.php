@@ -36,11 +36,16 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'admins',
+    ],
+],
 
 
     /*
@@ -61,11 +66,18 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\akunuser::class),
-        ],
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\akunuser::class,
     ],
+
+    // 🔴 INI YANG SERING TERLUPA
+    'admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\admin::class,
+    ],
+],
+
 
     /*
     |--------------------------------------------------------------------------

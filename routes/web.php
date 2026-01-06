@@ -2,15 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminKonsultasiController;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\layananController;
 use App\Http\Controllers\maklumatController;
 use App\Http\Controllers\faqController;
+use App\Http\Controllers\grafikPosisiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\janjitemuController;
 use App\Http\Controllers\jadwalController;
 use App\Http\Controllers\JamOperasionalController;
 use App\Http\Controllers\konsultanController;
 use App\Http\Controllers\konsultanJadwalController;
+use App\Http\Controllers\konsultanMingguanController;
 use App\Http\Controllers\konsultanStatusController;
 use App\Http\Controllers\konsultasiController;
 use App\Http\Controllers\standarController;
@@ -31,6 +35,7 @@ use App\Models\janjitemu;
 Route::middleware(LoggedInKonsultan::class)->group(function () {
 Route::get('/logoutKonsultan', [KonsultanLogin::class, 'logoutKonsultan'])->name('logoutKonsultan');
 Route::resource('status', konsultanStatusController::class)->except(['show']);
+Route::resource('mingguan', konsultanMingguanController::class)->except(['show']);
 Route::get('/konsultan/jadwal', [konsultanJadwalController::class, 'index'])->name('konsultan.jadwal.index');
 });
 
@@ -46,32 +51,60 @@ Route::middleware(LoggedInUser::class)->group(function () {
 
 });
 
-Route::middleware(LoggedInAdmin::class)->group(function () {
-    Route::get('/user', [UserLogin::class, 'dataUser'])->name('dataUser');
-    Route::resource('jam-operasional', JamOperasionalController::class);
-    Route::resource('jadwal', jadwalController::class)->except(['show']);
-    Route::post('/jadwal/{id}/tolak', [JadwalController::class, 'tolak'])->name('jadwal.tolak');
-    Route::delete('/jadwal/{jadwal_id}/batal', [JadwalController::class, 'batalJadwal'])->name('jadwal.batal');
-    Route::get('/jadwal/{id}/zoom', [JadwalController::class, 'formZoom'])->name('jadwal.zoom');
-    Route::post('/jadwal/{id}/zoom', [JadwalController::class, 'kirimZoom'])->name('jadwal.kirimZoom');
-    Route::post('/jadwal/{id}/schedule', [JadwalController::class, 'scheduleAndApprove'])->name('jadwal.schedule');
-    Route::resource('faq', faqController::class)->except(['show']);
-    Route::get('/faq/pesan', [faqController::class, 'pesan'])->name('faq.pesan');
-    Route::resource('konsultan', konsultanController::class)->except(['show']);
-    Route::resource('admin', AdminController::class)->except(['show']);
-    Route::resource('maklumat', maklumatController::class)->except(['show']);
-    Route::resource('layanan', layananController::class)->except(['show']);
-    Route::resource('petugas', petugasController::class)->except(['show']);
-    Route::resource('standar', standarController::class)->except(['show']);
-    Route::delete('/jadwal/hapus/{id}', [jadwalController::class, 'hapus'])->name('jadwal.hapus');
-    Route::get('/logoutAdmin', [AdminLogin::class, 'logoutAdmin'])->name('logoutAdmin');
+Route::prefix('admin')->group(function () {
+
+    Route::middleware('guest:admin')->group(function () {
+        Route::get('/loginAdmin', [AdminLogin::class, 'loginAdmin'])->name('loginAdmin');
+        Route::post('/prosesloginAdmin', [AdminLogin::class, 'prosesloginAdmin'])->name('prosesloginAdmin');
+    });
+
+    Route::middleware('auth:admin')->group(function () {
+
+        // akses /admin
+        Route::get('/', function () {
+            return redirect()->route('dashboard.index');
+        });
+
+        Route::get('/user', [UserLogin::class, 'dataUser'])->name('dataUser');
+        Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard.index');
+
+        Route::resource('jam-operasional', JamOperasionalController::class);
+        Route::resource('jadwal', jadwalController::class)->except(['show']);
+
+        Route::post('/jadwal/{id}/tolak', [JadwalController::class, 'tolak'])->name('jadwal.tolak');
+        Route::delete('/jadwal/{jadwal_id}/batal', [JadwalController::class, 'batalJadwal'])->name('jadwal.batal');
+        Route::get('/jadwal/{id}/zoom', [JadwalController::class, 'formZoom'])->name('jadwal.zoom');
+        Route::post('/jadwal/{id}/zoom', [JadwalController::class, 'kirimZoom'])->name('jadwal.kirimZoom');
+        Route::post('/jadwal/{id}/schedule', [JadwalController::class, 'scheduleAndApprove'])->name('jadwal.schedule');
+
+        Route::resource('faq', faqController::class)->except(['show']);
+        Route::get('/faq/pesan', [faqController::class, 'pesan'])->name('faq.pesan');
+        Route::delete('/faq/hapusPesan/{id}', [faqController::class, 'hapusPesan'])->name('faq.hapusPesan');
+
+        Route::resource('konsultan', konsultanController::class)->except(['show']);
+        Route::resource('admin', AdminController::class)->except(['show']);
+        Route::resource('adminKonsultasi', AdminKonsultasiController::class)->except('show');
+
+        Route::resource('maklumat', maklumatController::class)->except(['show']);
+        Route::resource('layanan', layananController::class)->except(['show']);
+        Route::resource('petugas', petugasController::class)->except(['show']);
+        Route::resource('grafik', grafikPosisiController::class)->except(['show']);
+
+        Route::get('/petugas/export-pdf', [petugasController::class, 'exportPdf'])
+            ->name('petugas.export-pdf');
+
+        Route::resource('standar', standarController::class)->except(['show']);
+        Route::delete('/jadwal/hapus/{id}', [jadwalController::class, 'hapus'])->name('jadwal.hapus');
+
+        Route::get('/logoutAdmin', [AdminLogin::class, 'logoutAdmin'])->name('logoutAdmin');
+    });
 
 });
 
-Route::middleware(LoginCheckAdmin::class)->group(function () {
-    Route::get('/loginAdmin', [AdminLogin::class, 'loginAdmin'])->name('loginAdmin');
-    Route::post('/prosesloginAdmin', [AdminLogin::class, 'prosesloginAdmin'])->name('prosesloginAdmin');
-});
+
+
+// Route::middleware(LoginCheckAdmin::class)->group(function () {
+// });
 
 Route::middleware(LoginCheckKonsultan::class)->group(function () {
     Route::get('/loginKonsultan', [KonsultanLogin::class, 'loginKonsultan'])->name('loginKonsultan');

@@ -16,9 +16,251 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite('resources/css/app.css')
 
     <style>
+
+.chart-container {
+    transition: transform 0.3s ease;
+}
+
+.stat-card {
+    transition: all 0.3s ease;
+}
+
+.stat-value {
+    transition: all 0.3s ease;
+}
+
+.chart-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .chart-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 400% 400%;
+        animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .chart-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #2d3748;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+    }
+
+    .title-icon {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .year-filter {
+        position: relative;
+    }
+
+    .filter-label {
+        color: #718096;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .year-select {
+        appearance: none;
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 40px 12px 16px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #2d3748;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 120px;
+    }
+
+    .year-select:hover {
+        border-color: #667eea;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        transform: translateY(-1px);
+    }
+
+    .year-select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .select-arrow {
+        position: absolute;
+        right: 12px;
+        top: 70%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: #718096;
+        transition: transform 0.3s ease;
+    }
+
+    .year-filter:hover .select-arrow {
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    .chart-container {
+        position: relative;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid #e2e8f0;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .no-data-message {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: #718096;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .no-data-icon {
+        font-size: 4rem;
+        color: #cbd5e0;
+        margin-bottom: 1rem;
+        opacity: 0.7;
+    }
+
+    .stats-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards 0.5s;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        padding: 1.5rem;
+        border-radius: 16px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #718096;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .chart-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+        }
+
+        .title-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+        .chart-card {
+            padding: 1.5rem;
+        }
+    }
+    /* End Chart */
 
         .glass-effect {
         background: rgba(255, 255, 255, 0.15);
@@ -200,6 +442,34 @@
             box-shadow: 0 8px 30px rgba(0, 82, 184, 0.6);
         }
 
+         .btn-modern-red {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #6a0000, #b80000);
+            box-shadow: 0 4px 15px rgba(0, 43, 106, 0.4);
+        }
+
+        .btn-modern-red::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern-red:hover::before {
+            left: 100%;
+        }
+
+        .btn-modern-red:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(184, 0, 0, 0.6);
+        }
+
         .btn-secondary-modern {
             position: relative;
             overflow: hidden;
@@ -356,16 +626,17 @@
                 <div class="hidden md:flex items-center space-x-1">
                     <a href="#home" class="nav-link-modern text-white font-medium">Beranda</a>
                     <a href="#konsultasi" class="nav-link-modern text-white font-medium">Konsultasi</a>
-                    @if(session('loginStatus') && session('user'))
+
+                    @if(session('login_user') && session('user_id'))
                     <a href="{{ route('profile.index') }}" class="nav-link-modern text-white font-medium">Profil</a>
                     @else
                     <button type="button" onclick="showLoginAlert()" class="nav-link-modern text-white font-medium">Profil</button>
                     @endif
 
-                    @if(session('loginStatus') && session('user'))
+                    @if(session('login_user') && session('user_id'))
                     <form action="{{ route('logoutUser') }}" method="POST" class="inline-block">
                     @csrf
-                    <button type="submit" class="btn-modern text-red-500 px-6 py-2 rounded-lg font-medium " onmouseenter="speakOnHover(this)">Logout</button>
+                    <button type="submit" class="btn-modern-red text-white px-6 py-2 rounded-lg font-medium " onmouseenter="speakOnHover(this)">Logout</button>
                     </form>
 
                     @else
@@ -391,8 +662,25 @@
                 <div class="px-2 pt-2 pb-3 space-y-1 bg-slate-800/50 rounded-lg mt-2">
                     <a href="#home" class="block px-3 py-2 text-white hover:bg-white/10 rounded-md">Beranda</a>
                     <a href="#konsultasi" class="block px-3 py-2 text-white hover:bg-white/10 rounded-md">Konsultasi</a>
-                    <a href="#profil" class="block px-3 py-2 text-white hover:bg-white/10 rounded-md">Profil</a>
-                    <a href="#login" class="block px-3 py-2 text-center bg-blue-800 text-white rounded-md mt-4">Login</a>
+
+                     @if(session('login_user') && session('user_id'))
+                    <a href="{{ route('profile.index') }}" class="nav-link-modern text-white font-medium">Profil</a>
+                    @else
+                    <button type="button" onclick="showLoginAlert()" class="nav-link-modern text-white font-medium">Profil</button>
+                    @endif
+
+                    @if(session('login_user') && session('user_id'))
+                    <form action="{{ route('logoutUser') }}" method="POST" class="inline-block">
+                    @csrf
+                    <button type="submit" class="btn-modern text-red-500 px-6 py-2 rounded-lg font-medium " onmouseenter="speakOnHover(this)">Logout</button>
+                    </form>
+
+                    @else
+
+                    <a href="{{ route('loginUser') }}" class="btn-modern text-white px-6 py-2 rounded-lg font-medium">
+                        Login
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -466,12 +754,12 @@
 
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="https://wa.me/6282226602929"
+                            <a href="{{ route('konsultasi.index') }}"
                                class="btn-modern flex items-center justify-center px-8 py-4 rounded-xl text-white font-semibold group">
                                 <svg class="w-5 h-5 mr-3 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                 </svg>
-                                Hubungi Petugas
+                                Hubungi Kami
                             </a>
 
                         </div>
@@ -590,12 +878,12 @@
                     <nav>
                         <ul class="space-y-3">
                             <li>
-                                <a href="#" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block">
+                                <a href="https://ppid.bps.go.id/app/konten/1901/Profil-BPS.html?_gl=1*1fmk1rz*_ga*MTE4NTMyOTIwNS4xNzY2NjQ5MjE3*_ga_XXTTVXWHDB*czE3NjY2NDkyMTckbzEkZzEkdDE3NjY2NDkyMjgkajQ5JGwwJGgw" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block">
                                     Profil BPS
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block">
+                                <a href="https://ppid.bps.go.id/?mfd=1901&_gl=1*3ljo36*_ga*MTE4NTMyOTIwNS4xNzY2NjQ5MjE3*_ga_XXTTVXWHDB*czE3NjY2NDkyMTckbzEkZzEkdDE3NjY2NDkyMjgkajQ5JGwwJGgw" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block">
                                     PPID
                                 </a>
                             </li>
@@ -611,7 +899,7 @@
                     <nav>
                         <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
                             <li>
-                                <a href="#" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
+                                <a href="https://www.aseanstats.org/" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
                                     ASEAN Stats
                                 </a>
                             </li>
@@ -621,7 +909,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
+                                <a href="https://rb.bps.go.id/?_gl=1*1suv0x5*_ga*MTE4NTMyOTIwNS4xNzY2NjQ5MjE3*_ga_XXTTVXWHDB*czE3NjY2NDkyMTckbzEkZzEkdDE3NjY2NTA0MDQkajMyJGwwJGgw" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
                                     Reformasi Birokrasi
                                 </a>
                             </li>
@@ -631,17 +919,17 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
+                                <a href="https://www.stis.ac.id/" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
                                     Politeknik Statistika STIS
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
+                                <a href="https://pusdiklat.bps.go.id/?_gl=1*1u2hm5i*_ga*MTE4NTMyOTIwNS4xNzY2NjQ5MjE3*_ga_XXTTVXWHDB*czE3NjY2NDkyMTckbzEkZzEkdDE3NjY2NTA0MjkkajckbDAkaDA." class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
                                     Pusdiklat BPS
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
+                                <a href="https://jdih.web.bps.go.id/public/" class="text-gray-200 hover:text-white hover:pl-2 transition-all duration-200 text-sm lg:text-base inline-block speak-target" onmouseenter="speakOnHover(this)">
                                     JDIH BPS
                                 </a>
                             </li>
@@ -658,11 +946,11 @@
             <div class="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
                 <!-- Quick Links -->
                 <div class="flex flex-wrap justify-center lg:justify-start gap-1 text-sm">
-                    <a href="#" class="text-gray-300 hover:text-white px-3 py-1 rounded transition-colors duration-200 speak-target" onmouseenter="speakOnHover(this)">
+                    <a href="https://manual-website-bps.readthedocs.io/id/latest/" class="text-gray-300 hover:text-white px-3 py-1 rounded transition-colors duration-200 speak-target" onmouseenter="speakOnHover(this)">
                         Manual
                     </a>
                     <span class="text-gray-500">•</span>
-                    <a href="#" class="text-gray-300 hover:text-white px-3 py-1 rounded transition-colors duration-200 speak-target" onmouseenter="speakOnHover(this)">
+                    <a href="https://babel.bps.go.id/id/term-of-use" class="text-gray-300 hover:text-white px-3 py-1 rounded transition-colors duration-200 speak-target" onmouseenter="speakOnHover(this)">
                         S&K
                     </a>
                     <span class="text-gray-500">•</span>
@@ -682,24 +970,24 @@
                 <div class="flex items-center space-x-4">
                     <span class="text-sm text-gray-400 hidden lg:inline speak-target" onmouseenter="speakOnHover(this)">Ikuti Kami:</span>
                     <div class="flex space-x-3">
-                        <a href="#" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
-                            <img src="/img/facebook-icon.png"
-                                 class="h-4 w-4 group-hover:scale-110 transition-transform duration-200"
+                        <a href="https://www.facebook.com/bpsstatistics/#" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
+                            <img src="/image/facebook.png"
+                                 class="h-8 w-8 group-hover:scale-110 transition-transform duration-200"
                                  alt="Facebook" />
                         </a>
-                        <a href="#" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
-                            <img src="/img/instagram-icon.png"
-                                 class="h-4 w-4 group-hover:scale-110 transition-transform duration-200"
+                        <a href="https://www.instagram.com/bpsbabel/" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
+                            <img src="/image/instagram.png"
+                                 class="h-8 w-8 group-hover:scale-110 transition-transform duration-200"
                                  alt="Instagram" />
                         </a>
-                        <a href="#" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
-                            <img src="/img/x-icon.png"
-                                 class="h-4 w-4 group-hover:scale-110 transition-transform duration-200"
+                        <a href="https://x.com/bps_statistics" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
+                            <img src="/image/twitter.png"
+                                 class="h-8 w-8 group-hover:scale-110 transition-transform duration-200"
                                  alt="Twitter" />
                         </a>
-                        <a href="#" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
-                            <img src="/img/youtube-icon.png"
-                                 class="h-4 w-4 group-hover:scale-110 transition-transform duration-200"
+                        <a href="https://www.youtube.com/channel/UCxeIxmnf4h2uGDrymxR1d4g" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-200 group">
+                            <img src="/image/youtube.png"
+                                 class="h-8 w-8 group-hover:scale-110 transition-transform duration-200"
                                  alt="YouTube" />
                         </a>
                     </div>
@@ -758,8 +1046,157 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Toggle Script -->
 <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Ambil data dari controller Laravel (sesuai kode asli)
+    const dataBulananServer = @json($dataBulanan);
+
+    // Cek apakah ada data untuk ditampilkan, jika tidak, jangan render chart
+    const totalKonsultasi = dataBulananServer.reduce((a, b) => a + b, 0);
+
+    if (totalKonsultasi === 0) {
+        // Jika tidak ada data, tampilkan pesan (sesuai kode asli)
+        const canvasElement = document.getElementById('grafikPieKonsultasi');
+        const parentElement = canvasElement.parentElement;
+        parentElement.innerHTML = '<div class="no-data-message"><div class="no-data-icon"><i class="fas fa-chart-pie"></i></div><div>Tidak ada data konsultasi untuk tahun {{ $selectedYear }}.</div></div>';
+    } else {
+        // Jika ada data, render chart (enhanced dari kode asli)
+        const canvasContext = document.getElementById('grafikPieKonsultasi').getContext('2d');
+
+        new Chart(canvasContext, {
+            // Jenis grafik tetap pie (sesuai kode asli yang sudah diubah)
+            type: 'pie',
+            data: {
+                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                datasets: [{
+                    label: 'Jumlah Konsultasi',
+                    data: dataBulananServer,
+                    // Warna yang lebih modern dan profesional
+                    backgroundColor: [
+                        '#667eea', '#764ba2', '#f093fb', '#f5576c',
+                        '#4facfe', '#00f2fe', '#43e97b', '#38f9d7',
+                        '#ffecd2', '#fcb69f', '#a8edea', '#fed6e3'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 3,
+                    hoverOffset: 15, // Enhanced hover effect
+                    hoverBorderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                // Tambahan animasi yang smooth
+                animation: {
+                    animateRotate: true,
+                    animateScale: true,
+                    duration: 2000,
+                    easing: 'easeOutCubic'
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Posisi legenda bulan (sesuai kode asli)
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            color: '#4a5568'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        borderColor: '#667eea',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            // Kostumisasi teks tooltip untuk menampilkan persentase (sesuai kode asli)
+                            label: function(context) {
+                                let label = context.label || '';
+                                let value = context.raw;
+                                let total = context.chart.getDatasetMeta(0).total;
+                                let percentage = total > 0 ? ((value / total) * 100).toFixed(1) + '%' : '0%';
+                                return `${label}: ${value} konsultasi (${percentage})+`;
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    arc: {
+                        borderJoinStyle: 'round'
+                    }
+                }
+            }
+        });
+
+        // Tambahan: Update statistik dengan animasi
+        updateStats();
+    }
+
+    // Function untuk update statistik dengan animasi
+    function updateStats() {
+        const total = dataBulananServer.reduce((a, b) => a + b, 0);
+        const average = Math.round(total / 12);
+        const maxIndex = dataBulananServer.indexOf(Math.max(...dataBulananServer));
+        const months = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        // Animasi counter untuk statistik
+        animateValue('totalKonsultasi', 0, total, 2000);
+        animateValue('rataRata', 0, average, 2000);
+
+        setTimeout(() => {
+            document.getElementById('bulanTertinggi').textContent = months[maxIndex];
+        }, 1000);
+    }
+
+    // Function untuk animasi counter
+    function animateValue(elementId, start, end, duration) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        const range = end - start;
+        const increment = end > start ? 1 : -1;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        let current = start;
+
+        if (range === 0) {
+            element.textContent = end;
+            return;
+        }
+
+        const timer = setInterval(() => {
+            current += increment;
+            element.textContent = current;
+            if (current === end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
+
+    // Function untuk menampilkan loading saat form submit
+    window.showLoadingAndSubmit = function(form) {
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const chartCanvas = document.getElementById('grafikPieKonsultasi');
+
+        if (loadingSpinner) loadingSpinner.style.display = 'flex';
+        if (chartCanvas) chartCanvas.style.display = 'none';
+
+        form.submit();
+    }
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     let currentSlide = 0;

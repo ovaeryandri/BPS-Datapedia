@@ -33,6 +33,17 @@
             </div>
 
             <div class="mb-4">
+                <label for="image" class="block text-gray-700 font-medium mb-2">Foto Petugas Mingguan</label>
+                <input type="file" name="image" id="image" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" required>
+
+                @error('image')
+
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+
+            </div>
+
+            <div class="mb-4">
                 <label for="gambar" class="block text-gray-700 font-medium mb-2">Foto Konsultan JPG|PNG|JPEG</label>
                 <input type="file" name="gambar" id="gambar" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" required>
 
@@ -71,25 +82,6 @@
 
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
-            </div>
-
-            <div class="mb-4">
-                <label for="no_hp" class="block text-gray-700 font-medium mb-2">Nomor Handphone</label>
-                <input type="number" name="no_hp" placeholder="Masukkan Nomor Handphone" id="no_hp" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('no_hp') }}" required>
-
-                    @error('no_hp')
-
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="mb-6">
-                <label class="flex items-center">
-                    <input type="checkbox" name="terms" class="form-checkbox h-5 w-5 text-blue-300" required>
-                    <span class="ml-2 text-gray-700">Saya Sebagai Admin</span>
-                </label>
-
-
             </div>
 
             <div class="flex items-center justify-between">

@@ -16,7 +16,7 @@ class LoginCheckUser
      */
     public function handle(Request $request, Closure $next): Response
 {
-    if (!session()->has('loginStatus') || !session()->has('user')) {
+    if (!session()->has('login_user') || !session()->has('user_id')) {
         return redirect()->route('loginUser');
     }
 

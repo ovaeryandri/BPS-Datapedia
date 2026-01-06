@@ -17,6 +17,12 @@ class faqController extends Controller
         return view('admin.faq.pesan', compact('faq'));
     }
 
+    public function hapusPesan($id){
+        $faq = konsultasiKlik::findOrFail($id);
+        $faq->delete();
+        return redirect()->route('faq.pesan')->with('success', 'FAQ Berhasil Dihapus');
+    }
+
     public function create(){
         $faq = faq::all();
         return view('admin.faq.create', compact('faq'));

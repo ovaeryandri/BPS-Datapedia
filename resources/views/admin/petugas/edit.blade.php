@@ -43,7 +43,7 @@
 
                 <div class="mb-4">
                     <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" value="{{ $petugas->tanggal }}" min="{{ old('tanggal', now()->format('Y-m-d')) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-400 focus:border-blue-400 sm:text-sm" required>
+                    <input type="date" name="tanggal" id="tanggal" value="{{ $petugas->tanggal }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-400 focus:border-blue-400 sm:text-sm" required>
                     @error('tanggal')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror

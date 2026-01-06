@@ -40,6 +40,25 @@
             </div>
 
             <div class="mb-4">
+                <label for="image" class="block text-gray-700 font-medium mb-2">Foto Petugas Mingguan</label>
+
+                <div class="mb-4">
+                    @if($konsultan->image)
+                    <img id="previewImage" src="{{ asset('storage/'.$konsultan->image) }}"
+                    class="w-32 h-32 object-contain bg-white border rounded mb-2"
+                    alt="Foto Petugas">
+
+                    @else
+                    <img id="previewImage" class="w-32 h-32 object-cover mb-2 hidden" alt="previewImage">
+                    @endif
+            </div>
+            <input type="file" name="image" id="image" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" accept="image/*">
+
+                @error('image')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+
+            <div class="mb-4">
                 <label for="gambar" class="block text-gray-700 font-medium mb-2">Foto Konsultan</label>
 
                 <div class="mb-4">
@@ -76,14 +95,6 @@
             <div class="mb-4">
                 <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
                 <input type="password" name="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
-
-                    <p class="text-red-500 text-sm mt-1"></p>
-
-            </div>
-
-            <div class="mb-4">
-                <label for="no_hp" class="block text-gray-700 font-medium mb-2">Nomor Handphone</label>
-                <input type="number" name="no_hp" id="no_hp" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ $konsultan->no_hp }}">
 
                     <p class="text-red-500 text-sm mt-1"></p>
 

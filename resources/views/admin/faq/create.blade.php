@@ -14,29 +14,26 @@
                 <label for="judul" class="block text-gray-700 font-medium mb-2">Judul FAQ</label>
                 <input type="text" name="judul" placeholder="Masukkan judul" id="judul" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('judul') }}" required>
 
-                    <p class="text-red-500 text-sm mt-1"></p>
+                      @error('judul')
+
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
 
             </div>
 
             <div class="mb-4">
                 <label for="deskripsi" class="block text-black font-medium mb-2">Deskripsi FAQ</label>
-                <div id="editor" class="w-full px-4 py-2 border rounded-lg bg-white" contenteditable="true">
-                    {!! old('deskripsi') !!}
-                </div>
-                <input type="hidden" name="deskripsi" id="hiddenDeskripsi">
+                <textarea id="deskripsi"
+                    name="deskripsi"
+                    class="w-full min-h-[200px]">
+                    {{ old('deskripsi') }}
+                </textarea>
 
 
-                    <p class="text-red-500 text-sm mt-1"></p>
+                      @error('deskripsi')
 
-            </div>
-
-            <div class="mb-6">
-                <label class="flex items-center">
-                    <input type="checkbox" name="terms" class="form-checkbox h-5 w-5 text-blue-300" required>
-                    <span class="ml-2 text-gray-700">Saya Sebagai Admin</span>
-                </label>
-
-                    <p class="text-red-500 text-sm mt-1"></p>
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
 
             </div>
 
@@ -47,31 +44,48 @@
         </form>
     </div>
 </div>
+<script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/inline/ckeditor.js"></script>
+{{-- <script src="https://cdn.tiny.cloud/1/x7k55ywys23h4znk6q665dt4ozxgzkkor7rbbx0t13pcsr86/tinymce/6/tinymce.min.js" referrerpolicy="origin">
+</script> --}}
+
 <script>
-    let editor;
-    InlineEditor
-        .create(document.querySelector('#editor'), {
-            toolbar: [
-                'bold', 'italic', '|',
-                'bulletedList', 'numberedList', '|',
-                'link', '|',
-                'undo', 'redo'
-            ]
-        })
-        .then(newEditor => {
-            editor = newEditor;
-        })
-        .catch(error => {
-            console.error(error);
-        });
+tinymce.init({
+    selector: '#deskripsi',
+    license_key: 'gpl', // ⭐ INI WAJIB
 
-    // Saat submit form, isi hidden input dengan HTML editor
-    document.querySelector('form').addEventListener('submit', function (e) {
-        document.querySelector('#hiddenDeskripsi').value = editor.getData();
-    });
+    height: 300,
+
+    plugins: [
+        'lists', 'link', 'table', 'code'
+    ],
+
+    toolbar: `
+        undo redo |
+        bold italic underline |
+        bullist numlist |
+        alignleft aligncenter alignright |
+        link table | code
+    `,
+
+    menubar: false,
+    branding: false,
+
+    content_style: `
+        body {
+            font-family: ui-sans-serif, system-ui;
+            font-size: 16px;
+        }
+        ul { list-style-type: disc; margin-left: 1.5rem; }
+        ol { list-style-type: decimal; margin-left: 1.5rem; }
+    `
+});
 </script>
 
+<script>
+document.querySelector('form').addEventListener('submit', function () {
+    tinymce.triggerSave(); // WAJIB
+});
+</script>
 
 @endsection

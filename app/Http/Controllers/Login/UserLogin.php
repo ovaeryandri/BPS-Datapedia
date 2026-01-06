@@ -51,18 +51,29 @@ class UserLogin extends Controller
 
     $user = akunuser::where('no_hp', $request->no_hp)->first();
 
-    if ($user && Hash::check($request->password, $user->password)) {
-        RateLimiter::clear($throttleKey);
+if (!$user) {
+    RateLimiter::hit($throttleKey, 120);
 
-        session([
-            'loginStatus' => true,
-            'user' => $user,
-            'user_id' => $user->id,
-            'lastActivityTime' => time(),
-        ]);
+    return back()->withErrors([
+        'invalid_no_hp' => 'Nomor Handphone tidak terdaftar'
+    ])->withInput();
+}
 
-        return redirect()->route('index');
-    }
+if (!Hash::check($request->password, $user->password)) {
+    RateLimiter::hit($throttleKey, 120);
+
+    return back()->withErrors([
+        'password' => 'Password yang Anda masukkan salah'
+    ])->withInput();
+}
+
+RateLimiter::clear($throttleKey);
+
+Session::put('login_user', true);
+Session::put('user_id', $user->id);
+
+return redirect()->route('index');
+
 
     RateLimiter::hit($throttleKey, 120);
 

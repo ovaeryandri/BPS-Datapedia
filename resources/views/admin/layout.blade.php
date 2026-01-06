@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css" />
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
   <title>Welcome To Admin</title>
-  <style>
+  {{-- <style>
 .ellipsis-3-lines {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -16,7 +16,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-</style>
+</style> --}}
 
 </head>
 
@@ -299,7 +299,7 @@
   <!-- end navbar -->
 
   <!-- strat wrapper -->
-  <div class=" flex ">
+  <div class="flex ">
     <!-- start sidebar -->
     <div id="sideBar"
       class="relative flex flex-col flex-wrap bg-white border-r border-gray-300 p-6 flex-none w-64 md:-ml-64 md:fixed md:top-0 md:z-30 md:h-screen md:shadow-xl animated faster">
@@ -312,6 +312,15 @@
           </button>
         </div>
         <!-- end sidebar toggle -->
+
+        <p class="uppercase text-xs text-blue-600 mb-4 tracking-wider">Dashboard</p>
+
+        <!-- link -->
+        <a href="{{ route('dashboard.index') }}"
+          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
+          <i class="fad fa-chart-pie text-xs mr-2"></i>
+          Halaman Dashboard
+        </a>
 
         <p class="uppercase text-xs text-blue-600 mb-4 tracking-wider">Role User</p>
 
@@ -338,7 +347,7 @@
         <a href="{{ route('petugas.index') }}"
           class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
           <i class="fad fa-chart-pie text-xs mr-2"></i>
-          Petugas Hari Ini
+          Petugas Minggu Ini
         </a>
         <!-- end link -->
 
@@ -376,6 +385,18 @@
           class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
           <i class="fad fa-comments text-xs mr-2"></i>
          Jam Operasional
+        </a>
+
+        <a href="{{ route('grafik.index') }}"
+          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
+          <i class="fad fa-comments text-xs mr-2"></i>
+         Grafik Konsultasi
+        </a>
+
+        <a href="{{ route('adminKonsultasi.create') }}"
+          class="mb-3 capitalize font-medium text-sm hover:text-blue-600 transition ease-in-out duration-500">
+          <i class="fad fa-comments text-xs mr-2"></i>
+         Penambahan Jumlah Konsultasi
         </a>
         <!-- end link -->
 
@@ -458,9 +479,7 @@
             setupPagination();
         }
     });
-</script>
 
-<script>
     document.getElementById('gambar').addEventListener('change', function (e) {
         const file = e.target.files[0];
         const preview = document.getElementById('preview');
@@ -474,11 +493,9 @@
             reader.readAsDataURL(file);
         }
     });
-</script>
 
 @stack('scripts')
 
-<script>
     document.getElementById('file').addEventListener('change', function (e) {
         const file = e.target.files[0];
         const preview = document.getElementById('preview-pdf');
@@ -493,8 +510,6 @@
         }
     });
 </script>
-
-
 
 </body>
 

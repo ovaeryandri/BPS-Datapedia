@@ -16,30 +16,143 @@ use App\Models\maklumat;
 use App\Models\petugas;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-   public function index()
-{
-    $faq = faq::all();
-    $maklumat = maklumat::all();
-    $standar = standar::all();
-    $layanan = layanan::all();
-    $konsultan = konsultan::all();
-    $jamOperasional = JamOperasional::all();
-    $userId = Session::get('user_id');
-    $janjiTemu = Janjitemu::where('users_id', $userId)
-        ->whereIn('jenis', ['online', 'offline'])
-        ->latest()
-        ->first();
-    $petugas = petugas::where('tanggal', Carbon::today())->with('konsultan')->first();
+    public function index(Request $request)
+    {
+        $faq = faq::all();
+        $maklumat = maklumat::all();
+        $standar = standar::all();
+        $layanan = layanan::all();
+        $konsultan = konsultan::all();
+        $jamOperasional = JamOperasional::all();
+        $userId = session()->get('user_id'); // Gunakan session() helper
+        $janjiTemu = Janjitemu::where('users_id', $userId)
+            ->whereIn('jenis', ['online', 'offline'])
+            ->latest()
+            ->first();
+        $today = Carbon::today()->toDateString();
+        // Gunakan get() untuk mendapatkan koleksi
+        $petugas = Petugas::with('konsultan')->where('tanggal', $today)->get();
+        // Ambil tahun yang dipilih dari request, default tahun sekarang
+        $selectedYear = $request->get('tahun', date('Y'));
 
-    // Data jumlah klik SEMUA USER (bukan per user)
-    $today = konsultasiKlik::whereDate('clicked_at', Carbon::today())->count();
-    $month = konsultasiKlik::whereMonth('clicked_at', Carbon::now()->month)->count();
-    $total = konsultasiKlik::count();
+        // Ambil semua tahun yang tersedia di database
+        $availableYears = $this->getAvailableYears();
 
-    return view('user.user', compact('faq', 'janjiTemu', 'maklumat', 'standar', 'layanan', 'petugas', 'konsultan', 'today', 'month', 'total', 'jamOperasional'));
-}
+        // Ambil data konsultasi bulanan berdasarkan kode asli Anda
+        $dataBulanan = $this->getDataBulanan($selectedYear);
 
+        return view('user.user', compact(
+            'faq', 'janjiTemu', 'maklumat', 'standar', 'layanan', 'petugas', 'konsultan', 'jamOperasional',
+            'dataBulanan',
+            'selectedYear',
+            'availableYears'
+        ));
+    }
+
+    /**
+     * Method untuk mengambil data bulanan sesuai dengan struktur kode asli
+     * Disesuaikan dengan variabel $dataBulanan yang Anda gunakan
+     */
+    private function getDataBulanan($year)
+    {
+        // Inisialisasi array untuk 12 bulan dengan nilai 0
+        $dataBulanan = array_fill(0, 12, 0);
+
+        // Query sesuai dengan tabel dan struktur database Anda
+        // Ganti 'konsultasiKlik' dengan nama tabel yang sesuai
+        // Ganti 'created_at' dengan kolom tanggal yang sesuai
+        $konsultasiData = DB::table('konsultasi_klik') // Sesuaikan nama tabel Anda
+            ->select(
+                DB::raw('MONTH(created_at) as bulan'),
+                DB::raw('COUNT(*) as jumlah')
+            )
+            ->whereYear('created_at', $year)
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy('bulan')
+            ->get();
+
+        // Isi data ke array $dataBulanan berdasarkan bulan
+        foreach ($konsultasiData as $data) {
+            $indexBulan = $data->bulan - 1; // Index array dimulai dari 0 (Januari = index 0)
+            $dataBulanan[$indexBulan] = (int) $data->jumlah;
+        }
+
+        return $dataBulanan;
+    }
+
+    /**
+     * Method untuk mengambil tahun-tahun yang tersedia
+     * Sesuai dengan variabel $availableYears yang Anda gunakan
+     */
+    private function getAvailableYears()
+    {
+        $tahunTersedia = DB::table('konsultasi_klik') // Sesuaikan nama tabel Anda
+            ->select(DB::raw('YEAR(created_at) as tahun'))
+            ->distinct()
+            ->orderBy('tahun', 'desc')
+            ->pluck('tahun')
+            ->toArray();
+
+        // Jika tidak ada data, berikan tahun sekarang sebagai default
+        if (empty($tahunTersedia)) {
+            $tahunTersedia = [date('Y')];
+        }
+
+        return $tahunTersedia;
+    }
+
+    /**
+     * Alternative method jika Anda menggunakan tabel lain
+     * Contoh: jika data konsultasi ada di tabel 'appointments' atau 'medical_records'
+     */
+    private function getDataBulananAlternative($year, $tableName = 'appointments')
+    {
+        $dataBulanan = array_fill(0, 12, 0);
+
+        $query = DB::table($tableName)
+            ->select(
+                DB::raw('MONTH(tanggal_konsultasi) as bulan'), // Sesuaikan nama kolom
+                DB::raw('COUNT(*) as jumlah')
+            )
+            ->whereYear('tanggal_konsultasi', $year) // Sesuaikan nama kolom
+            ->groupBy(DB::raw('MONTH(tanggal_konsultasi)'))
+            ->orderBy('bulan')
+            ->get();
+
+        foreach ($query as $item) {
+            $dataBulanan[$item->bulan - 1] = (int) $item->jumlah;
+        }
+
+        return $dataBulanan;
+    }
+
+    /**
+     * Method jika menggunakan kondisi tambahan (misalnya status tertentu)
+     */
+    // private function getDataBulananWithConditions($year)
+    // {
+    //     $dataBulanan = array_fill(0, 12, 0);
+
+    //     $data = DB::table('konsultasiKlik')
+    //         ->select(
+    //             DB::raw('MONTH(created_at) as bulan'),
+    //             DB::raw('COUNT(*) as jumlah')
+    //         )
+    //         ->whereYear('created_at', $year)
+    //         ->where('status', 'completed') // Contoh kondisi tambahan
+    //         // ->where('type', 'konsultasi') // Contoh kondisi lain
+    //         ->groupBy(DB::raw('MONTH(created_at)'))
+    //         ->orderBy('bulan')
+    //         ->get();
+
+    //     foreach ($data as $item) {
+    //         $dataBulanan[$item->bulan - 1] = (int) $item->jumlah;
+    //     }
+
+    //     return $dataBulanan;
+    // }
 }
