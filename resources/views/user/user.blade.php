@@ -17,7 +17,7 @@
                     <img src="{{ asset('image/konsultasii.png') }}" alt="Hubungi Layanan" class="h-48 w-auto mx-auto object-contain">
                 </div>
                 <div class="w-full">
-                    @if(session('loginStatus') && session('user'))
+                   @if(session('login_user') && session('user_id'))
                         <a href="{{ route('konsultasi.index') }}" class="block w-full">
                             <button class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
                                 <span>Konsultasi Whatsapp</span>
@@ -32,6 +32,7 @@
                     @endif
                 </div>
             </div>
+            889900998767
 
             {{-- Kartu 2 - Buat Janji Temu --}}
             <div class="bg-[#002B6A] rounded-2xl shadow-xl p-8 flex flex-col items-center justify-between hover:transform hover:scale-105 transition-all duration-300">
@@ -39,7 +40,7 @@
                     <img src="{{ asset('image/meet.png') }}" alt="Buat Janji Temu" class="h-48 w-auto mx-auto object-contain">
                 </div>
                 <div class="w-full">
-                    @if(session('loginStatus') && session('user'))
+                   @if(session('login_user') && session('user_id'))
                         <a href="{{ route('janjitemu.online') }}" class="block w-full">
                             <button class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target" onmouseenter="speakOnHover(this)">
                                 <span>Konsultasi Online</span>
@@ -61,19 +62,15 @@
                     <img src="{{ asset('image/antrianonline.png') }}" alt="Ambil Antrian Online" class="h-48 w-auto mx-auto object-contain">
                 </div>
                 <div class="w-full">
-                    @if(session('loginStatus') && session('user'))
+
                         <a href="https://webapps.bps.go.id/babel/antrianbabel/frontend/web/index.php?r=site/index#services" class="block w-full">
                             <button class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target nav-link" onmouseenter="speakOnHover(this)">
                                 <span>Ambil Antrian Online</span>
                                 <img src="{{ asset('image/tiket.png') }}" width="24" height="24" alt="Tiket" class="flex-shrink-0">
                             </button>
                         </a>
-                    @else
-                        <button type="button" onclick="showLoginAlert()" class="w-full bg-white hover:bg-gray-300 text-[#002B6A] font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors duration-300 speak-target">
-                            <span>Ambil Antrian Online</span>
-                            <img src="{{ asset('image/tiket.png') }}" width="24" height="24" alt="Tiket" class="flex-shrink-0">
-                        </button>
-                    @endif
+
+
                 </div>
             </div>
         </div>
